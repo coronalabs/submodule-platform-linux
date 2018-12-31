@@ -1,0 +1,23 @@
+-------------------------------------------------------------------------------
+-- 
+-- CustomDevice.lua.template
+-- Copyright (c) 2014 Corona Labs, Inc. All rights reserved.
+-- 
+-- Reviewers:
+-- 		Perry
+--
+-------------------------------------------------------------------------------
+
+simulator =
+{
+	device = "{customDevicePlatform}",
+	screenOriginX = 0,
+	screenOriginY = 0,
+	screenWidth = {customDeviceWidth},
+	screenHeight = {customDeviceHeight},
+	deviceImage = nil,
+	displayManufacturer = "{customDeviceManufacturer}",
+	displayName = "{customDeviceName}",
+	supportsScreenRotation = {customDeviceIsRotatable},
+	windowTitleBarName = "{customDeviceName}"
+}

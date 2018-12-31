@@ -1,0 +1,13 @@
+How to install and run Corona on Linux:
+
+1) download Corona-Linux-x86-64-2018.XXXX.tar.gz
+
+2) unpack .tar.gz file, for example
+mkdir ~/CoronaSimulator
+tar -xzf /tmp/Corona-Linux-x86-64-2018.XXXX.tar.gz -C ~/CoronaSimulator	
+
+3) launch install-dependencies.sh
+it will install all dependencies and Android SDK required by offline Android Builder
+
+4) run start.sh
+

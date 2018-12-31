@@ -1,0 +1,11 @@
+# generated code
+/lua
+# build stuff
+/ARM
+/Debug
+/Release
+/Simulator
+/rtt_simulator.mk
+/rtt.mk
+/rtt_arm.mk
+*.bak
