@@ -152,7 +152,7 @@ CPPS = $(patsubst %.lua, lua/%.cpp, $(notdir $(SRCS)))
 define ruletemp
 $(patsubst %.lua, lua/%.cpp, $(notdir $(1))): $(1)
 	@mkdir -p lua
-	@BUILD_CONFIG=$(UPPER_CONFIG) ../android/ndk/lua_to_native.sh $$< lua/ # $$@
+	@BUILD_CONFIG=$(UPPER_CONFIG) ./lua_to_native.sh $$< lua/ # $$@
 endef
 
 $(foreach src, $(SRCS), $(eval $(call ruletemp, $(src))) )
@@ -171,7 +171,7 @@ SOCKET_DST = $(patsubst %, lua/socket/%.c, $(SOCKET_FILES))
 
 lua/socket/%.c : ../../external/luasocket/src/%.lua
 	@mkdir -p lua/socket/
-	@../../bin/mac/lua2c.sh $< lua/socket/. $(UPPER_CONFIG) ../../bin/mac
+	@../../bin/linux/lua2c.sh $< lua/socket/. $(UPPER_CONFIG) ../../bin/linux
 
 
 # weird luaload renames
