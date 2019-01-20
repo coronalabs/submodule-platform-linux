@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # See https://sites.google.com/a/anscamobile.com/dev/home/corona-specs/init-lua
 
@@ -54,6 +54,13 @@ popd > /dev/null
 
 SRC_PATH="$SRC_DIR/$SRCFILE"
 
+if [[ $(uname -s) == Darwin ]];then
+    BIN_DIR=mac
+else 
+    BIN_DIR=linux
+fi
+
+
 # If the Lua is newer than the CPP, compile it
 if [ "$SRC_PATH" -nt "$DST_DIR/$SRCNAME.cpp" ]
 then
@@ -64,9 +71,9 @@ then
 	pushd "$path/../../bin" > /dev/null
 
 	LU_PATH=$TEMP_DIR/$SRCNAME.lu
-	linux/lua rcc.lua -c linux -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
+	${BIN_DIR}/lua rcc.lua -c ${BIN_DIR} -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
 
-	linux/lua -epackage.path="[[mac/loop/?.lua]]" mac/loop/precompiler.constant.lua -d "$DST_DIR" -o "$SRCNAME" -l "$LU_PATH" -n -m "$MODULE_NAME" "$SRCNAME"
+	${BIN_DIR}/lua -epackage.path="[[mac/loop/?.lua]]" mac/loop/precompiler.constant.lua -d "$DST_DIR" -o "$SRCNAME" -l "$LU_PATH" -n -m "$MODULE_NAME" "$SRCNAME"
 
 	popd > /dev/null
 

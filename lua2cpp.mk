@@ -166,12 +166,17 @@ lua/CoronaLibrary-lua.cpp: lua/CoronaLibrary.cpp
 
 # luasocket to c
 
+PLATFORMDIR=../../bin/linux
+ifeq ($(shell uname -s),Darwin)
+	PLATFORMDIR = ../../bin/mac
+endif
+
 SOCKET_FILES = ftp headers http ltn12 mbox mime smtp socket ssl tp url
 SOCKET_DST = $(patsubst %, lua/socket/%.c, $(SOCKET_FILES))
 
 lua/socket/%.c : ../../external/luasocket/src/%.lua
 	@mkdir -p lua/socket/
-	@../../bin/linux/lua2c.sh $< lua/socket/. $(UPPER_CONFIG) ../../bin/linux
+	$(PLATFORMDIR)/lua2c.sh $< lua/socket/. "$(UPPER_CONFIG)" "$(PLATFORMDIR)"
 
 
 # weird luaload renames
