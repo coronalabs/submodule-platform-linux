@@ -35,6 +35,7 @@
 	#include <sys/types.h>
 #endif
 
+#include <string.h>
 #include "Core/Rtt_Build.h"
 #include "Core/Rtt_Time.h"
 #include "Rtt_Runtime.h"
@@ -346,6 +347,20 @@ namespace Rtt
 		//		fKeyName["Break"] = KeyName::kBreak;
 		fKeyName[309] = KeyName::kMenu;
 		//		fKeyName["Application"] = KeyName::kMenu;		// web
+	}
+
+	void KeyListener::notifyCharEvent(wxKeyEvent& e)
+	{
+		wxChar unicodeCharacter = e.GetUnicodeKey();
+		if (unicodeCharacter != WXK_NONE)
+		{
+			wxCharBuffer utf8Buffer = wxString(e.GetUnicodeKey()).ToUTF8();
+			const char *utf8Character = utf8Buffer.data();
+			if (strlen(utf8Character) > 1 || isprint(utf8Character[0])) {
+				CharacterEvent characterEvent(NULL, utf8Character);
+				fRuntime.DispatchEvent(characterEvent);
+			}
+		}
 	}
 
 	void KeyListener::notifyKeyEvent(wxKeyEvent& e, bool down)
@@ -1295,6 +1310,7 @@ wxBEGIN_EVENT_TABLE(MyGLCanvas, wxGLCanvas)
 EVT_PAINT(MyGLCanvas::OnPaint)
 EVT_SIZE(MyGLCanvas::OnSize)
 EVT_MOUSE_EVENTS(MyGLCanvas::OnMouse)
+EVT_CHAR(MyGLCanvas::OnChar)
 EVT_KEY_UP(MyGLCanvas::OnKeyUp)
 EVT_KEY_DOWN(MyGLCanvas::OnKeyDown)
 EVT_TIMER(TIMER_ID, MyGLCanvas::OnTimer)
@@ -1374,6 +1390,12 @@ void MyGLCanvas::OnKeyUp(wxKeyEvent& event)
 	{
 		fContext->GetKeyListener()->notifyKeyEvent(event, false);
 	}
+}
+
+void MyGLCanvas::OnChar(wxKeyEvent& event)
+{
+	event.Skip();
+	fContext->GetKeyListener()->notifyCharEvent(event);
 }
 
 void MyGLCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))

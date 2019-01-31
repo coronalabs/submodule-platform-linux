@@ -75,7 +75,7 @@ namespace Rtt
 		KeyListener(Runtime &runtime);
 
 		void notifyKeyEvent(wxKeyEvent& e, bool down);
-
+		void notifyCharEvent(wxKeyEvent& e);
 	private:
 		Runtime& fRuntime;
 		std::map<int, std::string> fKeyName;
@@ -193,6 +193,7 @@ public:
 	MyGLCanvas(MyFrame* parent, const wxGLAttributes& canvasAttrs);
 	~MyGLCanvas();
 
+	void OnChar(wxKeyEvent& event);
 	void OnKeyDown(wxKeyEvent& event);
 	void OnKeyUp(wxKeyEvent& event);
 	void OnTimer(wxTimerEvent& event);
