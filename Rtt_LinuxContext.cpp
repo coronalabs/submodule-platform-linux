@@ -1106,7 +1106,7 @@ void MyFrame::createMenus()
 		mi = m_pBuildMenu->Append(wxID_SAVE, _T("&iOS"));	mi->Enable(false);
 		mi = m_pBuildMenu->Append(ID_MENU_BUILD_LINUX, _T("&Linux	\tCtrl-Shift-Alt-B"));
 		mi = m_pBuildMenu->Append(wxID_SAVE, _T("&Windows"));	mi->Enable(false);
-		mi = m_pFileMenu->AppendSubMenu(m_pBuildMenu, _T("&Bild"));
+		mi = m_pFileMenu->AppendSubMenu(m_pBuildMenu, _T("&Build"));
 
 		mi = m_pFileMenu->Append(wxID_SAVE, _T("&Open In Editor	\tCtrl-Shift-O"));
 		mi = m_pFileMenu->Append(wxID_SAVE, _T("&Show Project Files")); mi->Enable(false);
