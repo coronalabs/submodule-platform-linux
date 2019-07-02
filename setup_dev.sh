@@ -41,4 +41,4 @@ sh ./build_native_linux.sh
 cd CoronaSimulator
 sh ./install-dependencies.sh
 
-chown -R $USER:USER ~/corona/platform/linux/Simulator/
+chown -R $USER:USER ~/corona/
