@@ -120,7 +120,7 @@ void LinuxWebPopup::Show(const MPlatform& platform, const char *url)
 		platform->PathForFile(url, fBaseDirectory, MPlatform::kDefaultPathFlags, filePath);
 		if (!filePath.IsEmpty())
 		{
-			updatedUrl = filePath.GetString();
+			updatedUrl = std::string("file://") + filePath.GetString();
 		}
 	}
 	else if (fBaseUrl.size() > 0)
