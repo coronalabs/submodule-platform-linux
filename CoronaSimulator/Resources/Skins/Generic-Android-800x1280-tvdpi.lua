@@ -1,12 +1,11 @@
--------------------------------------------------------------------------------
--- 
--- Generic-Android-800x1280-tvdpi.lua
--- Copyright (c) 2016 Corona Labs, Inc. All rights reserved.
--- 
--- Reviewers:
--- 		Ajay
+------------------------------------------------------------------------------
 --
--------------------------------------------------------------------------------
+-- This file is part of the Corona game engine.
+-- For overview and more information on licensing please refer to README.md 
+-- Home page: https://github.com/coronalabs/corona
+-- Contact: support@coronalabs.com
+--
+------------------------------------------------------------------------------
 
 -- Based on the Nexus 7 (2012), Kindle Fire HD 8 (2015) and (2016)
 -- https://material.io/devices/

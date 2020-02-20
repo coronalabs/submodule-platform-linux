@@ -1,12 +1,11 @@
--------------------------------------------------------------------------------
--- 
--- Generic-Android-720x1280.lua
--- Copyright (c) 2016 Corona Labs, Inc. All rights reserved.
--- 
--- Reviewers:
--- 		Ajay
+------------------------------------------------------------------------------
 --
--------------------------------------------------------------------------------
+-- This file is part of the Corona game engine.
+-- For overview and more information on licensing please refer to README.md 
+-- Home page: https://github.com/coronalabs/corona
+-- Contact: support@coronalabs.com
+--
+------------------------------------------------------------------------------
 
 -- Based on the Moto G, Sony Xperia Z1 Compact, Xperia Z3 Compact
 -- https://material.io/devices/

@@ -1,12 +1,11 @@
--------------------------------------------------------------------------------
--- 
--- Generic-Android-1440x2560-3.5-x-mdpi.lua
--- Copyright (c) 2016 Corona Labs, Inc. All rights reserved.
--- 
--- Reviewers:
--- 		Ajay
+------------------------------------------------------------------------------
 --
--------------------------------------------------------------------------------
+-- This file is part of the Corona game engine.
+-- For overview and more information on licensing please refer to README.md 
+-- Home page: https://github.com/coronalabs/corona
+-- Contact: support@coronalabs.com
+--
+------------------------------------------------------------------------------
 
 -- Based on the Google Pixel XL, Nexus 6 and Nexus 6P
 -- https://material.io/devices/

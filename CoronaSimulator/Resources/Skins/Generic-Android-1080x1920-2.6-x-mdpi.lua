@@ -1,12 +1,11 @@
--------------------------------------------------------------------------------
--- 
--- Generic-Android-1080x1920-2.6-x-mdpi.lua
--- Copyright (c) 2016 Corona Labs, Inc. All rights reserved.
--- 
--- Reviewers:
--- 		Ajay
+------------------------------------------------------------------------------
 --
--------------------------------------------------------------------------------
+-- This file is part of the Corona game engine.
+-- For overview and more information on licensing please refer to README.md 
+-- Home page: https://github.com/coronalabs/corona
+-- Contact: support@coronalabs.com
+--
+------------------------------------------------------------------------------
 
 -- Based on the Google Pixel and Nexus 5X
 -- https://material.io/devices/

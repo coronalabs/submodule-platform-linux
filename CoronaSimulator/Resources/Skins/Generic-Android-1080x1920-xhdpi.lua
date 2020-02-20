@@ -1,12 +1,11 @@
--------------------------------------------------------------------------------
--- 
--- Generic-Android-1080x1920-xhdpi.lua
--- Copyright (c) 2016 Corona Labs, Inc. All rights reserved.
--- 
--- Reviewers:
--- 		Ajay
+------------------------------------------------------------------------------
 --
--------------------------------------------------------------------------------
+-- This file is part of the Corona game engine.
+-- For overview and more information on licensing please refer to README.md 
+-- Home page: https://github.com/coronalabs/corona
+-- Contact: support@coronalabs.com
+--
+------------------------------------------------------------------------------
 
 -- Based on the Sony Xperia C4, Xperia Z Ultra, and Xperia Z3 Tablet
 -- https://material.io/devices/
