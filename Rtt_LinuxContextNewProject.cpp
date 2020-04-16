@@ -13,18 +13,9 @@ namespace Rtt
 			fOrientationIndex("portrait"),
 			fProjectPath("")
 	{
-		static const int kPhonePresetWidth = 320;
-		static const int kPhonePresetHeight = 480;
 
-		static const int kTabletPresetWidth = 768;
-		static const int kTabletPresetHeight = 1024;
-
-		static const int kPhonePresetTag = 0;
-		static const int kTabletPresetTag = 1;
-		static const int kCustomPresetTag = 2;
-		
 		SetSize(wxSize(511, 425));
-		txtApplicationName = new wxTextCtrl(this, wxID_ANY, wxEmptyString);
+		txtApplicationName = new wxTextCtrl(this, wxID_ANY, std::string(fProjectName));
 		txtProjectFolder = new wxTextCtrl(this, wxID_ANY, wxEmptyString);
 		btnBrowse = new wxButton(this, wxID_ANY, wxT("&Browse..."));
 		rProjectOption1 = new wxRadioButton(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
