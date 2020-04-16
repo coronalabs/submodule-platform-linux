@@ -1,4 +1,6 @@
 # generated code
+CoronaSimulator/android-sdk
+CoronaSimulator/CoronaSimulator
 /lua
 # build stuff
 /ARM
@@ -9,3 +11,4 @@
 /rtt.mk
 /rtt_arm.mk
 *.bak
+/
