@@ -37,6 +37,7 @@
 #include "Rtt_Freetype.h"
 #include "Rtt_LuaLibSimulator.h"
 #include "Rtt_LinuxSimulatorView.h"
+#include "Rtt_LinuxConfiguration.h"
 
 //#define Rtt_DEBUG_TOUCH 1
 
@@ -86,6 +87,8 @@ wxDEFINE_EVENT(eventNewProject, wxCommandEvent);
 namespace Rtt
 {
 
+	LinuxConfiguration* CoronaConf = new LinuxConfiguration();
+	
 	MouseListener::MouseListener(Runtime &runtime)
 		: fRuntime(runtime)
 		, fScaleX(1)
@@ -407,6 +410,9 @@ namespace Rtt
 		//const char* appPath = "/home/vitaly/Clock";
 	#endif
 
+	CoronaConf->HomeDir = homedir;
+	CoronaConf->ApplicationPath = appPath;
+
 		// override appPath if arg isn't NULL
 		if (path && *path != 0)
 		{
@@ -435,6 +441,9 @@ namespace Rtt
 				}
 			}
 		}
+		
+		CoronaConf->ApplicationName = fAppName;
+		
 		Rtt_ASSERT(fAppName.size() > 0);
 		std::string startDir(appPath);
 
@@ -443,14 +452,15 @@ namespace Rtt
 		fSaveFolder += "Documents";
 		fSaveFolder += LUA_DIRSEP;
 		fSaveFolder += "Corona Built Apps";
-
-
+		
+		CoronaConf->BuildFolder = fSaveFolder;
+		
 		//
 		// tar.gz app ?
 		//
 
 		std::string assetsDir = startDir + "/resource.car";
-		Rtt_LogException("Checking %s\n", assetsDir.c_str());
+		//Rtt_LogException("Checking %s\n", assetsDir.c_str());
 		if (Rtt_FileExists(assetsDir.c_str()))
 		{
 			fPathToApp = startDir;
@@ -459,7 +469,7 @@ namespace Rtt
 
 		// next check if main.lua exists
 		assetsDir = startDir + "/main.lua";
-		Rtt_LogException("Checking %s\n", assetsDir.c_str());
+		//Rtt_LogException("Checking %s\n", assetsDir.c_str());
 		if (Rtt_FileExists(assetsDir.c_str()))
 		{
 			fPathToApp = startDir;
@@ -474,7 +484,7 @@ namespace Rtt
 		startDir += fAppName;
 
 		assetsDir = startDir + "/resource.car";
-		Rtt_LogException("Checking %s\n", assetsDir.c_str());
+		//Rtt_LogException("Checking %s\n", assetsDir.c_str());
 		if (Rtt_FileExists(assetsDir.c_str()))
 		{
 			fPathToApp = startDir;
@@ -484,7 +494,7 @@ namespace Rtt
 
 		// next check if main.lua exists
 		assetsDir = startDir + "/main.lua";
-		Rtt_LogException("Checking %s\n", assetsDir.c_str());
+		//Rtt_LogException("Checking %s\n", assetsDir.c_str());
 		if (Rtt_FileExists(assetsDir.c_str()))
 		{
 			fPathToApp = startDir;
@@ -498,7 +508,7 @@ namespace Rtt
 		startDir = getStartupPath(NULL);
 		startDir += "/Resources/homescreen";
 		assetsDir = startDir + "/main.lua";
-		Rtt_LogException("Checking %s\n", assetsDir.c_str());
+		//Rtt_LogException("Checking %s\n", assetsDir.c_str());
 		if (Rtt_FileExists(assetsDir.c_str()))
 		{
 			fAppName = "homescreen";
@@ -534,7 +544,7 @@ namespace Rtt
 		setGlyphProvider(NULL);
 	}
 
-	bool		CoronaAppContext::Init()
+	bool CoronaAppContext::Init()
 	{
 		// Initializes all available image handlers
 		wxInitAllImageHandlers();
@@ -556,8 +566,8 @@ namespace Rtt
 			appDir += "/.corona/";
 			appDir += fAppName;
 		}
-		Rtt_LogException("sandbox: %s\n", appDir.c_str());
-		Rtt_LogException("assets: %s\n", fPathToApp.c_str());
+		//Rtt_LogException("sandbox: %s\n", appDir.c_str());
+		//Rtt_LogException("assets: %s\n", fPathToApp.c_str());
 
 		std::string documentsDir = appDir;
 		std::string temporaryDir = appDir;
@@ -957,6 +967,7 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
 	EVT_MENU(wxID_EXIT, MyFrame::OnQuit)
 	EVT_MENU(wxID_ABOUT, MyFrame::OnAbout)
 	EVT_MENU(wxID_OPEN, MyFrame::OnOpenFileDialog)
+	EVT_MENU(wxID_NEW, MyFrame::OnNewProject)
 	EVT_MENU(ID_MENU_WELCOME, MyFrame::OnOpenWelcome)
 	EVT_MENU(ID_MENU_BUILD_ANDROID, MyFrame::OnBuildAndroid)
 	EVT_MENU(ID_MENU_BUILD_WEB, MyFrame::OnBuildWeb)
@@ -965,13 +976,14 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
 	EVT_MENU(ID_MENU_CLOSE, MyFrame::OnOpenWelcome)
 	
 	EVT_COMMAND(wxID_ANY, eventOpenProject, MyFrame::OnOpen)
+	EVT_COMMAND(wxID_ANY, eventNewProject, MyFrame::OnNewProject)
 	EVT_COMMAND(wxID_ANY, eventRelaunchProject, MyFrame::OnRelaunch)
 	EVT_COMMAND(wxID_ANY, eventWelcomeProject, MyFrame::OnOpenWelcome)
 
 wxEND_EVENT_TABLE()
 
 MyFrame::MyFrame()
-	: wxFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxSize(0,0), wxCAPTION | wxCLOSE_BOX)
+	: wxFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxSize(10,10), wxCAPTION | wxCLOSE_BOX)
 	, m_mycanvas(NULL)
 	, fContext(NULL)
 	, fMenuMain(NULL)
@@ -1042,8 +1054,9 @@ void MyFrame::resetSize()
 {
 	int w = fContext->getWidth();
 	int h = fContext->getHeight();
-	SetClientSize(wxSize(w, h));
-	Refresh(false);
+	this->SetClientSize(wxSize(w, h));
+	this->Refresh(false);
+	this->Update();
 }
 
 void MyFrame::createMenus()
@@ -1054,7 +1067,7 @@ void MyFrame::createMenus()
 
 		// File Menu
 		wxMenu* m_pFileMenu = new wxMenu();
-		mi = m_pFileMenu->Append(wxID_NEW, _T("&New Project	\tCtrl-N")); mi->Enable(false);
+		mi = m_pFileMenu->Append(wxID_NEW, _T("&New Project	\tCtrl-N")); //mi->Enable(false);
 		mi = m_pFileMenu->Append(wxID_OPEN, _T("&Open Project	\tCtrl-O"));
 		m_pFileMenu->AppendSeparator();
 		mi = m_pFileMenu->Append(wxID_SAVE, _T("&Relaunch Last Project	\tCtrl-R"));
@@ -1080,7 +1093,7 @@ void MyFrame::createMenus()
 
 		// File Menu
 		wxMenu* m_pFileMenu = new wxMenu();
-		mi = m_pFileMenu->Append(wxID_NEW, _T("&New Project	\tCtrl-N")); mi->Enable(false);
+		mi = m_pFileMenu->Append(wxID_NEW, _T("&New Project	\tCtrl-N")); //mi->Enable(false);
 		mi = m_pFileMenu->Append(wxID_OPEN, _T("&Open Project	\tCtrl-O"));
 		m_pFileMenu->AppendSeparator();
 
@@ -1250,6 +1263,8 @@ void MyFrame::OnRelaunch(wxCommandEvent& event)
 		bool fullScreen = fContext->Init();
 		fContext->loadApp(m_mycanvas);
 		resetSize();
+		this->Refresh(false);
+		this->Update();
 		m_mycanvas->fContext = fContext;
 		fContext->setCanvas(m_mycanvas);
 
@@ -1258,6 +1273,23 @@ void MyFrame::OnRelaunch(wxCommandEvent& event)
 		m_mycanvas->startTimer(1000.0f / (float)fContext->getFPS());
 	}
 }
+
+void MyFrame::OnNewProject(wxCommandEvent& event)
+{
+	
+	NewProjectDialog* newProjectDlg = new NewProjectDialog(this, wxID_ANY, wxEmptyString);
+	
+	if ( newProjectDlg->ShowModal() == wxID_OK ){
+		
+		Rtt_LogException("OK Button clicked!\n");
+		
+		
+	}
+	
+	newProjectDlg->Destroy();
+	
+}
+
 
 void MyFrame::OnOpen(wxCommandEvent& event)
 {
@@ -1278,6 +1310,8 @@ void MyFrame::OnOpen(wxCommandEvent& event)
 	bool fullScreen = fContext->Init();
 	fContext->loadApp(m_mycanvas);
 	resetSize();
+	this->Refresh(false);
+	this->Update();
 	m_mycanvas->fContext = fContext;
 	fContext->setCanvas(m_mycanvas);
 
@@ -1401,7 +1435,7 @@ void MyGLCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 
 void MyGLCanvas::OnSize(wxSizeEvent& event)
 {
-	event.Skip();
+	
 
 	// If this window is not fully initialized, dismiss this event
 	if (!IsShownOnScreen())
@@ -1439,6 +1473,9 @@ void MyGLCanvas::OnSize(wxSizeEvent& event)
 
 	// Generate paint event without erasing the background.
 	Refresh(false);
+	Update();
+	
+	//event.Skip();
 }
 
 void MyGLCanvas::OnMouse(wxMouseEvent& e)

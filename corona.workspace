@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="corona" Database="" Version="10.0.0">
   <Project Name="linux_rtt" Path="linux_rtt.project" Active="Yes"/>
-  <Project Name="plugin" Path="../../../plugins/plugins-bit/linux/plugin.project" Active="No"/>
   <Project Name="car" Path="car.project" Active="No"/>
   <Project Name="app_sign" Path="app_sign.project" Active="No"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="no">
       <Environment/>
-      <Project Name="linux_rtt" ConfigName="Debug"/>
-      <Project Name="plugin_bit" ConfigName="Debug"/>
-      <Project Name="car" ConfigName="Debug"/>
       <Project Name="app_sign" ConfigName="Debug"/>
+      <Project Name="car" ConfigName="Debug"/>
+      <Project Name="linux_rtt" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
@@ -28,10 +26,9 @@
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Simulator" Selected="yes">
       <Environment/>
-      <Project Name="linux_rtt" ConfigName="Simulator"/>
-      <Project Name="plugin_bit" ConfigName="Debug"/>
-      <Project Name="car" ConfigName="Debug"/>
       <Project Name="app_sign" ConfigName="Debug"/>
+      <Project Name="car" ConfigName="Debug"/>
+      <Project Name="linux_rtt" ConfigName="Simulator"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

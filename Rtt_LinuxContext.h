@@ -19,6 +19,7 @@
 #include "Core/Rtt_Array.h"
 #include "Rtt_LinuxInputDeviceManager.h"
 #include "Rtt_LinuxSimulatorServices.h"
+#include "Rtt_LinuxContextNewProject.h"
 
 #include "wx/app.h"
 #include "wx/frame.h"
@@ -33,6 +34,7 @@ class MyFrame;
 class MyGLCanvas;
 
 wxDECLARE_EVENT(eventOpenProject, wxCommandEvent);
+wxDECLARE_EVENT(eventNewProject, wxCommandEvent);
 wxDECLARE_EVENT(eventRelaunchProject, wxCommandEvent);
 wxDECLARE_EVENT(eventWelcomeProject, wxCommandEvent);
 wxDECLARE_EVENT(eventNewProject, wxCommandEvent);
@@ -195,9 +197,9 @@ public:
 	void startTimer(float duration);
 
 	//private:
-	MyFrame*      m_parent;
-	wxGLContext*  m_oglContext;
-	int           m_winHeight; // We use this var to know if we have been sized
+	MyFrame* m_parent;
+	wxGLContext* m_oglContext;
+	int m_winHeight; // We use this var to know if we have been sized
 	Rtt::CoronaAppContext* fContext;
 	wxTimer m_timer;
 
@@ -215,6 +217,7 @@ public:
 	void OnAbout(wxCommandEvent& event);
 	void OnQuit(wxCommandEvent& event);
 	void OnOpen(wxCommandEvent& event);
+	void OnNewProject(wxCommandEvent& event);
 	void OnRelaunch(wxCommandEvent& event);
 	void OnOpenFileDialog(wxCommandEvent& event);
 	void OnOpenWelcome(wxCommandEvent& event);

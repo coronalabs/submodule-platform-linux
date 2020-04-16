@@ -2,19 +2,19 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Release
+## Debug
 ProjectName            :=car
-ConfigurationName      :=Release
-WorkspacePath          :=/home/vitaly/main/platform/linux
-ProjectPath            :=/home/vitaly/main/platform/linux
-IntermediateDirectory  :=./Release
+ConfigurationName      :=Debug
+WorkspacePath          :=/home/robert/corona/platform/linux
+ProjectPath            :=/home/robert/corona/platform/linux
+IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=vitaly
-Date                   :=27/11/18
-CodeLitePath           :=/home/vitaly/.codelite
+User                   :=Robert
+Date                   :=12/04/20
+CodeLitePath           :=/home/robert/.codelite
 LinkerName             :=g++
 SharedObjectLinkerName :=g++ -shared -fPIC
 ObjectSuffix           :=.o
@@ -28,7 +28,7 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
-Preprocessors          :=$(PreprocessorSwitch)NDEBUG $(PreprocessorSwitch)Rtt_LINUX_ENV $(PreprocessorSwitch)Rtt_NO_ARCHIVE 
+Preprocessors          :=$(PreprocessorSwitch)Rtt_LINUX_ENV $(PreprocessorSwitch)Rtt_NO_ARCHIVE 
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E 
@@ -50,8 +50,8 @@ LibPath                := $(LibraryPathSwitch).
 AR       := ar rcus
 CXX      := g++
 CC       := gcc
-CXXFLAGS :=  -O2 -Wall $(Preprocessors)
-CFLAGS   :=  -O2 -Wall $(Preprocessors)
+CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
+CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := as
 
@@ -60,7 +60,7 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) 
 
 
 
@@ -79,11 +79,11 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
 
 MakeIntermediateDirs:
-	@test -d ./Release || $(MakeDirCommand) ./Release
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
 
 $(IntermediateDirectory)/.d:
-	@test -d ./Release || $(MakeDirCommand) ./Release
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
 PreBuild:
 
@@ -91,45 +91,45 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix): ../../librtt/Core/Rtt_String.cpp $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/vitaly/main/librtt/Core/Rtt_String.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix): ../../librtt/Core/Rtt_String.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix) -MM ../../librtt/Core/Rtt_String.cpp
-
-$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(PreprocessSuffix): ../../librtt/Core/Rtt_String.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(PreprocessSuffix) ../../librtt/Core/Rtt_String.cpp
-
 $(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix): ../../tools/car/main.cpp $(IntermediateDirectory)/up_up_tools_car_main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/vitaly/main/tools/car/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/tools/car/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_tools_car_main.cpp$(DependSuffix): ../../tools/car/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_tools_car_main.cpp$(DependSuffix) -MM ../../tools/car/main.cpp
 
 $(IntermediateDirectory)/up_up_tools_car_main.cpp$(PreprocessSuffix): ../../tools/car/main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_tools_car_main.cpp$(PreprocessSuffix) ../../tools/car/main.cpp
 
+$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix): ../../librtt/Core/Rtt_String.cpp $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/librtt/Core/Rtt_String.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix): ../../librtt/Core/Rtt_String.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix) -MM ../../librtt/Core/Rtt_String.cpp
+
+$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(PreprocessSuffix): ../../librtt/Core/Rtt_String.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(PreprocessSuffix) ../../librtt/Core/Rtt_String.cpp
+
 $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix): ../../tools/car/Rtt_Car.cpp $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/vitaly/main/tools/car/Rtt_Car.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/tools/car/Rtt_Car.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(DependSuffix): ../../tools/car/Rtt_Car.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(DependSuffix) -MM ../../tools/car/Rtt_Car.cpp
 
 $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(PreprocessSuffix): ../../tools/car/Rtt_Car.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(PreprocessSuffix) ../../tools/car/Rtt_Car.cpp
 
-$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix): ../../librtt/Rtt_Archive.cpp $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/vitaly/main/librtt/Rtt_Archive.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix): ../../librtt/Rtt_Archive.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix) -MM ../../librtt/Rtt_Archive.cpp
-
-$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(PreprocessSuffix): ../../librtt/Rtt_Archive.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(PreprocessSuffix) ../../librtt/Rtt_Archive.cpp
-
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix): ../../librtt/Core/Rtt_FileSystem.cpp $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/vitaly/main/librtt/Core/Rtt_FileSystem.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/librtt/Core/Rtt_FileSystem.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(DependSuffix): ../../librtt/Core/Rtt_FileSystem.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(DependSuffix) -MM ../../librtt/Core/Rtt_FileSystem.cpp
 
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(PreprocessSuffix): ../../librtt/Core/Rtt_FileSystem.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(PreprocessSuffix) ../../librtt/Core/Rtt_FileSystem.cpp
+
+$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix): ../../librtt/Rtt_Archive.cpp $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/librtt/Rtt_Archive.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix): ../../librtt/Rtt_Archive.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix) -MM ../../librtt/Rtt_Archive.cpp
+
+$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(PreprocessSuffix): ../../librtt/Rtt_Archive.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(PreprocessSuffix) ../../librtt/Rtt_Archive.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
@@ -137,6 +137,6 @@ $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(PreprocessSuffix)
 ## Clean
 ##
 clean:
-	$(RM) -r ./Release/
+	$(RM) -r ./Debug/
 
 

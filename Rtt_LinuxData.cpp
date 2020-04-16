@@ -10,6 +10,8 @@
 #include "Rtt_LinuxData.h"
 #include "Rtt_LuaContext.h"
 
+#pragma once
+
 // ----------------------------------------------------------------------------
 
 namespace Rtt
