@@ -19,6 +19,7 @@ namespace Rtt
 	private:
 		void set_properties();
 		void do_layout();
+		void SetProjectPath();
 		std::string fProjectName;
 		std::string fTemplateName;
 		int fScreenWidth;
@@ -46,6 +47,7 @@ namespace Rtt
 
 	public:
 		void onChange(wxCommandEvent &event);
+		void OnProjectFolderBrowse(wxCommandEvent &event);
 		void onbtnOKClicked(wxCommandEvent &event);
 		void onbtnCancelClicked(wxCommandEvent &event);
 	};

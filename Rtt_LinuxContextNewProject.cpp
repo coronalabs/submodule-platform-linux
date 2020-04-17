@@ -1,5 +1,9 @@
 #include "Rtt_LinuxContextNewProject.h"
 
+#include "luaconf.h"
+
+#include <pwd.h>
+
 using namespace Rtt;
 
 namespace Rtt
@@ -12,12 +16,12 @@ namespace Rtt
 			fScreenHeight(480),
 			fOrientationIndex("portrait"),
 			fProjectPath("")
+			
 	{
-
 		SetSize(wxSize(511, 425));
 		txtApplicationName = new wxTextCtrl(this, wxID_ANY, std::string(fProjectName));
 		txtProjectFolder = new wxTextCtrl(this, wxID_ANY, wxEmptyString);
-		btnBrowse = new wxButton(this, wxID_ANY, wxT("&Browse..."));
+		btnBrowse = new wxButton(this, wxID_OPEN, wxT("&Browse..."));
 		rProjectOption1 = new wxRadioButton(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
 		rProjectOption2 = new wxRadioButton(this, wxID_ANY, wxEmptyString);
 		rProjectOption3 = new wxRadioButton(this, wxID_ANY, wxEmptyString);
@@ -50,11 +54,7 @@ namespace Rtt
 		txtWidth->Enable(0);
 		txtHeight->Enable(0);
 		btnOK->SetDefault();
-		
-		//Set form specific data
-		fScreenWidth = 320;
-		fScreenHeight = 480;
-		
+		this->SetProjectPath();
 	}
 
 
@@ -143,13 +143,28 @@ namespace Rtt
 		Layout();
 	}
 
-
 	BEGIN_EVENT_TABLE(NewProjectDialog, wxDialog)
 		EVT_COMBOBOX(wxID_ANY, NewProjectDialog::onChange)
+		EVT_BUTTON(wxID_OPEN, NewProjectDialog::OnProjectFolderBrowse)
 		EVT_BUTTON(wxID_OK, NewProjectDialog::onbtnOKClicked)
 		EVT_BUTTON(wxID_CANCEL, NewProjectDialog::onbtnCancelClicked)
 	END_EVENT_TABLE();
 
+	void NewProjectDialog::OnProjectFolderBrowse(wxCommandEvent &event)
+	{
+		
+		wxDirDialog openDirDialog( this, _("Choose Project Directory"), fProjectPath, 0, wxDefaultPosition);
+		if (openDirDialog.ShowModal() == wxID_CANCEL)
+		{
+			return;
+		}
+		if ( openDirDialog.ShowModal() ==  wxID_OK )
+		{ 
+			fProjectPath = std::string(openDirDialog.GetPath());
+			txtProjectFolder->SetValue(fProjectPath);
+		}
+		
+	}
 
 	void NewProjectDialog::onChange(wxCommandEvent &event)
 	{
@@ -251,6 +266,21 @@ namespace Rtt
 
 		EndModal(wxID_CLOSE);
 
+	}
+	
+	void NewProjectDialog::SetProjectPath()
+	{
+		
+		struct passwd* pw = getpwuid(getuid());
+		const char* homedir = pw->pw_dir;
+		fProjectPath = std::string(homedir);
+		fProjectPath += LUA_DIRSEP;
+		fProjectPath += "Documents";
+		fProjectPath += LUA_DIRSEP;
+		fProjectPath += "Corona Projects";
+		
+		txtProjectFolder->SetValue(fProjectPath);
+		
 	}
 
 }
