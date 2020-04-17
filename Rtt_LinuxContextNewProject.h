@@ -20,13 +20,16 @@ namespace Rtt
 		void set_properties();
 		void do_layout();
 		void SetProjectPath();
+		void SetResourcePath();
+		void CreateProject();
 		std::string fProjectName;
 		std::string fTemplateName;
 		int fScreenWidth;
 		int fScreenHeight;
 		std::string fOrientationIndex;
 		std::string fProjectPath;
-
+		std::string fResourcePath;
+		
 	protected:
 		wxTextCtrl* txtApplicationName;
 		wxTextCtrl* txtProjectFolder;

@@ -1,8 +1,19 @@
-#include "Rtt_LinuxContextNewProject.h"
+#include "Core/Rtt_Build.h"
 
 #include "luaconf.h"
+#include "Rtt_Lua.h"
+#include "Rtt_LuaContext.h"
+#include "Rtt_MSimulatorServices.h"
+#include "Rtt_LuaLibSimulator.h"
+#include "Rtt_FileSystem.h"
 
 #include <pwd.h>
+#include <libgen.h>
+#include <string.h>
+
+#include "Rtt_LinuxContextNewProject.h"
+
+Rtt_EXPORT int luaopen_lfs (lua_State *L);
 
 using namespace Rtt;
 
@@ -15,7 +26,8 @@ namespace Rtt
 			fScreenWidth(320),
 			fScreenHeight(480),
 			fOrientationIndex("portrait"),
-			fProjectPath("")
+			fProjectPath(""),
+			fResourcePath("")
 			
 	{
 		SetSize(wxSize(511, 425));
@@ -55,6 +67,7 @@ namespace Rtt
 		txtHeight->Enable(0);
 		btnOK->SetDefault();
 		this->SetProjectPath();
+		this->SetResourcePath();
 	}
 
 
@@ -256,6 +269,9 @@ namespace Rtt
 			
 		}		
 		
+		//TODO: Make sure all variables are sane values before running project creation process
+		
+		this->CreateProject();
 		
 		EndModal(wxID_OK);
 	
@@ -280,6 +296,88 @@ namespace Rtt
 		fProjectPath += "Corona Projects";
 		
 		txtProjectFolder->SetValue(fProjectPath);
+		
+	}
+	void NewProjectDialog::SetResourcePath()
+	{
+		
+		static char buf[ PATH_MAX + 1];
+		ssize_t count = readlink("/proc/self/exe", buf, PATH_MAX);
+		const char *appPath;
+		
+		if (count != -1) {
+		
+			appPath = dirname(buf);
+		
+		}
+
+		fResourcePath = std::string(appPath);
+		fResourcePath += LUA_DIRSEP;
+		fResourcePath += "Resources";
+		wxLogDebug("appPath = %s\n", std::string(appPath) );
+		
+	}
+	
+	void NewProjectDialog::CreateProject()
+	{
+		
+		std::string fNewProjectLuaScript = fResourcePath;
+		fNewProjectLuaScript += LUA_DIRSEP;
+		fNewProjectLuaScript += "homescreen";
+		fNewProjectLuaScript += LUA_DIRSEP;
+		fNewProjectLuaScript += "newproject.lua";
+		
+		std::string fTemplatesDir = fResourcePath;
+		fTemplatesDir += LUA_DIRSEP;
+		fTemplatesDir += "homescreen";
+		fTemplatesDir += LUA_DIRSEP;
+		fTemplatesDir += "templates";
+		
+		std::string fProjectSavePath = fProjectPath;
+		fProjectSavePath += LUA_DIRSEP;
+		fProjectSavePath += fProjectName;
+		
+		Rtt_MakeDirectory(fProjectSavePath.c_str());
+		
+		lua_State *L = luaL_newstate();
+		luaL_openlibs( L );
+
+		Rtt::LuaContext::RegisterModuleLoader( L, "lfs", luaopen_lfs );
+//#if 0
+    // Uncomment if Simulator services are required in newproject.lua
+	//lua_pushlightuserdata( L, (void *)fServices );
+    //Rtt::LuaContext::RegisterModuleLoader( L, "simulator", Rtt::LuaLibSimulator::Open, 1 );
+//#endif // 0
+
+		const char *script = fNewProjectLuaScript.c_str();
+		int status = luaL_loadfile( L ,script ); Rtt_ASSERT( 0 == status );
+		lua_createtable( L, 0, 6 );
+		{
+			lua_pushboolean( L, true );
+			lua_setfield( L, -2, "isSimulator" );
+
+			lua_pushstring( L, fTemplateName.c_str() );
+			lua_setfield( L, -2, "template" );
+
+			lua_pushinteger( L, fScreenWidth );
+			lua_setfield( L, -2, "width" );
+
+			lua_pushinteger( L, fScreenHeight );
+			lua_setfield( L, -2, "height" );
+
+			lua_pushstring( L, 0 == fOrientationIndex ? "portrait" : "landscapeRight" );
+			lua_setfield( L, -2, "orientation" );
+
+			lua_pushstring( L, fProjectSavePath.c_str() );
+			lua_setfield( L, -2, "savePath" );
+
+			lua_pushstring( L, fTemplatesDir.c_str() );
+			lua_setfield( L, -2, "templateBaseDir" );
+		}
+
+		status = Rtt::LuaContext::DoCall( L, 1, 0 ); Rtt_ASSERT( 0 == status );
+		lua_close( L );
+			
 		
 	}
 
