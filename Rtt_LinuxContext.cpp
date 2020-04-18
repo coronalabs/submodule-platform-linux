@@ -401,7 +401,7 @@ namespace Rtt
 	#ifdef _WIN32
 		const char* homedir = getenv("USERPROFILE");
 		const char* appPath = "Z:\\CoronaSimulator\\welcomescreen";
-//		const char* appPath = "Z:\\tmp\\clock";
+		//const char* appPath = "Z:\\tmp\\clock";
 	#else
 		struct passwd* pw = getpwuid(getuid());
 		const char* homedir = pw->pw_dir;
@@ -983,12 +983,13 @@ wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
 wxEND_EVENT_TABLE()
 
 MyFrame::MyFrame()
-	: wxFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxSize(10,10), wxCAPTION | wxCLOSE_BOX)
+	: wxFrame(NULL, wxID_ANY, "", wxDefaultPosition, wxSize(320,480), wxCAPTION | wxCLOSE_BOX)
 	, m_mycanvas(NULL)
 	, fContext(NULL)
 	, fMenuMain(NULL)
 	, fMenuProject(NULL)
-	, fWatcher(NULL)
+	, fWatcher(NULL),
+	fProjectPath("")
 {
 	wxGLAttributes vAttrs;
 	vAttrs.PlatformDefaults().Defaults().EndList();
@@ -1011,6 +1012,15 @@ MyFrame::MyFrame()
 	m_mycanvas = new MyGLCanvas(this, vAttrs);
 
 	SetWindowStyle(wxCAPTION | wxCLOSE_BOX);
+	
+	struct passwd* pw = getpwuid(getuid());
+		const char* homedir = pw->pw_dir;
+		fProjectPath = std::string(homedir);
+		fProjectPath += LUA_DIRSEP;
+		fProjectPath += "Documents";
+		fProjectPath += LUA_DIRSEP;
+		fProjectPath += "Corona Projects";
+		
 }
 
 MyFrame::~MyFrame()
@@ -1232,7 +1242,7 @@ void MyFrame::OnBuildLinux(wxCommandEvent& ev)
 
 void MyFrame::OnOpenFileDialog(wxCommandEvent& event)
 {
-	wxFileDialog openFileDialog(wxGetApp().getParent(), _("Open"), "", "", "Simulator Files (main.lua)|main.lua", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog openFileDialog(wxGetApp().getParent(), _("Open"), fProjectPath , wxEmptyString, "Simulator Files (main.lua)|main.lua", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
 	{
 		return;

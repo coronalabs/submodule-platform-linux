@@ -243,6 +243,7 @@ public:
 	wxMenuBar* fMenuMain;
 	wxMenuBar* fMenuProject;
 	std::string fAppPath;
+	std::string fProjectPath;
 	wxFileSystemWatcher* fWatcher;
 
 	wxDECLARE_EVENT_TABLE();

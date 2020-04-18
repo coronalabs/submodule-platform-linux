@@ -28,6 +28,7 @@ namespace Rtt
 		int fScreenHeight;
 		std::string fOrientationIndex;
 		std::string fProjectPath;
+		std::string fProjectSavePath;
 		std::string fResourcePath;
 		
 	protected:

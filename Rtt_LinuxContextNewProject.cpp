@@ -27,6 +27,7 @@ namespace Rtt
 			fScreenHeight(480),
 			fOrientationIndex("portrait"),
 			fProjectPath(""),
+			fProjectSavePath(""),
 			fResourcePath("")
 			
 	{
@@ -220,61 +221,86 @@ namespace Rtt
 	void NewProjectDialog::onbtnOKClicked(wxCommandEvent &event)
 	{
 		
+		bool bDialogClean = true;
+		
 		// Determine the application template we are using
 		
 		if ( rProjectOption1->GetValue() == true ){
 			
 			fTemplateName = "blank";
-			wxLogDebug(wxT("Project = blank\n" ));
+			//wxLogDebug(wxT("Project = blank\n" ));
 			
 		}
 		
 		if ( rProjectOption2->GetValue()  == true ){
 			
 			fTemplateName = "app";
-			wxLogDebug(wxT("Project = app\n" ));
+			//wxLogDebug(wxT("Project = app\n" ));
 			
 		}
 		
 		if ( rProjectOption3->GetValue()  == true ){
 			
 			fTemplateName = "game";
-			wxLogDebug(wxT("Project = game\n" ));
+			//wxLogDebug(wxT("Project = game\n" ));
 			
 		}
 		
 		if ( rProjectOption4->GetValue()  == true ){
 			
 			fTemplateName = "ebook";
-			wxLogDebug(wxT("Project = ebook\n" ));
+			//wxLogDebug(wxT("Project = ebook\n" ));
 			
 		}
 		
-		fScreenWidth = atoi(txtWidth->GetValue());
-		fScreenHeight = atoi(txtHeight->GetValue());
+		fScreenWidth = wxAtoi(txtWidth->GetValue());
+		fScreenHeight = wxAtoi(txtHeight->GetValue());
+		
+		if ( fScreenWidth == 0 || fScreenHeight == 0) {
+			
+			wxMessageBox( wxT("Height and Width values must be numeric and larger that 0"), wxT("Screen Dimension Errors"), wxICON_INFORMATION);
+			bDialogClean = false;
+			
+		}
 		
 		wxLogDebug("dimension width x height = %s x %s" , std::to_string(fScreenWidth), std::to_string(fScreenHeight) );
 
 		if ( rUpright->GetValue()  == true ){
 			
 			fOrientationIndex = "portait";
-			wxLogDebug(wxT("Orientation = portrait\n" ));
+			//wxLogDebug(wxT("Orientation = portrait\n" ));
 			
 		}		
 		
 		if ( rSideways->GetValue()  == true ){
 			
 			fOrientationIndex = "landscapeRight";
-			wxLogDebug(wxT("Orientation = landscapeRight\n" ));
+			//wxLogDebug(wxT("Orientation = landscapeRight\n" ));
 			
 		}		
 		
 		//TODO: Make sure all variables are sane values before running project creation process
 		
-		this->CreateProject();
+		std::string fProjectSavePath = fProjectPath;
+		fProjectSavePath += LUA_DIRSEP;
+		fProjectSavePath += fProjectName;
 		
-		EndModal(wxID_OK);
-	
+		//check if project folder already exists and that the height and width are numbers
+		if (Rtt_IsDirectory(fProjectSavePath.c_str()) == true)
+		{
+			
+			wxMessageBox( wxT("Project of that name already exists."), wxT("Duplicate Project Name"), wxICON_INFORMATION);
+			bDialogClean = false;
+		
+		} 
+		
+		if ( bDialogClean == true ){
+			
+			this->CreateProject();
+			EndModal(wxID_OK);
+			
+		}
+		
 	}
 
 	void NewProjectDialog::onbtnCancelClicked(wxCommandEvent &event)
@@ -332,10 +358,6 @@ namespace Rtt
 		fTemplatesDir += "homescreen";
 		fTemplatesDir += LUA_DIRSEP;
 		fTemplatesDir += "templates";
-		
-		std::string fProjectSavePath = fProjectPath;
-		fProjectSavePath += LUA_DIRSEP;
-		fProjectSavePath += fProjectName;
 		
 		Rtt_MakeDirectory(fProjectSavePath.c_str());
 		
