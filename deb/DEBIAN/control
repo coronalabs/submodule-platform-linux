@@ -1,9 +1,0 @@
-Package: @package
-Version: @version
-Section: misc
-Priority: optional
-Installed-Size: @size
-Architecture: all
-Depends: libopenal1, libwebkitgtk-3.0-0
-Maintainer: @maintainer
-Description: @description

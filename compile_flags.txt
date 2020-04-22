@@ -1,5 +1,0 @@
--I/home/robert/corona/platform/linux
--I/home/robert/corona/librtt
--I/home/robert/corona/librtt/Core
--DRtt_NO_ARCHIVE
--DRtt_LINUX_ENV
