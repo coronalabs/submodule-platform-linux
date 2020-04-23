@@ -1,5 +1,9 @@
 [
     {
+        "title": "Corona Labs transition update 22-April-2020",
+        "url": "https://coronalabs.com/blog/2020/04/22/corona-labs-transition-update-22-april-2020/"
+    },
+    {
         "title": "Google 64-bit deadline coming August 1, 2020",
         "url": "https://coronalabs.com/blog/2020/04/16/google-64-bit-deadline-coming-august-1-2020/"
     },
@@ -34,9 +38,5 @@
     {
         "title": "Android 64-bit is here&#8230;",
         "url": "https://coronalabs.com/blog/2019/07/23/android-64-bit-is-here/"
-    },
-    {
-        "title": "Important AdMob and other ad plugin changes",
-        "url": "https://coronalabs.com/blog/2019/07/22/important-admob-and-other-ad-plugin-changes/"
     }
 ]

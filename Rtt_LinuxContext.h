@@ -26,6 +26,7 @@
 #include "wx/glcanvas.h"
 #include <wx/timer.h>
 #include "wx/fswatcher.h"
+#include <wx/aboutdlg.h>
 
 #pragma once
 

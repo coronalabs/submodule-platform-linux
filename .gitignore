@@ -12,3 +12,12 @@ CoronaSimulator/CoronaSimulator
 /rtt_arm.mk
 *.bak
 /
+/.codelite
+compile_commands.json
+compile_flags.txt
+corona.workspace
+/deb
+/deb_arm
+/deb_simulator
+
+

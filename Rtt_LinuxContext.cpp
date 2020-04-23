@@ -1091,7 +1091,7 @@ void MyFrame::createMenus()
 		wxMenu* m_pHelpMenu = new wxMenu();
 		mi = m_pHelpMenu->Append(wxID_HELP_CONTENTS, _T("&Online Documentation...")); mi->Enable(false);
 		mi = m_pHelpMenu->Append(wxID_HELP_INDEX, _T("&Sample projects...")); mi->Enable(false);
-		mi = m_pHelpMenu->Append(wxID_ABOUT, _T("&About Simulator...")); mi->Enable(false);
+		mi = m_pHelpMenu->Append(wxID_ABOUT, _T("&About Simulator...")); //mi->Enable(false);
 		fMenuMain->Append(m_pHelpMenu, _T("&Help"));
 	}
 
@@ -1155,7 +1155,7 @@ void MyFrame::createMenus()
 		wxMenu* m_pHelpMenu = new wxMenu();
 		mi = m_pHelpMenu->Append(wxID_HELP_CONTENTS, _T("&Online Documentation...")); mi->Enable(false);
 		mi = m_pHelpMenu->Append(wxID_HELP_INDEX, _T("&Sample projects...")); mi->Enable(false);
-		mi = m_pHelpMenu->Append(wxID_ABOUT, _T("&About Simulator...")); mi->Enable(false);
+		mi = m_pHelpMenu->Append(wxID_ABOUT, _T("&About Simulator...")); //mi->Enable(false);
 		fMenuProject->Append(m_pHelpMenu, _T("&Help"));
 	}
 }
@@ -1185,6 +1185,13 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 
 void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
+	wxAboutDialogInfo info;
+	info.SetName("Corona Simulator");
+	info.SetVersion("1.0.0 alpha");
+    info.SetCopyright(_("MIT License"));
+    info.SetLicence(_("MIT License"));
+    info.SetDescription(_("Corona SDK Simulator"));
+    ::wxAboutBox(info);
 }
 
 void MyFrame::OnFileSystemEvent(wxFileSystemWatcherEvent& event)
