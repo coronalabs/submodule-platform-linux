@@ -219,8 +219,6 @@ namespace Rtt
 		virtual Preference::ReadValueResult GetPreference(const char* categoryName, const char* keyName) const override;
 		virtual OperationResult SetPreferences(const char* categoryName, const PreferenceCollection& collection) const override;
 		virtual OperationResult DeletePreferences(const char* categoryName, const char** keyNameArray, U32 keyNameCount) const override;
-		virtual bool HttpDownload(const char* url, String& result, String& errorMesg, const std::map<std::string, std::string>& headers) const override;
-		virtual bool HttpDownloadFile(const char* url, const char* filename, String& errorMesg, const std::map<std::string, std::string>& headers) const override;
 		virtual void Suspend() const override;
 		virtual void Resume() const override;
 
