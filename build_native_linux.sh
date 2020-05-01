@@ -1,9 +1,10 @@
-#!/bin/bash -e
+#!/bin/env sh
 
-# this file is run inside ubundu environment
-if [[ "$OSTYPE" != "linux-gnu" ]]
+# this file should run inside ubundu environment
+grep -i ubuntu /etc/os-release > /dev/null
+if [ "$?" -ne 0 ]
 then
-    echo "This script is meant to run on Linux"
+    echo "This script is meant to run on Ubuntu Linux"
     exit 1
 fi
 
@@ -41,7 +42,6 @@ fi
 
 tar -czvf CoronaSimulator-x86-64.tar.gz ./CoronaSimulator
 
-
 echo "x86/64 Build started..."
 echo "======================="
 make -j4 -f linux_rtt.mk
@@ -60,7 +60,6 @@ mkdir -p ./CONTENTS/usr/share/corona/res_widget
 cp ../../../subrepos/widget/widget_theme_*.png ./CONTENTS/usr/share/corona/res_widget/
 tar -czvf ../linuxtemplate.tar.gz .
 cd ../
-
 
 echo "ARM Build started..."
 echo "===================="
