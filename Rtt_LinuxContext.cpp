@@ -37,7 +37,7 @@
 #include "Rtt_Freetype.h"
 #include "Rtt_LuaLibSimulator.h"
 #include "Rtt_LinuxSimulatorView.h"
-#include "Rtt_LinuxConfiguration.h"
+
 
 //#define Rtt_DEBUG_TOUCH 1
 
@@ -87,8 +87,7 @@ wxDEFINE_EVENT(eventNewProject, wxCommandEvent);
 namespace Rtt
 {
 
-	LinuxConfiguration* CoronaConf = new LinuxConfiguration();
-	
+
 	MouseListener::MouseListener(Runtime &runtime)
 		: fRuntime(runtime)
 		, fScaleX(1)
@@ -410,8 +409,6 @@ namespace Rtt
 		//const char* appPath = "/home/vitaly/Clock";
 	#endif
 
-	CoronaConf->HomeDir = homedir;
-	CoronaConf->ApplicationPath = appPath;
 
 		// override appPath if arg isn't NULL
 		if (path && *path != 0)
@@ -442,8 +439,6 @@ namespace Rtt
 			}
 		}
 		
-		CoronaConf->ApplicationName = fAppName;
-		
 		Rtt_ASSERT(fAppName.size() > 0);
 		std::string startDir(appPath);
 
@@ -452,8 +447,6 @@ namespace Rtt
 		fSaveFolder += "Documents";
 		fSaveFolder += LUA_DIRSEP;
 		fSaveFolder += "Corona Built Apps";
-		
-		CoronaConf->BuildFolder = fSaveFolder;
 		
 		//
 		// tar.gz app ?
@@ -1191,7 +1184,7 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
     info.SetCopyright(_("MIT License"));
     info.SetLicence(_("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS\nBE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN\nACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\nCONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."));
     info.SetDescription(_("Corona SDK Simulator"));
-    ::wxAboutBox( info, this);
+    ::wxAboutBox( info, this );
 }
 
 void MyFrame::OnFileSystemEvent(wxFileSystemWatcherEvent& event)

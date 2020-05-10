@@ -8,8 +8,6 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="Rtt_LinuxConfiguration.cpp"/>
-    <File Name="Rtt_LinuxConfiguration.h"/>
     <File Name="Rtt_LinuxContextNewProject.h"/>
     <File Name="Rtt_LinuxContextNewProject.cpp"/>
     <VirtualDirectory Name="simulator">
