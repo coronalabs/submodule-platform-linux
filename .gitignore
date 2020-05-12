@@ -7,9 +7,6 @@ CoronaSimulator/CoronaSimulator
 /Debug
 /Release
 /Simulator
-/rtt_simulator.mk
-/rtt.mk
-/rtt_arm.mk
 *.bak
 /
 /.codelite
