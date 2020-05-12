@@ -1513,9 +1513,6 @@
     <ClCompile Include="..\Rtt_LinuxSimulatorView.cpp">
       <Filter>simulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Rtt_PlatformConnection.cpp">
-      <Filter>simulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Rtt_PlatformDictionaryWrapper.cpp">
       <Filter>simulator</Filter>
     </ClCompile>
@@ -1547,9 +1544,6 @@
       <Filter>simulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Rtt_TargetAndroidAppStore.cpp">
-      <Filter>simulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Rtt_WebServicesSession.cpp">
       <Filter>simulator</Filter>
     </ClCompile>
     <ClCompile Include="..\lua\create_build_properties_luaload.cpp">
@@ -2714,9 +2708,6 @@
     <ClInclude Include="..\..\shared\Rtt_MPlatformServices.h">
       <Filter>simulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Rtt_PlatformConnection.h">
-      <Filter>simulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Rtt_PlatformDictionaryWrapper.h">
       <Filter>simulator</Filter>
     </ClInclude>
@@ -2739,9 +2730,6 @@
       <Filter>simulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Rtt_TargetAndroidAppStore.h">
-      <Filter>simulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Rtt_WebServicesSession.h">
       <Filter>simulator</Filter>
     </ClInclude>
   </ItemGroup>

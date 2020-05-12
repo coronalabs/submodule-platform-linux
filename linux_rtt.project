@@ -14,8 +14,6 @@
       <File Name="../android/Rtt_AndroidAppPackager.cpp"/>
       <File Name="../shared/Rtt_TargetAndroidAppStore.h"/>
       <File Name="../shared/Rtt_TargetAndroidAppStore.cpp"/>
-      <File Name="../shared/Rtt_WebServicesSession.h"/>
-      <File Name="../shared/Rtt_WebServicesSession.cpp"/>
       <File Name="../shared/Rtt_LinuxAppPackager.h"/>
       <File Name="../shared/Rtt_LinuxAppPackager.cpp"/>
       <File Name="lua/linuxPackageApp.cpp"/>
@@ -26,8 +24,6 @@
       <File Name="../shared/Rtt_PlatformObjectWrapper.cpp"/>
       <File Name="../shared/Rtt_PlatformDictionaryWrapper.h"/>
       <File Name="../shared/Rtt_PlatformDictionaryWrapper.cpp"/>
-      <File Name="../shared/Rtt_PlatformConnection.h"/>
-      <File Name="../shared/Rtt_PlatformConnection.cpp"/>
       <File Name="../shared/Rtt_PlatformAppPackager.h"/>
       <File Name="../shared/Rtt_PlatformAppPackager.cpp"/>
       <File Name="../shared/Rtt_DeviceBuildData.h"/>
@@ -772,8 +768,6 @@
       <File Name="../../external/b2Separator-cpp/b2Separator.h"/>
       <File Name="../../external/b2Separator-cpp/b2Separator.cpp"/>
       <File Name="../../librtt/Rtt_WorkFlowConstants.h"/>
-      <File Name="../../librtt/Rtt_VerifierData.h"/>
-      <File Name="../../librtt/Rtt_Verifier.h"/>
       <File Name="../../librtt/Rtt_Transform.h"/>
       <File Name="../../librtt/Rtt_TesselatorStream.h"/>
       <File Name="../../librtt/Rtt_SurfaceInfo.h"/>
@@ -877,7 +871,6 @@
       <File Name="../../librtt/Rtt_CachedPath.h"/>
       <File Name="../../librtt/Rtt_Archive.h"/>
       <File Name="../../librtt/b2GLESDebugDraw.h"/>
-      <File Name="../../librtt/Rtt_Verifier.cpp"/>
       <File Name="../../librtt/Rtt_Transform.cpp"/>
       <File Name="../../librtt/Rtt_TesselatorStream.cpp"/>
       <File Name="../../librtt/Rtt_StrokeTesselatorStream.cpp"/>

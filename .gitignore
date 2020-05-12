@@ -9,3 +9,13 @@
 /rtt.mk
 /rtt_arm.mk
 *.bak
+linux_rtt.txt
+CoronaSimulator-x86-64.tar.gz
+linuxtemplate.tar.gz
+raspbiantemplate.tar.gz
+CoronaSimulator/CoronaSimulator
+deb_arm/CONTENTS/usr/bin/linux_rtt
+deb_arm/CONTENTS/usr/share/corona/res_widget/
+deb_simulator/CONTENTS/usr/bin/CoronaSimulator
+deb/CONTENTS/usr/share/corona/res_widget/
+deb/CONTENTS/usr/bin/linux_rtt

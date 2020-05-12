@@ -3,35 +3,30 @@
   <Project Name="linux_rtt" Path="linux_rtt.project" Active="Yes"/>
   <Project Name="plugin" Path="../../../plugins/plugins-bit/linux/plugin.project" Active="No"/>
   <Project Name="car" Path="car.project" Active="No"/>
-  <Project Name="app_sign" Path="app_sign.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="linux_rtt" ConfigName="Debug"/>
       <Project Name="plugin_bit" ConfigName="Debug"/>
       <Project Name="car" ConfigName="Debug"/>
-      <Project Name="app_sign" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="linux_rtt" ConfigName="Release"/>
       <Project Name="plugin_bit" ConfigName="Release"/>
       <Project Name="car" ConfigName="Release"/>
-      <Project Name="app_sign" ConfigName="Release"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="ARM" Selected="no">
       <Environment/>
       <Project Name="linux_rtt" ConfigName="ARM"/>
       <Project Name="plugin_bit" ConfigName="ARM"/>
       <Project Name="car" ConfigName="Debug"/>
-      <Project Name="app_sign" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Simulator" Selected="yes">
       <Environment/>
       <Project Name="linux_rtt" ConfigName="Simulator"/>
       <Project Name="plugin_bit" ConfigName="Debug"/>
       <Project Name="car" ConfigName="Debug"/>
-      <Project Name="app_sign" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

@@ -553,13 +553,11 @@
     <ClInclude Include="..\..\shared\Rtt_MAuthorizationDelegate.h" />
     <ClInclude Include="..\..\shared\Rtt_MPlatformServices.h" />
     <ClInclude Include="..\..\shared\Rtt_PlatformAppPackager.h" />
-    <ClInclude Include="..\..\shared\Rtt_PlatformConnection.h" />
     <ClInclude Include="..\..\shared\Rtt_PlatformDictionaryWrapper.h" />
     <ClInclude Include="..\..\shared\Rtt_PlatformObjectWrapper.h" />
     <ClInclude Include="..\..\shared\Rtt_TargetAndroidAppStore.h" />
     <ClInclude Include="..\..\shared\Rtt_TargetDevice.h" />
     <ClInclude Include="..\..\shared\Rtt_WebAppPackager.h" />
-    <ClInclude Include="..\..\shared\Rtt_WebServicesSession.h" />
     <ClInclude Include="..\NetworkLibrary.h" />
     <ClInclude Include="..\NetworkSupport.h" />
     <ClInclude Include="..\Rtt_Freetype.h" />
@@ -943,13 +941,11 @@
     <ClCompile Include="..\..\shared\Rtt_DeviceBuildData.cpp" />
     <ClCompile Include="..\..\shared\Rtt_LinuxAppPackager.cpp" />
     <ClCompile Include="..\..\shared\Rtt_PlatformAppPackager.cpp" />
-    <ClCompile Include="..\..\shared\Rtt_PlatformConnection.cpp" />
     <ClCompile Include="..\..\shared\Rtt_PlatformDictionaryWrapper.cpp" />
     <ClCompile Include="..\..\shared\Rtt_PlatformObjectWrapper.cpp" />
     <ClCompile Include="..\..\shared\Rtt_TargetAndroidAppStore.cpp" />
     <ClCompile Include="..\..\shared\Rtt_TargetDevice.cpp" />
     <ClCompile Include="..\..\shared\Rtt_WebAppPackager.cpp" />
-    <ClCompile Include="..\..\shared\Rtt_WebServicesSession.cpp" />
     <ClCompile Include="..\lua\composer.cpp" />
     <ClCompile Include="..\lua\composer_scene.cpp" />
     <ClCompile Include="..\lua\CoronaLibrary-lua.cpp" />

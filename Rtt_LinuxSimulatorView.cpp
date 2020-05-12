@@ -14,7 +14,6 @@
 #include <wx/textctrl.h>
 
 //#include "Core\Rtt_Build.h"
-#include "Rtt_AuthorizationTicket.h"
 #include "Rtt_LuaContext.h"
 #include "Rtt_LuaFile.h"
 #include "Rtt_MPlatform.h"
@@ -24,7 +23,6 @@
 #include "Rtt_RenderingStream.h"
 #include "Rtt_Runtime.h"
 #include "Rtt_SimulatorAnalytics.h"
-#include "Rtt_Authorization.h"
 #include "Rtt_LinuxPlatform.h"
 #include "Rtt_LinuxSimulatorServices.h"
 #include "Rtt_LinuxSimulatorView.h"
@@ -32,7 +30,6 @@
 #include "Rtt_WebAppPackager.h"
 #include "Rtt_LinuxAppPackager.h"
 #include "Rtt_AndroidAppPackager.h"
-#include "Rtt_WebServicesSession.h"
 #include "Core/Rtt_FileSystem.h"
 
 namespace Rtt
@@ -123,11 +120,9 @@ namespace Rtt
 		tmp += LUA_DIRSEP;
 		tmp += "CoronaLabs";
 
-		WebServicesSession* session = NULL;
-
 		// Have the server build the app. (Warning! This is a long blocking call.)
 		platform->SetActivityIndicator(true);
-		rc = packager.Build(&androidBuilderParams, *session, tmp.c_str());
+		rc = packager.Build(&androidBuilderParams, tmp.c_str());
 		platform->SetActivityIndicator(false);
 
 		params->fDlg->Close();
@@ -210,11 +205,9 @@ namespace Rtt
 		tmp += LUA_DIRSEP;
 		tmp += "CoronaLabs";
 
-		WebServicesSession* session = NULL;
-
 		// Have the server build the app. (Warning! This is a long blocking call.)
 		platform->SetActivityIndicator(true);
-		int rc = packager.Build(&linuxBuilderParams, *session, tmp.c_str());
+		int rc = packager.Build(&linuxBuilderParams, tmp.c_str());
 		platform->SetActivityIndicator(false);
 
 		params->fDlg->Close();
@@ -251,7 +244,7 @@ namespace Rtt
 		bool wasSuccessful = packager.ReadBuildSettings(srcDir);
 		if (!wasSuccessful)
 		{
-			return; // CBuildResult(Rtt::WebServicesSession::kBuildError, message);
+			return;
 		}
 
 		// Check if a custom build ID has been assigned.
@@ -298,11 +291,9 @@ namespace Rtt
 		tmp += LUA_DIRSEP;
 		tmp += "CoronaLabs";
 
-		WebServicesSession* session = NULL;
-
 		// Have the server build the app. (Warning! This is a long blocking call.)
 		platform->SetActivityIndicator(true);
-		int rc = packager.Build(&webBuilderParams, *session, tmp.c_str());
+		int rc = packager.Build(&webBuilderParams, tmp.c_str());
 		platform->SetActivityIndicator(false);
 
 		params->fDlg->Close();
