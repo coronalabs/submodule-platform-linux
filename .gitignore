@@ -16,5 +16,7 @@ corona.workspace
 /deb
 /deb_arm
 /deb_simulator
+*.tar.gz
+linuxtemplate.tar.gz
 
 
