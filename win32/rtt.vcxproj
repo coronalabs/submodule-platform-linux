@@ -272,10 +272,6 @@
     <ClInclude Include="..\..\..\external\luasocket\src\timeout.h" />
     <ClInclude Include="..\..\..\external\luasocket\src\udp.h" />
     <ClInclude Include="..\..\..\external\luasocket\src\wsocket.h" />
-    <ClInclude Include="..\..\..\external\rsa\prime.hpp" />
-    <ClInclude Include="..\..\..\external\rsa\rsa.hpp" />
-    <ClInclude Include="..\..\..\external\rsa\vlong.hpp" />
-    <ClInclude Include="..\..\..\external\rsa\vlong_io.h" />
     <ClInclude Include="..\..\..\external\smoothpolygon\SmoothPolygon.h" />
     <ClInclude Include="..\..\..\external\zlib123\crc32.h" />
     <ClInclude Include="..\..\..\external\zlib123\deflate.h" />
@@ -307,8 +303,6 @@
     <ClInclude Include="..\..\..\librtt\Core\Rtt_Macros.h" />
     <ClInclude Include="..\..\..\librtt\Core\Rtt_Math.h" />
     <ClInclude Include="..\..\..\librtt\Core\Rtt_Matrix.h" />
-    <ClInclude Include="..\..\..\librtt\Core\Rtt_MD4.h" />
-    <ClInclude Include="..\..\..\librtt\Core\Rtt_MessageDigest.h" />
     <ClInclude Include="..\..\..\librtt\Core\Rtt_OperationResult.h" />
     <ClInclude Include="..\..\..\librtt\Core\Rtt_Real.h" />
     <ClInclude Include="..\..\..\librtt\Core\Rtt_RefCount.h" />
@@ -497,7 +491,6 @@
     <ClInclude Include="..\..\..\librtt\Rtt_LuaUserdataProxy.h" />
     <ClInclude Include="..\..\..\librtt\Rtt_Matrix.h" />
     <ClInclude Include="..\..\..\librtt\Rtt_MCrypto.h" />
-    <ClInclude Include="..\..\..\librtt\Rtt_Message.h" />
     <ClInclude Include="..\..\..\librtt\Rtt_ParticleSystemObject.h" />
     <ClInclude Include="..\..\..\librtt\Rtt_PhysicsContact.h" />
     <ClInclude Include="..\..\..\librtt\Rtt_PhysicsContactListener.h" />
@@ -692,10 +685,6 @@
     <ClCompile Include="..\..\..\external\luasocket\src\timeout.c" />
     <ClCompile Include="..\..\..\external\luasocket\src\udp.c" />
     <ClCompile Include="..\..\..\external\luasocket\src\wsocket.c" />
-    <ClCompile Include="..\..\..\external\rsa\prime.cpp" />
-    <ClCompile Include="..\..\..\external\rsa\rsa.cpp" />
-    <ClCompile Include="..\..\..\external\rsa\vlong.cpp" />
-    <ClCompile Include="..\..\..\external\rsa\vlong_io.cpp" />
     <ClCompile Include="..\..\..\external\smoothpolygon\SmoothPolygon.cpp" />
     <ClCompile Include="..\..\..\external\zlib123\adler32.c" />
     <ClCompile Include="..\..\..\external\zlib123\compress.c" />
@@ -722,8 +711,6 @@
     <ClCompile Include="..\..\..\librtt\Core\Rtt_FixedMath.c" />
     <ClCompile Include="..\..\..\librtt\Core\Rtt_Geometry.cpp" />
     <ClCompile Include="..\..\..\librtt\Core\Rtt_Math.c" />
-    <ClCompile Include="..\..\..\librtt\Core\Rtt_MD4.c" />
-    <ClCompile Include="..\..\..\librtt\Core\Rtt_MessageDigest.cpp" />
     <ClCompile Include="..\..\..\librtt\Core\Rtt_OperationResult.cpp" />
     <ClCompile Include="..\..\..\librtt\Core\Rtt_RefCount.cpp" />
     <ClCompile Include="..\..\..\librtt\Core\Rtt_ResourceHandle.cpp" />
@@ -893,7 +880,6 @@
     <ClCompile Include="..\..\..\librtt\Rtt_LuaTableIterator.cpp" />
     <ClCompile Include="..\..\..\librtt\Rtt_LuaUserdataProxy.cpp" />
     <ClCompile Include="..\..\..\librtt\Rtt_Matrix.cpp" />
-    <ClCompile Include="..\..\..\librtt\Rtt_Message.cpp" />
     <ClCompile Include="..\..\..\librtt\Rtt_ParticleSystemObject.cpp" />
     <ClCompile Include="..\..\..\librtt\Rtt_PhysicsContact.cpp" />
     <ClCompile Include="..\..\..\librtt\Rtt_PhysicsContactListener.cpp" />
