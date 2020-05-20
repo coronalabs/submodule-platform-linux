@@ -48,6 +48,8 @@ SRCS =	shell.lua \
 		$(ROOT)/../librtt/Corona/CoronaLibrary.lua \
 		$(ROOT)/../librtt/Corona/CoronaPrototype.lua \
 		$(ROOT)/../librtt/Corona/CoronaProvider.lua \
+		$(ROOT)/../tools/CoronaBuilder/BuilderPluginDownloader.lua \
+		$(ROOT)/resources/CoronaBuilderPluginCollector.lua \
 		\
 		$(ROOT)/../librtt/Display/Shader/kernel_composite_add_gl.lua \
 		$(ROOT)/../librtt/Display/Shader/kernel_composite_average_gl.lua \
