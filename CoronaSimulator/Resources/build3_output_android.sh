@@ -63,10 +63,8 @@ PACKAGE_NAME=$7
 
 if [ "$(uname -p)" = 'x86_64' ]; then
 	CAR=car64
-	APP_SIGN=app_sign64
 else
 	CAR=car
-	APP_SIGN=app_sign
 fi
 
 if [ -z "$ANDROID_SDK" ]; then
@@ -167,9 +165,6 @@ LIB_REL_PATH=$LIB_DIR/$LIB_NAME
 unzip -o "$OUTPUT_DIR/template.apk" "$LIB_REL_PATH" -d "$OUTPUT_DIR"
 checkError
 
-if [ -z "$APP_SIGN_PATH" ]; then
-	APP_SIGN_PATH="$path"/"$APP_SIGN"
-fi
 
 LUA=lua
 UNAME=$(uname)
@@ -181,8 +176,6 @@ if [ "Darwin" != "$UNAME" ]; then
 else
 	LUA=$path/../../bin/mac/lua
 fi
-"$TIMEOUT" "$TIMEOUT_SEC" "$APP_SIGN_PATH" sign "$4" "$TMP_DIR/resource.car" "$OUTPUT_DIR/$LIB_REL_PATH" "$6"
-checkError
 
 # Begin forming the AAPT command by determining how many different res directories we need.
 AAPT_RES_DIRECTORY_OPTIONS="-S $TEMPLATE_DIR/res/"

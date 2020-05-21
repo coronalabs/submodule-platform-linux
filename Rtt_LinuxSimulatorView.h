@@ -33,7 +33,6 @@ namespace Rtt
 	public:
 		// MPlatformServices
 		virtual const MPlatform& Platform() const override { return *fPlatform; }
-		virtual PlatformConnection* CreateConnection(const char* url) const override { Rtt_ASSERT(0); return NULL; };
 
 		virtual void GetPreference(const char *key, String * value) const override
 		{
