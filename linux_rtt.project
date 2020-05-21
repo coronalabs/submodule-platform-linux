@@ -16,6 +16,7 @@
       <File Name="../shared/Rtt_TargetAndroidAppStore.cpp"/>
       <File Name="../shared/Rtt_LinuxAppPackager.h"/>
       <File Name="../shared/Rtt_LinuxAppPackager.cpp"/>
+      <File Name="Rtt_HTTPClientLinux.cpp"/>
       <File Name="lua/linuxPackageApp.cpp"/>
       <File Name="lua/webPackageApp.cpp"/>
       <File Name="../shared/Rtt_WebAppPackager.h"/>
