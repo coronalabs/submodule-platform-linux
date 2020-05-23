@@ -16,10 +16,9 @@
       <File Name="../android/Rtt_AndroidAppPackager.cpp"/>
       <File Name="../shared/Rtt_TargetAndroidAppStore.h"/>
       <File Name="../shared/Rtt_TargetAndroidAppStore.cpp"/>
-      <File Name="../shared/Rtt_WebServicesSession.h"/>
-      <File Name="../shared/Rtt_WebServicesSession.cpp"/>
       <File Name="../shared/Rtt_LinuxAppPackager.h"/>
       <File Name="../shared/Rtt_LinuxAppPackager.cpp"/>
+      <File Name="Rtt_HTTPClientLinux.cpp"/>
       <File Name="lua/linuxPackageApp.cpp"/>
       <File Name="lua/webPackageApp.cpp"/>
       <File Name="../shared/Rtt_WebAppPackager.h"/>
@@ -28,8 +27,6 @@
       <File Name="../shared/Rtt_PlatformObjectWrapper.cpp"/>
       <File Name="../shared/Rtt_PlatformDictionaryWrapper.h"/>
       <File Name="../shared/Rtt_PlatformDictionaryWrapper.cpp"/>
-      <File Name="../shared/Rtt_PlatformConnection.h"/>
-      <File Name="../shared/Rtt_PlatformConnection.cpp"/>
       <File Name="../shared/Rtt_PlatformAppPackager.h"/>
       <File Name="../shared/Rtt_PlatformAppPackager.cpp"/>
       <File Name="../shared/Rtt_DeviceBuildData.h"/>
@@ -382,10 +379,6 @@
       <File Name="../../librtt/Input/Rtt_InputDeviceType.cpp"/>
       <File Name="../../librtt/Input/Rtt_InputDeviceCollection.h"/>
       <File Name="../../librtt/Input/Rtt_InputDeviceCollection.cpp"/>
-      <File Name="../../librtt/Core/Rtt_MD4.h"/>
-      <File Name="../../librtt/Core/Rtt_MD4.c"/>
-      <File Name="../../librtt/Core/Rtt_MessageDigest.h"/>
-      <File Name="../../librtt/Core/Rtt_MessageDigest.cpp"/>
       <File Name="../../librtt/Core/Rtt_RefCount.cpp"/>
       <File Name="../../librtt/Core/Rtt_AutoResource.h"/>
       <File Name="../../librtt/Core/Rtt_AutoResource.cpp"/>
@@ -436,14 +429,6 @@
       <File Name="../../librtt/Core/Rtt_Assert.c"/>
       <File Name="../../librtt/Core/Rtt_Time.h"/>
       <File Name="../../librtt/Core/Rtt_Time.c"/>
-      <File Name="../../external/rsa/vlong_io.h"/>
-      <File Name="../../external/rsa/vlong_io.cpp"/>
-      <File Name="../../external/rsa/vlong.hpp"/>
-      <File Name="../../external/rsa/vlong.cpp"/>
-      <File Name="../../external/rsa/rsa.hpp"/>
-      <File Name="../../external/rsa/rsa.cpp"/>
-      <File Name="../../external/rsa/prime.hpp"/>
-      <File Name="../../external/rsa/prime.cpp"/>
       <File Name="../../librtt/Display/Rtt_VertexCache.h"/>
       <File Name="../../librtt/Display/Rtt_VertexCache.cpp"/>
       <File Name="../../librtt/Display/Rtt_TextureResourceExternalAdapter.h"/>
@@ -774,8 +759,6 @@
       <File Name="../../external/b2Separator-cpp/b2Separator.h"/>
       <File Name="../../external/b2Separator-cpp/b2Separator.cpp"/>
       <File Name="../../librtt/Rtt_WorkFlowConstants.h"/>
-      <File Name="../../librtt/Rtt_VerifierData.h"/>
-      <File Name="../../librtt/Rtt_Verifier.h"/>
       <File Name="../../librtt/Rtt_Transform.h"/>
       <File Name="../../librtt/Rtt_TesselatorStream.h"/>
       <File Name="../../librtt/Rtt_SurfaceInfo.h"/>
@@ -828,7 +811,6 @@
       <File Name="../../librtt/Rtt_MLuaProxyable.h"/>
       <File Name="../../librtt/Rtt_MKeyValueIterable.h"/>
       <File Name="../../librtt/Rtt_MIterable.h"/>
-      <File Name="../../librtt/Rtt_Message.h"/>
       <File Name="../../librtt/Rtt_MCrypto.h"/>
       <File Name="../../librtt/Rtt_MCriticalSection.h"/>
       <File Name="../../librtt/Rtt_MCallback.h"/>
@@ -879,7 +861,6 @@
       <File Name="../../librtt/Rtt_CachedPath.h"/>
       <File Name="../../librtt/Rtt_Archive.h"/>
       <File Name="../../librtt/b2GLESDebugDraw.h"/>
-      <File Name="../../librtt/Rtt_Verifier.cpp"/>
       <File Name="../../librtt/Rtt_Transform.cpp"/>
       <File Name="../../librtt/Rtt_TesselatorStream.cpp"/>
       <File Name="../../librtt/Rtt_StrokeTesselatorStream.cpp"/>
@@ -920,7 +901,6 @@
       <File Name="../../librtt/Rtt_PhysicsContactListener.cpp"/>
       <File Name="../../librtt/Rtt_PhysicsContact.cpp"/>
       <File Name="../../librtt/Rtt_ParticleSystemObject.cpp"/>
-      <File Name="../../librtt/Rtt_Message.cpp"/>
       <File Name="../../librtt/Rtt_Matrix.cpp"/>
       <File Name="../../librtt/Rtt_LuaUserdataProxy.cpp"/>
       <File Name="../../librtt/Rtt_LuaTableIterator.cpp"/>

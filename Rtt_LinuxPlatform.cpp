@@ -983,19 +983,6 @@ namespace Rtt
 		return rc == false ? OperationResult::FailedWith("This API is not supported on this platform.") : Rtt::OperationResult::kSucceeded;
 	}
 
-	bool LinuxPlatform::HttpDownload(const char* url, String& result, String& errorMesg, const std::map<std::string, std::string>& headers) const
-	{
-		Rtt_ASSERT_MSG(0, "Code should NOT be reached");
-		return false;
-	}
-
-	bool LinuxPlatform::HttpDownloadFile(const char* url, const char* filename, String& errorMesg, const std::map<std::string, std::string>& headers) const
-	{
-		Rtt_ASSERT_MSG(0, "Code should NOT be reached");
-		return false;
-	}
-
-
 	void LinuxPlatform::Suspend() const
 	{
 	}

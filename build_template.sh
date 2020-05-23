@@ -83,11 +83,10 @@ fi
 # generate Lua -> CPP
 make -j4 -f lua2cpp.mk
 
-CONTAINER=coronalabs/linux_builder
+CONTAINER=coronalabs/linux_builder_rpi
 # This container lives at https://bitbucket.org/coronalabs/buildsys-linux-docker/
 docker pull $CONTAINER
 
 docker run --rm \
     --mount type=bind,source="${PROJECT}",target=/main \
-    --mount type=bind,source="${XTOOLS}/RPiBuildTools",target=/RPiBuildTools \
     $TMPFS $CONTAINER

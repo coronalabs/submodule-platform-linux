@@ -9,7 +9,6 @@
 
 #include "Rtt_LinuxSimulatorServices.h"
 #include "Core/Rtt_Build.h"
-#include "Rtt_AuthorizationTicket.h"
 #include "Rtt_LinuxPlatform.h"
 #include "Rtt_TargetDevice.h"
 #include "Rtt_SimulatorAnalytics.h"

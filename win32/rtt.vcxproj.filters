@@ -190,9 +190,6 @@
     <ClCompile Include="..\..\..\librtt\Rtt_Matrix.cpp">
       <Filter>rtt</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\librtt\Rtt_Message.cpp">
-      <Filter>rtt</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\librtt\Rtt_ParticleSystemObject.cpp">
       <Filter>rtt</Filter>
     </ClCompile>
@@ -575,12 +572,6 @@
       <Filter>rtt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\librtt\Core\Rtt_Math.c">
-      <Filter>rtt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\librtt\Core\Rtt_MD4.c">
-      <Filter>rtt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\librtt\Core\Rtt_MessageDigest.cpp">
       <Filter>rtt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\librtt\Core\Rtt_OperationResult.cpp">
@@ -1204,12 +1195,6 @@
     <ClCompile Include="..\lua\re.cpp">
       <Filter>rtt</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\external\rsa\rsa.cpp">
-      <Filter>rtt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\rsa\prime.cpp">
-      <Filter>rtt</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\librtt\Rtt_LuaAssert.cpp">
       <Filter>rtt</Filter>
     </ClCompile>
@@ -1301,12 +1286,6 @@
       <Filter>rtt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\external\smoothpolygon\SmoothPolygon.cpp">
-      <Filter>rtt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\rsa\vlong.cpp">
-      <Filter>rtt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\external\rsa\vlong_io.cpp">
       <Filter>rtt</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\external\lpeg\lpeg.c">
@@ -1513,9 +1492,6 @@
     <ClCompile Include="..\Rtt_LinuxSimulatorView.cpp">
       <Filter>simulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Rtt_PlatformConnection.cpp">
-      <Filter>simulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Rtt_PlatformDictionaryWrapper.cpp">
       <Filter>simulator</Filter>
     </ClCompile>
@@ -1547,9 +1523,6 @@
       <Filter>simulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Rtt_TargetAndroidAppStore.cpp">
-      <Filter>simulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Rtt_WebServicesSession.cpp">
       <Filter>simulator</Filter>
     </ClCompile>
     <ClCompile Include="..\lua\create_build_properties_luaload.cpp">
@@ -1738,9 +1711,6 @@
       <Filter>rtt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\librtt\Rtt_MCrypto.h">
-      <Filter>rtt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\librtt\Rtt_Message.h">
       <Filter>rtt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\librtt\Rtt_ParticleSystemObject.h">
@@ -2163,12 +2133,6 @@
     <ClInclude Include="..\..\..\librtt\Core\Rtt_Matrix.h">
       <Filter>rtt</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\librtt\Core\Rtt_MD4.h">
-      <Filter>rtt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\librtt\Core\Rtt_MessageDigest.h">
-      <Filter>rtt</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\librtt\Core\Rtt_OperationResult.h">
       <Filter>rtt</Filter>
     </ClInclude>
@@ -2535,19 +2499,7 @@
     <ClInclude Include="..\..\..\external\b2Separator-cpp\b2Separator.h">
       <Filter>rtt</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\external\rsa\prime.hpp">
-      <Filter>rtt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\rsa\rsa.hpp">
-      <Filter>rtt</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\external\smoothpolygon\SmoothPolygon.h">
-      <Filter>rtt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\rsa\vlong.hpp">
-      <Filter>rtt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\external\rsa\vlong_io.h">
       <Filter>rtt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\external\lpeg\lpeg.h">
@@ -2714,9 +2666,6 @@
     <ClInclude Include="..\..\shared\Rtt_MPlatformServices.h">
       <Filter>simulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Rtt_PlatformConnection.h">
-      <Filter>simulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Rtt_PlatformDictionaryWrapper.h">
       <Filter>simulator</Filter>
     </ClInclude>
@@ -2739,9 +2688,6 @@
       <Filter>simulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Rtt_TargetAndroidAppStore.h">
-      <Filter>simulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Rtt_WebServicesSession.h">
       <Filter>simulator</Filter>
     </ClInclude>
   </ItemGroup>
