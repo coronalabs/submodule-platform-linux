@@ -167,7 +167,7 @@ namespace Rtt
 		}
 	}
 
-	void		MouseListener::TouchUp(int x, int y, int fid)
+	void MouseListener::TouchUp(int x, int y, int fid)
 	{
 		bool notifyMultitouch = fRuntime.Platform().GetDevice().DoesNotify(MPlatformDevice::kMultitouchEvent);
 
@@ -400,13 +400,10 @@ namespace Rtt
 	#ifdef _WIN32
 		const char* homedir = getenv("USERPROFILE");
 		const char* appPath = "Z:\\CoronaSimulator\\welcomescreen";
-		//const char* appPath = "Z:\\tmp\\clock";
 	#else
 		struct passwd* pw = getpwuid(getuid());
 		const char* homedir = pw->pw_dir;
-
 		const char* appPath = getStartupPath(&exeFileName);
-		//const char* appPath = "/home/vitaly/Clock";
 	#endif
 
 

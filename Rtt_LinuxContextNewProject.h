@@ -16,17 +16,19 @@ namespace Rtt
 
 		NewProjectDialog(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long style=wxDEFAULT_DIALOG_STYLE);
 		std::string ProjectFolder;
+		std::string fProjectName;
 	private:
 		void set_properties();
 		void do_layout();
 		void SetProjectPath();
 		void SetResourcePath();
-		void CreateProject();
-		std::string fProjectName;
+		void CreateProject(std::string projectFolder);
+		
 		std::string fTemplateName;
 		int fScreenWidth;
 		int fScreenHeight;
 		std::string fOrientationIndex;
+		std::string fP;
 		std::string fProjectPath;
 		std::string fProjectSavePath;
 		std::string fResourcePath;

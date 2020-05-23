@@ -1,11 +1,20 @@
 #include "Core/Rtt_Build.h"
-
-#include "luaconf.h"
-#include "Rtt_Lua.h"
+#include "Core/Rtt_Time.h"
+#include "Rtt_Runtime.h"
 #include "Rtt_LuaContext.h"
-#include "Rtt_MSimulatorServices.h"
+#include "Core/Rtt_Types.h"
+#include "Rtt_LinuxContext.h"
+#include "Rtt_LinuxPlatform.h"
+#include "Rtt_LinuxRuntimeDelegate.h"
+#include "Rtt_LuaFile.h"
+#include "Core/Rtt_FileSystem.h"
+#include "Rtt_Archive.h"
+#include "Display/Rtt_Display.h"
+#include "Display/Rtt_DisplayDefaults.h"
+#include "Rtt_KeyName.h"
+#include "Rtt_Freetype.h"
 #include "Rtt_LuaLibSimulator.h"
-#include "Rtt_FileSystem.h"
+#include "Rtt_LinuxSimulatorView.h"
 
 #include <pwd.h>
 #include <libgen.h>
@@ -21,18 +30,18 @@ namespace Rtt
 {
 	NewProjectDialog::NewProjectDialog(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style):
 		wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE),
-			fProjectName("Untitled"),
-			fTemplateName("blank"),
+			fProjectName(""),
+			fTemplateName(""),
 			fScreenWidth(320),
 			fScreenHeight(480),
-			fOrientationIndex("portrait"),
+			fOrientationIndex(""),
 			fProjectPath(""),
 			fProjectSavePath(""),
 			fResourcePath("")
 			
 	{
 		SetSize(wxSize(511, 425));
-		txtApplicationName = new wxTextCtrl(this, wxID_ANY, std::string(fProjectName));
+		txtApplicationName = new wxTextCtrl(this, wxID_ANY, wxEmptyString);
 		txtProjectFolder = new wxTextCtrl(this, wxID_ANY, wxEmptyString);
 		btnBrowse = new wxButton(this, wxID_OPEN, wxT("&Browse..."));
 		rProjectOption1 = new wxRadioButton(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
@@ -62,10 +71,12 @@ namespace Rtt
 		SetTitle(wxT("New Project"));
 		SetSize(wxSize(511, 425));
 		SetFont(wxFont(8, wxDEFAULT, wxNORMAL, wxNORMAL, 0, wxT("")));
-		txtProjectFolder->Enable(0);
+		txtApplicationName->SetValue("Untitled");
+		//txtProjectFolder->Enable(true);
+		txtProjectFolder->Enable(false);
 		cboScreenSizePreset->SetSelection(0);
-		txtWidth->Enable(0);
-		txtHeight->Enable(0);
+		txtWidth->Enable(false);
+		txtHeight->Enable(false);
 		btnOK->SetDefault();
 		this->SetProjectPath();
 		this->SetResourcePath();
@@ -156,7 +167,7 @@ namespace Rtt
 		SetSizer(dialog_layout);
 		Layout();
 	}
-
+	
 	BEGIN_EVENT_TABLE(NewProjectDialog, wxDialog)
 		EVT_COMBOBOX(wxID_ANY, NewProjectDialog::onChange)
 		EVT_BUTTON(wxID_OPEN, NewProjectDialog::OnProjectFolderBrowse)
@@ -167,21 +178,30 @@ namespace Rtt
 	void NewProjectDialog::OnProjectFolderBrowse(wxCommandEvent &event)
 	{
 		
+		event.Skip();
+		
 		wxDirDialog openDirDialog( this, _("Choose Project Directory"), fProjectPath, 0, wxDefaultPosition);
-		if (openDirDialog.ShowModal() == wxID_CANCEL)
-		{
-			return;
-		}
+
 		if ( openDirDialog.ShowModal() ==  wxID_OK )
 		{ 
+			
 			fProjectPath = std::string(openDirDialog.GetPath());
 			txtProjectFolder->SetValue(fProjectPath);
+			
+		} else if (openDirDialog.ShowModal() == wxID_CANCEL){
+			
+			return;
+			
 		}
 		
 	}
 
+
+
 	void NewProjectDialog::onChange(wxCommandEvent &event)
 	{
+		
+		event.Skip();
 		
 		wxString strPreset = cboScreenSizePreset->GetValue();
 		
@@ -220,6 +240,8 @@ namespace Rtt
 
 	void NewProjectDialog::onbtnOKClicked(wxCommandEvent &event)
 	{
+		
+		wxLogDebug("fProjectName = %s " , txtApplicationName->GetValue().ToStdString() );
 		
 		bool bDialogClean = true;
 		
@@ -281,9 +303,12 @@ namespace Rtt
 		
 		//TODO: Make sure all variables are sane values before running project creation process
 		
-		std::string fProjectSavePath = fProjectPath;
+		std::string fProjectSavePath = txtProjectFolder->GetValue().ToStdString();
+	    fProjectName = txtApplicationName->GetValue().ToStdString();
 		fProjectSavePath += LUA_DIRSEP;
 		fProjectSavePath += fProjectName;
+
+		wxLogDebug("fProjectSavePath = %s " , fProjectSavePath );
 		
 		//check if project folder already exists and that the height and width are numbers
 		if (Rtt_IsDirectory(fProjectSavePath.c_str()) == true)
@@ -296,7 +321,7 @@ namespace Rtt
 		
 		if ( bDialogClean == true ){
 			
-			this->CreateProject();
+			this->CreateProject(fProjectSavePath);
 			EndModal(wxID_OK);
 			
 		}
@@ -344,7 +369,7 @@ namespace Rtt
 		
 	}
 	
-	void NewProjectDialog::CreateProject()
+	void NewProjectDialog::CreateProject(std::string projectFolder)
 	{
 		
 		std::string fNewProjectLuaScript = fResourcePath;
@@ -352,14 +377,21 @@ namespace Rtt
 		fNewProjectLuaScript += "homescreen";
 		fNewProjectLuaScript += LUA_DIRSEP;
 		fNewProjectLuaScript += "newproject.lua";
+		wxLogDebug("fNewProjectLuaScript = %s\n", std::string(fNewProjectLuaScript) );
 		
 		std::string fTemplatesDir = fResourcePath;
 		fTemplatesDir += LUA_DIRSEP;
 		fTemplatesDir += "homescreen";
 		fTemplatesDir += LUA_DIRSEP;
 		fTemplatesDir += "templates";
+		wxLogDebug("fTemplatesDir = %s\n", std::string(fTemplatesDir) );
 		
-		Rtt_MakeDirectory(fProjectSavePath.c_str());
+		if (Rtt_IsDirectory(projectFolder.c_str()) == false)
+		{
+			Rtt_MakeDirectory(projectFolder.c_str());
+			wxLogDebug("Creating directory = %s\n", projectFolder );
+		}
+		
 		
 		lua_State *L = luaL_newstate();
 		luaL_openlibs( L );
@@ -390,7 +422,7 @@ namespace Rtt
 			lua_pushstring( L, 0 == fOrientationIndex ? "portrait" : "landscapeRight" );
 			lua_setfield( L, -2, "orientation" );
 
-			lua_pushstring( L, fProjectSavePath.c_str() );
+			lua_pushstring( L, projectFolder.c_str() );
 			lua_setfield( L, -2, "savePath" );
 
 			lua_pushstring( L, fTemplatesDir.c_str() );

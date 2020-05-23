@@ -1450,7 +1450,9 @@
       <PreBuild>
         <Command Enabled="yes">make -f lua2cpp.mk</Command>
       </PreBuild>
-      <PostBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp ./Simulator/$(ProjectName) ./CoronaSimulator/CoronaSimulator</Command>
+      </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
         <CleanCommand/>
