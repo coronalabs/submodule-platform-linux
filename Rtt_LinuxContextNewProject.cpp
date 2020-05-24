@@ -391,7 +391,7 @@ namespace Rtt
 			Rtt_MakeDirectory(projectFolder.c_str());
 			wxLogDebug("Creating directory = %s\n", projectFolder );
 		}
-		
+		 
 		
 		lua_State *L = luaL_newstate();
 		luaL_openlibs( L );

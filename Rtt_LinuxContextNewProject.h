@@ -23,7 +23,6 @@ namespace Rtt
 		void SetProjectPath();
 		void SetResourcePath();
 		void CreateProject(std::string projectFolder);
-		
 		std::string fTemplateName;
 		int fScreenWidth;
 		int fScreenHeight;
