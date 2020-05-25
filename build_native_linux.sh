@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 # this file is run inside ubundu environment
 if [[ "$OSTYPE" != "linux-gnu" ]]
@@ -46,8 +46,7 @@ echo "x86/64 Build started..."
 echo "======================="
 make -j4 -f linux_rtt.mk
 
-#cp Release/linux_rtt deb/CONTENTS/usr/bin/
-cp Debug/linux_rtt deb/CONTENTS/usr/bin/
+cp Simulator/linux_rtt deb/CONTENTS/usr/bin/
 
 if [ -d /tmpfs ]
 then
@@ -66,7 +65,7 @@ echo "ARM Build started..."
 echo "===================="
 make -j4 -f linux_rtt_arm.mk
 
-#cp ARM/linux_rtt deb_arm/CONTENTS/usr/bin/
+cp ARM/linux_rtt deb_arm/CONTENTS/usr/bin/
 
 if [ -d /tmpfs ]
 then

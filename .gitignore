@@ -14,6 +14,7 @@ corona.workspace
 /rtt_arm.mk
 *.bak
 linux_rtt.txt
+car.txt
 CoronaSimulator-x86-64.tar.gz
 linuxtemplate.tar.gz
 raspbiantemplate.tar.gz

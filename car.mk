@@ -5,8 +5,8 @@
 ## Debug
 ProjectName            :=car
 ConfigurationName      :=Debug
-WorkspacePath          :=/home/robert/corona/platform/linux
-ProjectPath            :=/home/robert/corona/platform/linux
+WorkspacePath          :=../../platform/linux
+ProjectPath            :=../../platform/linux
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
@@ -92,7 +92,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix): ../../tools/car/main.cpp $(IntermediateDirectory)/up_up_tools_car_main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/tools/car/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "../../tools/car/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_tools_car_main.cpp$(DependSuffix): ../../tools/car/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_tools_car_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_tools_car_main.cpp$(DependSuffix) -MM ../../tools/car/main.cpp
 
@@ -100,7 +100,7 @@ $(IntermediateDirectory)/up_up_tools_car_main.cpp$(PreprocessSuffix): ../../tool
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_tools_car_main.cpp$(PreprocessSuffix) ../../tools/car/main.cpp
 
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix): ../../librtt/Core/Rtt_String.cpp $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/librtt/Core/Rtt_String.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "../../librtt/Core/Rtt_String.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix): ../../librtt/Core/Rtt_String.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(DependSuffix) -MM ../../librtt/Core/Rtt_String.cpp
 
@@ -108,7 +108,7 @@ $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(PreprocessSuffix): ..
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_String.cpp$(PreprocessSuffix) ../../librtt/Core/Rtt_String.cpp
 
 $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix): ../../tools/car/Rtt_Car.cpp $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/tools/car/Rtt_Car.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "../../tools/car/Rtt_Car.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(DependSuffix): ../../tools/car/Rtt_Car.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(DependSuffix) -MM ../../tools/car/Rtt_Car.cpp
 
@@ -116,7 +116,7 @@ $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(PreprocessSuffix): ../../t
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_tools_car_Rtt_Car.cpp$(PreprocessSuffix) ../../tools/car/Rtt_Car.cpp
 
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix): ../../librtt/Core/Rtt_FileSystem.cpp $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/librtt/Core/Rtt_FileSystem.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "../../librtt/Core/Rtt_FileSystem.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(DependSuffix): ../../librtt/Core/Rtt_FileSystem.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(DependSuffix) -MM ../../librtt/Core/Rtt_FileSystem.cpp
 
@@ -124,7 +124,7 @@ $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(PreprocessSuffix)
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_librtt_Core_Rtt_FileSystem.cpp$(PreprocessSuffix) ../../librtt/Core/Rtt_FileSystem.cpp
 
 $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix): ../../librtt/Rtt_Archive.cpp $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/robert/corona/librtt/Rtt_Archive.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "../../librtt/Rtt_Archive.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix): ../../librtt/Rtt_Archive.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_librtt_Rtt_Archive.cpp$(DependSuffix) -MM ../../librtt/Rtt_Archive.cpp
 
