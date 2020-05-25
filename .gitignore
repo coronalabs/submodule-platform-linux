@@ -1,15 +1,20 @@
-# generated code
+CoronaSimulator/android-sdk
+CoronaSimulator/CoronaSimulator
 /lua
-# build stuff
 /ARM
 /Debug
 /Release
 /Simulator
+/.codelite
+compile_commands.json
+compile_flags.txt
+corona.workspace
 /rtt_simulator.mk
 /rtt.mk
 /rtt_arm.mk
 *.bak
 linux_rtt.txt
+car.txt
 CoronaSimulator-x86-64.tar.gz
 linuxtemplate.tar.gz
 raspbiantemplate.tar.gz

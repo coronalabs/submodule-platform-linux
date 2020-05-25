@@ -8,6 +8,8 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="Rtt_LinuxContextNewProject.h"/>
+    <File Name="Rtt_LinuxContextNewProject.cpp"/>
     <VirtualDirectory Name="simulator">
       <File Name="lua/create_build_properties.cpp"/>
       <File Name="../android/Rtt_AndroidAppPackager.h"/>
@@ -1415,7 +1417,7 @@
       </Compiler>
       <Linker Options="-export-dynamic ./CryptoPP/libcryptopp.a ./curl-7.61.0/libcurl.a ./openssl-1.0.2o/libssl.a ./openssl-1.0.2o/libcrypto.a -lGL -lopenal ./wx/lib/libwx_gtk3u-3.1.a ./wx/lib/libwx_gtk3u_gl-3.1.a ./wx/lib/libwxtiff-3.1.a -lgdk-3 -lpangocairo-1.0 -lgthread-2.0 -pthread -lX11 -lXxf86vm -lSM -lgtk-3 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lfontconfig -lfreetype -lpng -lz -lexpat -ljpeg -ldl -lm -lwebkitgtk-3.0 -lgstreamer-1.0 -lgstvideo-1.0" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="../../platform/linux/CoronaSimulator/CoronaSimulator" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
@@ -1428,7 +1430,9 @@
       <PreBuild>
         <Command Enabled="yes">make -f lua2cpp.mk</Command>
       </PreBuild>
-      <PostBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp ./Simulator/$(ProjectName) ./CoronaSimulator/CoronaSimulator</Command>
+      </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
         <CleanCommand/>
@@ -1614,7 +1618,7 @@
       </Compiler>
       <Linker Options="-export-dynamic ./CryptoPP/libcryptopp.a ./curl-7.61.0/libcurl.a ./openssl-1.0.2o/libssl.a ./openssl-1.0.2o/libcrypto.a -lGL -lopenal ./wx/lib/libwx_gtk3u-3.1.a ./wx/lib/libwx_gtk3u_gl-3.1.a ./wx/lib/libwxtiff-3.1.a -lgdk-3 -lpangocairo-1.0 -lgthread-2.0 -pthread -lX11 -lXxf86vm -lSM -lgtk-3 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lfontconfig -lfreetype -lpng -lz -lexpat -ljpeg -ldl -lm -lwebkitgtk-3.0 -lgstreamer-1.0 -lgstvideo-1.0" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Simulator" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Simulator" Command="../CoronaSimulator/start.sh" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
@@ -1627,7 +1631,9 @@
       <PreBuild>
         <Command Enabled="yes">make -f lua2cpp.mk</Command>
       </PreBuild>
-      <PostBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp ./Simulator/$(ProjectName) ./CoronaSimulator/CoronaSimulator</Command>
+      </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
         <CleanCommand/>
