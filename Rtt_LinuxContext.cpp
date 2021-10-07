@@ -690,11 +690,11 @@ namespace Rtt
 		bool fullScreen = fMode == "maximized";
 		if (fullScreen)
 		{
-			wxDisplay screen(0);
-			wxRect rect = screen.GetGeometry();
-	//		fWidth = rect.GetWidth();
-	//		fHeight = rect.GetHeight() - 1;
-//			Rtt_LogException("Full Screen mode: %dx%d\n", fWidth, fHeight);
+		//	wxDisplay screen(0);
+		//	wxRect rect = screen.GetGeometry();
+		//	fWidth = rect.GetWidth();
+		//	fHeight = rect.GetHeight() - 1;
+		//	Rtt_LogException("Full Screen mode: %dx%d\n", fWidth, fHeight);
 		}
 
 		fPlatform->setWindow(this);
