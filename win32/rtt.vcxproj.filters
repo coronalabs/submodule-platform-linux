@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <Filter Include="emscripten">
-      <UniqueIdentifier>{3f71204b-a0d0-4335-86a3-6ea3e7452446}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-</Project>

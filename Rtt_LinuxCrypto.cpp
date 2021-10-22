@@ -28,10 +28,10 @@ namespace Rtt
 }
 #else
 
-#include "CryptoPP/hmac.h"
-#include "CryptoPP/md4.h"
-#include "CryptoPP/md5.h"
-#include "CryptoPP/sha.h"
+#include "crypto++/hmac.h"
+#include "crypto++/md4.h"
+#include "crypto++/md5.h"
+#include "crypto++/sha.h"
 
 namespace Rtt
 {
