@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # See https://sites.google.com/a/anscamobile.com/dev/home/corona-specs/init-lua
 
@@ -73,7 +73,7 @@ then
 	LU_PATH=$TEMP_DIR/$SRCNAME.lu
 	${BIN_DIR}/lua rcc.lua -c ${BIN_DIR} -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
 
-	${BIN_DIR}/lua -epackage.path="[[mac/loop/?.lua]]" mac/loop/precompiler.constant.lua -d "$DST_DIR" -o "$SRCNAME" -l "$LU_PATH" -n -m "$MODULE_NAME" "$SRCNAME"
+	${BIN_DIR}/lua -epackage.path="[[../external/loop-2.3-beta/lua/?.lua]]" ../external/loop-2.3-beta/lua/precompiler.constant.lua -d "$DST_DIR" -o "$SRCNAME" -l "$LU_PATH" -n -m "$MODULE_NAME" "$SRCNAME"
 
 	popd > /dev/null
 
