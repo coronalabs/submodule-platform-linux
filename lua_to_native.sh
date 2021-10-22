@@ -71,6 +71,11 @@ then
 	pushd "$path/../../bin" > /dev/null
 
 	LU_PATH=$TEMP_DIR/$SRCNAME.lu
+
+	# hack
+	chmod 555 ${BIN_DIR}/lua
+	chmod 555 ${BIN_DIR}/luac
+
 	${BIN_DIR}/lua rcc.lua -c ${BIN_DIR} -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
 
 	${BIN_DIR}/lua -epackage.path="[[../external/loop-2.3-beta/lua/?.lua]]" ../external/loop-2.3-beta/lua/precompiler.constant.lua -d "$DST_DIR" -o "$SRCNAME" -l "$LU_PATH" -n -m "$MODULE_NAME" "$SRCNAME"
