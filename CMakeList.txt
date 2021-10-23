@@ -1,5 +1,58 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+# check dependencies
+
+find_package(ZLIB REQUIRED)
+if (ZLIB_FOUND)
+	message("zlib-${ZLIB_VERSION_STRING}; ${ZLIB_INCLUDE_DIR}; ${ZLIB_LIBRARIES}")
+else()
+	message(FATAL_ERROR "*** no zlib, use 'sudo apt install zlib1g-dev' to install it")
+endif()
+
+set(OpenGL_GL_PREFERENCE "LEGACY")
+find_package(OpenGL REQUIRED)
+if (OpenGL_OpenGL_FOUND)
+	message("OpenGL; ${OPENGL_INCLUDE_DIR}; ${OPENGL_LIBRARIES}")
+else()
+	message(FATAL_ERROR "*** no OpenGL, use 'sudo apt install libglu1-mesa-dev' to install it")
+endif()
+
+find_package(OpenAL REQUIRED)
+if (OPENAL_FOUND)
+	message("OpenAL; ${OPENAL_INCLUDE_DIR}; ${OPENAL_LIBRARY}")
+else()
+	message(FATAL_ERROR "*** no OpenAL, use 'sudo apt install libopenal-dev' to install it")
+endif()
+
+find_package(Freetype REQUIRED)
+if (FREETYPE_FOUND)
+	message("Freetype-${FREETYPE_VERSION_STRING}; ${FREETYPE_INCLUDE_DIRS}; ${FREETYPE_LIBRARIES}")
+else()
+	message(FATAL_ERROR "*** no Freetype, use 'sudo apt install libfreetype6-dev' to install it")
+endif()
+
+find_package(PNG REQUIRED)
+if (PNG_FOUND)
+	message("png-${PNG_VERSION_STRING}; ${PNG_INCLUDE_DIRS}; ${PNG_LIBRARIES}")
+else()
+	message(FATAL_ERROR "*** no libpng, use 'sudo apt install libpng-dev' to install it")
+endif()
+
+find_package(CURL REQUIRED)
+if (CURL_FOUND)
+	message("curl-${CURL_VERSION_STRING}; ${CURL_INCLUDE_DIRS}; ${CURL_LIBRARIES}")
+else()
+	message(FATAL_ERROR "*** no libcurl, use 'sudo apt install libcurl-dev' to install it")
+endif()
+
+#find_package(CryptoPP REQUIRED)
+#if (FREETYPE_FOUND)
+#	message("Freetype: ${FREETYPE_VERSION_STRING}; ${FREETYPE_INCLUDE_DIRS}; ${FREETYPE_LIBRARIES}")
+#else()
+#	message(FATAL_ERROR "*** no Freetype, use 'sudo apt install libcrypto++-dev' to install it")
+#endif()
+
+
 #set(COMMON_COMPILER_FLAGS "-Wno-deprecated -O3 -fstrict-aliasing -fvisibility=hidden -ffunction-sections -fdata-sections")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_COMPILER_FLAGS} -std=c++14")
@@ -206,7 +259,7 @@ ENDFOREACH()
 
 
 
-add_executable( Solar2D
+add_executable( simulator
 		${Lua2CppOutputDir}/init.cpp
 		${Lua2CppOutputDir}/runtime.cpp
 		${Lua2CppOutputDir}/easing.cpp
@@ -813,7 +866,12 @@ add_executable( Solar2D
 
 )
 
-target_link_libraries(Solar2D	dl GL z pthread openal ssl crypto gdk-3 freetype png cryptopp curl
-	wx_baseu-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1)
+target_link_libraries(simulator	dl GL z pthread openal freetype png cryptopp curl
+	gdk-3 wx_baseu-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1)
 
-	#sudo apt-get install libcrypto++-dev
+# install Resources
+install(DIRECTORY "${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/" DESTINATION bin/Solar2D/Resources)
+
+# install binary
+install(TARGETS simulator RUNTIME DESTINATION bin/Solar2D)
+
