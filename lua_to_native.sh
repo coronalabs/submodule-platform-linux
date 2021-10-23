@@ -75,6 +75,7 @@ then
 	# hack
 	chmod 555 ${BIN_DIR}/lua
 	chmod 555 ${BIN_DIR}/luac
+	chmod 555 ${BIN_DIR}/lua2c.sh
 
 	${BIN_DIR}/lua rcc.lua -c ${BIN_DIR} -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
 
