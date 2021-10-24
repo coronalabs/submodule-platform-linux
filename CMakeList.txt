@@ -72,7 +72,7 @@ include_directories (
 	/usr/local/include/wx-3.1
 	${CORONA_ROOT}
 	${CORONA_ROOT}/external/sqlite3
-	${LuaIncludePath}
+	${CORONA_ROOT}/external/lua-5.1.3/src
 	${CORONA_ROOT}/external/rsa
 	${CORONA_ROOT}/external/LuaHashMap
 	${CORONA_ROOT}/external/openal-soft/include/AL
