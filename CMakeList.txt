@@ -249,15 +249,12 @@ SET( LUA_SOCKET_SOURCES
 )
 
 FOREACH(LUA_FILE ${LUA_SOURCES})
-message("${LUA_FILE}")
 	lua_2_cpp("${LUA_FILE}")
 ENDFOREACH()
 
 FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
 	lua_2_c("${LUA_FILE}" luasocket)
 ENDFOREACH()
-
-
 
 add_executable( simulator
 		${Lua2CppOutputDir}/init.cpp
@@ -874,4 +871,21 @@ install(DIRECTORY "${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/" DES
 
 # install binary
 install(TARGETS simulator RUNTIME DESTINATION bin/Solar2D)
+
+# build template
+
+set(debdir "${CMAKE_CURRENT_BINARY_DIR}/deb")
+
+add_custom_target(copydeb ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CORONA_ROOT}/platform/linux/deb ${debdir}
+    DEPENDS simulator)
+
+add_custom_target(copybinary ALL
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simulator ${debdir}/CONTENTS/usr/bin
+    DEPENDS copydeb)
+
+add_custom_target(create_template ALL 
+	COMMAND ${CMAKE_COMMAND} -E tar cfvz "${CMAKE_CURRENT_BINARY_DIR}/linuxtemplate.tar.gz" "."
+	WORKING_DIRECTORY ${debdir}
+	DEPENDS copybinary)
 

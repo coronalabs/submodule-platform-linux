@@ -73,9 +73,10 @@ then
 	LU_PATH=$TEMP_DIR/$SRCNAME.lu
 
 	# hack
-	chmod 555 ${BIN_DIR}/lua
-	chmod 555 ${BIN_DIR}/luac
-	chmod 555 ${BIN_DIR}/lua2c.sh
+	chmod 555 ${BIN_DIR}/lua > /dev/null
+	chmod 555 ${BIN_DIR}/luac > /dev/null
+	chmod 555 ${BIN_DIR}/lua2c.sh > /dev/null
+	dos2unix ${BIN_DIR}/lua2c.sh > /dev/null
 
 	${BIN_DIR}/lua rcc.lua -c ${BIN_DIR} -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
 
