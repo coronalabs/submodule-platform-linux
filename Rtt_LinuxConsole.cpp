@@ -1,4 +1,5 @@
 #include "Rtt_LinuxConsole.h"
+#include "Rtt_FileSystem.h"
 #include <sys/time.h>
 #include <wx/statbmp.h>
 #include <wx/config.h>
@@ -86,7 +87,14 @@ Rtt_LinuxConsole::Rtt_LinuxConsole(wxWindow *parent, wxWindowID id, const wxStri
 	struct passwd *pw = getpwuid(getuid());
 	const char *homedir = pw->pw_dir;
 	consoleLog.settingsFilePath = homedir;
-	consoleLog.settingsFilePath.append("/.Solar2D/console.conf");
+
+	consoleLog.settingsFilePath.append("/.Solar2D");
+	if (!Rtt_IsDirectory(consoleLog.settingsFilePath.c_str()))
+	{
+		Rtt_MakeDirectory(consoleLog.settingsFilePath.c_str());
+	}
+
+	consoleLog.settingsFilePath.append("/console.conf");
 	consoleLog.config = new wxFileConfig("", "", consoleLog.settingsFilePath);
 	consoleLog.themeTextColour = consoleLog.textColourDarkTheme;
 	consoleLog.themeBackgroundColour = consoleLog.backgroundColourDarkTheme;
