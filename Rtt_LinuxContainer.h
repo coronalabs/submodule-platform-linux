@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -32,7 +32,7 @@ template<class T>
 class smart_ptr
 {
 public:
-	smart_ptr(T* ptr)	:
+	smart_ptr(T *ptr)	:
 		m_ptr(ptr)
 	{
 		if (m_ptr)
@@ -42,8 +42,7 @@ public:
 	}
 
 	smart_ptr() : m_ptr(NULL) {}
-	smart_ptr(const smart_ptr<T>& s)
-		:
+	smart_ptr(const smart_ptr<T>& s) :
 		m_ptr(s.m_ptr)
 	{
 		if (m_ptr)
@@ -61,22 +60,22 @@ public:
 	}
 
 	//	operator bool() const { return m_ptr != NULL; }
-	void	operator=(const smart_ptr<T>& s) { set_ref(s.m_ptr); }
+	void	operator=(const smart_ptr<T> &s) { set_ref(s.m_ptr); }
 	void	operator=(T* ptr) { set_ref(ptr); }
 	//	void	operator=(const weak_ptr<T>& w);
-	T*	operator->() const { /*assert(m_ptr);*/ return m_ptr; }
-	T*	get() const { return m_ptr; }
+	T *operator->() const { /*assert(m_ptr);*/ return m_ptr; }
+	T *get() const { return m_ptr; }
 	T& operator*() const { return *(T*) m_ptr; }
-	operator T*() const {	return m_ptr;	}
-	bool	operator==(const smart_ptr<T>& p) const { return m_ptr == p.m_ptr; }
-	bool	operator!=(const smart_ptr<T>& p) const { return m_ptr != p.m_ptr; }
-	bool	operator==(T* p) const { return m_ptr == p; }
-	bool	operator!=(T* p) const { return m_ptr != p; }
+	operator T*() const { return m_ptr; }
+	bool	operator==(const smart_ptr<T> &p) const { return m_ptr == p.m_ptr; }
+	bool	operator!=(const smart_ptr<T> &p) const { return m_ptr != p.m_ptr; }
+	bool	operator==(T *p) const { return m_ptr == p; }
+	bool	operator!=(T *p) const { return m_ptr != p; }
 
 	// Provide work-alikes for static_cast, dynamic_cast, implicit up-cast?  ("gentle_cast" a la ajb?)
 
 private:
-	void	set_ref(T* ptr)
+	void	set_ref(T *ptr)
 	{
 		if (ptr != m_ptr)
 		{
@@ -95,7 +94,7 @@ private:
 
 	//	friend weak_ptr;
 
-	T*	m_ptr;
+	T *m_ptr;
 };
 
 
@@ -135,10 +134,10 @@ public:
 
 private:
 	// Don't use these.
-	weak_proxy(const weak_proxy& w) { /*assert(0);*/ }
-	void	operator=(const weak_proxy& w) { /*assert(0); */}
+	weak_proxy(const weak_proxy &w) { /*assert(0);*/ }
+	void	operator=(const weak_proxy &w) { /*assert(0); */}
 
-	int	m_ref_count;
+	int m_ref_count;
 	bool	m_alive;
 };
 
@@ -164,23 +163,24 @@ public:
 	{
 	}
 
-	weak_ptr(T* ptr)
+	weak_ptr(T *ptr)
 		:
 		m_ptr(0)
 	{
 		operator=(ptr);
 	}
 
-	weak_ptr(const smart_ptr<T>& ptr)
+	weak_ptr(const smart_ptr<T> &ptr)
 	{
 		operator=(ptr.get());
 	}
 
 	// Default constructor and assignment from weak_ptr<T> are OK.
 
-	void	operator=(T* ptr)
+	void	operator=(T *ptr)
 	{
 		m_ptr = ptr;
+
 		if (m_ptr)
 		{
 			m_proxy = m_ptr->get_weak_proxy();
@@ -193,43 +193,43 @@ public:
 		}
 	}
 
-	void	operator=(const smart_ptr<T>& ptr) { operator=(ptr.get()); }
+	void	operator=(const smart_ptr<T> &ptr) { operator=(ptr.get()); }
 
-	bool	operator==(const smart_ptr<T>& ptr) const
+	bool	operator==(const smart_ptr<T> &ptr) const
 	{
 		check_proxy();
 		return m_ptr == ptr.get();
 	}
 
-	bool	operator!=(const smart_ptr<T>& ptr) const
+	bool	operator!=(const smart_ptr<T> &ptr) const
 	{
 		check_proxy();
 		return m_ptr != ptr.get();
 	}
 
-	bool	operator==(T* ptr) const 
+	bool	operator==(T *ptr) const
 	{
 		check_proxy();
-		return m_ptr == ptr; 
+		return m_ptr == ptr;
 	}
 
-	bool	operator!=(T* ptr) const 
+	bool	operator!=(T *ptr) const
 	{
 		check_proxy();
 		return m_ptr != ptr;
 	}
 
-	T*	operator->() const
+	T *operator->() const
 	{
 		check_proxy();
 		assert(m_ptr);
 		return m_ptr;
 	}
 
-	T*	get() const 
+	T *get() const
 	{
 		check_proxy();
-		return m_ptr; 
+		return m_ptr;
 	}
 
 	// Conversion to smart_ptr.
@@ -239,25 +239,25 @@ public:
 		return smart_ptr<T>(m_ptr);
 	}
 
-	bool	operator==(T* ptr) { check_proxy(); return m_ptr == ptr; }
-	bool	operator==(const smart_ptr<T>& ptr) { check_proxy(); return m_ptr == ptr.get(); }
+	bool	operator==(T *ptr) { check_proxy(); return m_ptr == ptr; }
+	bool	operator==(const smart_ptr<T> &ptr) { check_proxy(); return m_ptr == ptr.get(); }
 
 	// for hash< weak_ptr<...>, ...>
-	bool	operator==(const weak_ptr<T>& ptr) const
+	bool	operator==(const weak_ptr<T> &ptr) const
 	{
 		check_proxy();
 		ptr.check_proxy();
-		return m_ptr == ptr.m_ptr; 
+		return m_ptr == ptr.m_ptr;
 	}
 
 private:
 
-	void check_proxy() const
-		// Set m_ptr to NULL if the object died.
+	void check_proxy() const // Set m_ptr to NULL if the object died.
 	{
 		if (m_ptr)
 		{
 			assert(m_proxy != NULL);
+
 			if (m_proxy->is_alive() == false)
 			{
 				// Underlying object went away.
@@ -267,10 +267,9 @@ private:
 		}
 	}
 
-	mutable smart_ptr<weak_proxy>	m_proxy;
-	mutable T*	m_ptr;
+	mutable smart_ptr<weak_proxy> m_proxy;
+	mutable T *m_ptr;
 };
-
 
 // For stuff that's tricky to keep track of w/r/t ownership & cleanup.
 struct ref_counted
@@ -283,7 +282,7 @@ struct ref_counted
 
 	virtual ~ref_counted()
 	{
-//		assert(m_ref_count == 0);
+		//assert(m_ref_count == 0);
 
 		if (m_weak_proxy)
 		{
@@ -294,7 +293,7 @@ struct ref_counted
 
 	void add_ref() const
 	{
-	//	assert(m_ref_count >= 0);
+		//	assert(m_ref_count >= 0);
 		m_ref_count++;
 	}
 
@@ -302,6 +301,7 @@ struct ref_counted
 	{
 		//assert(m_ref_count > 0);
 		m_ref_count--;
+
 		if (m_ref_count == 0)
 		{
 			// Delete me!
@@ -309,14 +309,13 @@ struct ref_counted
 		}
 	}
 
-	int	get_ref_count() const { return m_ref_count; }
-	weak_proxy* get_weak_proxy() const
+	int get_ref_count() const { return m_ref_count; }
+	weak_proxy *get_weak_proxy() const
 	{
 		// By rights, somebody should be holding a ref to us.
 		// Vitaly: Sometimes it not so, for example in the constructor of character
 		// where this->ref_counted == 0fadd_frame_lab
-
-		//		assert(m_ref_count > 0);
+		//assert(m_ref_count > 0);
 
 		if (m_weak_proxy == NULL)
 		{
@@ -330,7 +329,7 @@ struct ref_counted
 
 private:
 	mutable int	m_ref_count;
-	mutable weak_proxy*	m_weak_proxy;
+	mutable weak_proxy *m_weak_proxy;
 };
 
 typedef signed char	Sint8;
@@ -344,61 +343,51 @@ typedef signed int Sint32;
 typedef unsigned int uint32;
 typedef signed int sint32;
 
-inline int	fchop( float f ) { return (int) f; }	// replace w/ inline asm if desired
-inline int	frnd(float f) { return fchop(f + 0.5f); }	// replace with inline asm if desired
+inline int fchop( float f ) { return (int) f; }	// replace w/ inline asm if desired
+inline int frnd(float f) { return fchop(f + 0.5f); }	// replace with inline asm if desired
 
 struct membuf
 {
-	 membuf();
-	 membuf(const void* data, int size);
-	 membuf(const membuf& buf);
-	 ~membuf();
+	membuf();
+	membuf(const void *data, int size);
+	membuf(const membuf &buf);
+	~membuf();
 
 	// Construct a read-only membuf that points at the given data,
 	// instead of copying it.
 	enum read_only_enum { READ_ONLY };
-	 membuf(read_only_enum e, const void* data, int size);
+	membuf(read_only_enum e, const void *data, int size);
 
-	 int size() const { return m_size; }
-	 const void* data() const { return m_data; }
-	 void* data()
-	{ 
-//		assert(!m_read_only);
-		return m_data; 
+	int size() const { return m_size; }
+	const void *data() const { return m_data; }
+	void *data()
+	{
+		//assert(!m_read_only);
+		return m_data;
 	}
 
 	// Don't call these mutators on read-only membufs.
-	
-	 void resize(int new_size);
-	 void append(const void* data, int size);
-	 void append(const membuf& buf);
-	 void append(Uint8 byte);
-	 void append(int num);
-	 void append(double num);
-	 void remove(int size);
 
-	 void dump();
+	void resize(int new_size);
+	void append(const void *data, int size);
+	void append(const membuf &buf);
+	void append(Uint8 byte);
+	void append(int num);
+	void append(double num);
+	void remove(int size);
+	void dump();
 
-	 Uint8&	operator[](int index);
-	 const Uint8&	operator[](int index) const;
-	 void	operator=(const membuf& buf);
-	 bool	operator==(const membuf& buf) const;
-	 bool	operator!=(const membuf& buf) const;
+	Uint8 &operator[](int index);
+	const Uint8 &operator[](int index) const;
+	void	operator=(const membuf &buf);
+	bool	operator==(const membuf &buf) const;
+	bool	operator!=(const membuf &buf) const;
 
 private:
-
 	int m_size;
 	int m_capacity;
-	void* m_data;
+	void *m_data;
 	bool m_read_only;
 };
 
-
 #endif // CONTAINER_H
-
-// Local Variables:
-// mode: C++
-// c-basic-offset: 8 
-// tab-width: 8
-// indent-tabs-mode: t
-// End:

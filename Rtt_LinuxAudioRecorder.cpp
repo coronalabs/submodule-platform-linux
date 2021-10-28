@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -18,13 +18,12 @@
 
 namespace Rtt
 {
-
-	LinuxAudioRecorder::LinuxAudioRecorder(const ResourceHandle<lua_State> & handle, Rtt_Allocator & allocator, const char * file)
+	LinuxAudioRecorder::LinuxAudioRecorder(const ResourceHandle<lua_State> &handle, Rtt_Allocator &allocator, const char * file)
 		: PlatformAudioRecorder(handle, allocator, file)
 		, fFile(file)
 		, fDevice(NULL)
 		, fAudioTask(NULL)
-	//	, fOut(NULL)
+		  //	, fOut(NULL)
 		, fWavDataChunkPos(0)
 		, fChannels(2)		// stereo
 	{
@@ -35,13 +34,16 @@ namespace Rtt
 		Stop();
 	}
 
-  template <typename Word>
-  std::ostream& write_word( std::ostream& outs, Word value, unsigned size = sizeof( Word ) )
-  {
-    for (; size; --size, value >>= 8)
-      outs.put( static_cast <char> (value & 0xFF) );
-    return outs;
-  }
+	template <typename Word>
+	std::ostream& write_word( std::ostream &outs, Word value, unsigned size = sizeof(Word))
+	{
+		for (; size; --size, value >>= 8)
+		{
+			outs.put(static_cast<char>(value & 0xFF));
+		}
+
+		return outs;
+	}
 
 	void LinuxAudioRecorder::Start()
 	{
@@ -51,13 +53,13 @@ namespace Rtt
 		const int SSIZE = 1024;
 
 		fDevice = alcCaptureOpenDevice(NULL, rate, AL_FORMAT_STEREO16, SSIZE);
+
 		if (fDevice)
 		{
 			alcCaptureStart(fDevice);
 			fIsRunning = true;
 
 			// attach to onEnterFrame
-
 			Rtt_ASSERT(fAudioTask == NULL);
 			fAudioTask = Rtt_NEW(Allocator(), AudioTask(this));
 			Runtime* runtime = wxGetApp().GetRuntime();
@@ -98,9 +100,9 @@ namespace Rtt
 			// Fix the file header to contain the proper RIFF chunk size, which is (file size - 8) bytes
 			f.seekp(0 + 4);
 			write_word(f, file_length - 8, 4);
-
 			f.close();
 		}
+
 		fWavDataChunkPos = 0;
 
 		if (fAudioTask)
@@ -114,6 +116,7 @@ namespace Rtt
 			alcCaptureStop(fDevice);
 			fDevice = NULL;
 		}
+
 		fIsRunning = false;
 	}
 
@@ -122,7 +125,7 @@ namespace Rtt
 	{
 		if (fDevice)
 		{
-			// Get the number of samples available 
+			// Get the number of samples available
 			ALint samplesAvailable;
 			alcGetIntegerv(fDevice, ALC_CAPTURE_SAMPLES, (ALCsizei) sizeof(ALint), &samplesAvailable);
 
@@ -131,7 +134,7 @@ namespace Rtt
 				int bufsize = samplesAvailable * fChannels * sizeof(int16_t);		// AL_FORMAT_STEREO16
 				char* buffer = (char*) malloc(bufsize);
 
-				// Copy the samples to our capture buffer 
+				// Copy the samples to our capture buffer
 				alcCaptureSamples(fDevice, buffer, samplesAvailable);
 
 				// LITTLE ENDIAN !!!
@@ -140,6 +143,4 @@ namespace Rtt
 			}
 		}
 	}
-
 } // namespace Rtt
-

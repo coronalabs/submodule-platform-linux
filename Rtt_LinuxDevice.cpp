@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -9,201 +9,211 @@
 
 #include "Core/Rtt_Build.h"
 #include "Rtt_LinuxDevice.h"
-
-// ----------------------------------------------------------------------------
+#include "wx/wx.h"
 
 namespace Rtt
 {
-
-// ----------------------------------------------------------------------------
-
-#pragma region Constructors/Destructors
-LinuxDevice::LinuxDevice( Rtt_Allocator& allocator )
-:	fAllocator( allocator ),
-	fInputDeviceManager( &allocator ),
-	fOrientation( DeviceOrientation::kUnknown )
-{
-}
-
-LinuxDevice::~LinuxDevice()
-{
-}
-
-#pragma endregion
-
-
-#pragma region Public Member Functions
-void LinuxDevice::SetOrientation( DeviceOrientation::Type orientation )
-{
-	fOrientation = orientation;
-}
-
-void LinuxDevice::Vibrate() const
-{
-}
-
-void LinuxDevice::SetAccelerometerInterval( U32 frequency ) const
-{
-}
-
-void LinuxDevice::SetGyroscopeInterval( U32 frequency ) const
-{
-}
-
-bool LinuxDevice::HasEventSource( EventType type ) const
-{
-	bool hasEventSource = false;
-	
-	switch (type)
+	#pragma region Constructors / Destructors
+	LinuxDevice::LinuxDevice(Rtt_Allocator &allocator)
+		: fAllocator(allocator),
+		  fInputDeviceManager(&allocator),
+		  fOrientation(DeviceOrientation::kUnknown)
 	{
-		case MPlatformDevice::kAccelerometerEvent:
-			break;
-		case MPlatformDevice::kGyroscopeEvent:
-			break;
-		case MPlatformDevice::kOrientationEvent:
-		case MPlatformDevice::kLocationEvent:
-		case MPlatformDevice::kHeadingEvent:
-		case MPlatformDevice::kMultitouchEvent:
-		case MPlatformDevice::kKeyEvent:
-			hasEventSource = true;
-			break;
-		default:
-			Rtt_ASSERT_NOT_REACHED();
-			break;
 	}
-	return hasEventSource;
-}
 
-void LinuxDevice::BeginNotifications( EventType type ) const
-{
-	fTracker.BeginNotifications( type );
-
-	switch( type )
+	LinuxDevice::~LinuxDevice()
 	{
-		case MPlatformDevice::kOrientationEvent:
-		case MPlatformDevice::kLocationEvent:
-		case MPlatformDevice::kAccelerometerEvent:
-		case MPlatformDevice::kGyroscopeEvent:
-		case MPlatformDevice::kHeadingEvent:
-		case MPlatformDevice::kMultitouchEvent:
-			break;
-		default:
-			Rtt_ASSERT_NOT_REACHED();
-			break;
 	}
-}
 
-void LinuxDevice::EndNotifications( EventType type ) const
-{
-	fTracker.EndNotifications( type );
+	#pragma endregion
 
-	switch( type )
+	#pragma region Public Member Functions
+
+	void LinuxDevice::SetOrientation(DeviceOrientation::Type orientation)
 	{
-		case MPlatformDevice::kOrientationEvent:
-		case MPlatformDevice::kLocationEvent:
-		case MPlatformDevice::kAccelerometerEvent:
-		case MPlatformDevice::kGyroscopeEvent:
-		case MPlatformDevice::kHeadingEvent:
-		case MPlatformDevice::kMultitouchEvent:
-			break;
-		default:
-			Rtt_ASSERT_NOT_REACHED();
-			break;
+		fOrientation = orientation;
 	}
-}
 
-bool LinuxDevice::DoesNotify( EventType type ) const
-{
-	return fTracker.DoesNotify( type );
-}
-
-const char* LinuxDevice::GetModel() const
-{
-	return "Linux";
-}
-
-const char* LinuxDevice::GetName() const
-{
-	return "";
-}
-
-const char* LinuxDevice::GetUniqueIdentifier( IdentifierType t ) const
-{
-	const char *result = "";
-
-	switch ( t )
+	void LinuxDevice::Vibrate() const
 	{
-		case MPlatformDevice::kDeviceIdentifier:
-			break;
-		case MPlatformDevice::kHardwareIdentifier:
-			break;
-		case MPlatformDevice::kOSIdentifier:
-			break;
-		case MPlatformDevice::kUdidIdentifier:
-			break;
-		default:
-			break;
 	}
-	return result;
-}
 
-MPlatformDevice::EnvironmentType LinuxDevice::GetEnvironment() const
-{
-	return kDeviceEnvironment;
-}
+	void LinuxDevice::SetAccelerometerInterval(U32 frequency) const
+	{
+	}
 
-const char* LinuxDevice::GetPlatformName() const
-{
-	return "LINUX";
-}
-	
-const char* LinuxDevice::GetPlatformVersion() const
-{
-	return "1.0";
-}
+	void LinuxDevice::SetGyroscopeInterval(U32 frequency) const
+	{
+	}
 
-const char* LinuxDevice::GetProductName() const
-{
-	return "";
-}
+	bool LinuxDevice::HasEventSource(EventType type) const
+	{
+		bool hasEventSource = false;
 
-const char* LinuxDevice::GetArchitectureInfo() const
-{
-	return "Lua";
-}
+		switch (type)
+		{
+			case MPlatformDevice::kGyroscopeEvent:
+				break;
+			case MPlatformDevice::kOrientationEvent:
+			case MPlatformDevice::kLocationEvent:
+			case MPlatformDevice::kHeadingEvent:
+			case MPlatformDevice::kMultitouchEvent:
+			case MPlatformDevice::kKeyEvent:
+			case MPlatformDevice::kAccelerometerEvent:
+				hasEventSource = true;
+				break;
+			default:
+				Rtt_ASSERT_NOT_REACHED();
+				break;
+		}
+		return hasEventSource;
+	}
 
-PlatformInputDeviceManager& LinuxDevice::GetInputDeviceManager()
-{
-	return fInputDeviceManager;
-}
+	void LinuxDevice::BeginNotifications(EventType type) const
+	{
+		fTracker.BeginNotifications(type);
 
-void LinuxDevice::SetLocationAccuracy( Real meters ) const
-{
-}
+		switch (type)
+		{
+			case MPlatformDevice::kOrientationEvent:
+			case MPlatformDevice::kLocationEvent:
+			case MPlatformDevice::kAccelerometerEvent:
+			case MPlatformDevice::kGyroscopeEvent:
+			case MPlatformDevice::kHeadingEvent:
+			case MPlatformDevice::kMultitouchEvent:
+				break;
+			default:
+				Rtt_ASSERT_NOT_REACHED();
+				break;
+		}
+	}
 
-void LinuxDevice::SetLocationThreshold( Real meters ) const
-{
-}
+	void LinuxDevice::EndNotifications(EventType type) const
+	{
+		fTracker.EndNotifications(type);
 
-DeviceOrientation::Type LinuxDevice::GetOrientation() const
-{
-	return fOrientation;
-}
+		switch (type)
+		{
+			case MPlatformDevice::kOrientationEvent:
+			case MPlatformDevice::kLocationEvent:
+			case MPlatformDevice::kAccelerometerEvent:
+			case MPlatformDevice::kGyroscopeEvent:
+			case MPlatformDevice::kHeadingEvent:
+			case MPlatformDevice::kMultitouchEvent:
+				break;
+			default:
+				Rtt_ASSERT_NOT_REACHED();
+				break;
+		}
+	}
 
-	const char* LinuxDevice::GetPlatform() const
-{
-	return "linux";
-}
-	
-	const char* LinuxDevice::GetManufacturer() const
-{
-	return "CoronaLabs";
-}
-	
-#pragma endregion
+	bool LinuxDevice::DoesNotify(EventType type) const
+	{
+		return fTracker.DoesNotify(type);
+	}
 
-// ----------------------------------------------------------------------------
+	const char *LinuxDevice::GetModel() const
+	{
+		return "Linux";
+	}
 
-} // namespace Rtt
+	const char *LinuxDevice::GetName() const
+	{
+		fName = wxGetLinuxDistributionInfo().Id.ToStdString().c_str();
 
-// ----------------------------------------------------------------------------
+		return fName.c_str();
+	}
+
+	const char *LinuxDevice::GetUniqueIdentifier(IdentifierType t) const
+	{
+		const char *result = "";
+
+		switch (t)
+		{
+			case MPlatformDevice::kDeviceIdentifier:
+				break;
+			case MPlatformDevice::kHardwareIdentifier:
+				break;
+			case MPlatformDevice::kOSIdentifier:
+				break;
+			case MPlatformDevice::kUdidIdentifier:
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
+
+	MPlatformDevice::EnvironmentType LinuxDevice::GetEnvironment() const
+	{
+#ifdef Rtt_SIMULATOR
+		return kSimulatorEnvironment;
+#endif
+		return kDeviceEnvironment;
+	}
+
+	const char *LinuxDevice::GetPlatformName() const
+	{
+		return "LINUX";
+	}
+
+	const char *LinuxDevice::GetPlatformVersion() const
+	{
+		return "1.0";
+	}
+
+	const char *LinuxDevice::GetProductName() const
+	{
+		return "";
+	}
+
+	const char *LinuxDevice::GetArchitectureInfo() const
+	{
+		switch(wxPlatformInfo::Get().GetArchitecture())
+		{
+			case wxARCH_INVALID:
+				fArchitecture = "unknown";
+				break;
+
+			case wxARCH_32:
+				fArchitecture = "x86";
+				break;
+
+			case wxARCH_64:
+				fArchitecture = "x64";
+				break;
+		}
+
+		return fArchitecture.c_str();
+	}
+
+	PlatformInputDeviceManager &LinuxDevice::GetInputDeviceManager()
+	{
+		return fInputDeviceManager;
+	}
+
+	void LinuxDevice::SetLocationAccuracy(Real meters) const
+	{
+	}
+
+	void LinuxDevice::SetLocationThreshold(Real meters) const
+	{
+	}
+
+	DeviceOrientation::Type LinuxDevice::GetOrientation() const
+	{
+		return fOrientation;
+	}
+
+	const char *LinuxDevice::GetPlatform() const
+	{
+		return "linux";
+	}
+
+	const char *LinuxDevice::GetManufacturer() const
+	{
+		return "Solar2D";
+	}
+
+	#pragma endregion
+}; // namespace Rtt

@@ -1,13 +1,14 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
 //////////////////////////////////////////////////////////////////////////////
 
 #include "Rtt_Freetype.h"
+#include "Rtt_LinuxFileUtils.h"
 
 // for debugging
 #ifdef _DEBUG
@@ -30,7 +31,8 @@ void printBitmap(const char* path, const U8* img, int w, int h, int bpp, int cha
 				}
 				else
 				{
-					if (img[i + channel] == 0) fprintf(f, "  "); else fprintf(f, "%02X", img[i + channel]);
+					if (img[i + channel] == 0) fprintf(f, "  ");
+					else fprintf(f, "%02X", img[i + channel]);
 				}
 				fprintf(f, " ");
 			}
@@ -50,7 +52,7 @@ namespace Rtt
 	std::string glyph_freetype_provider::m_base_dir;
 
 
-	// 
+	//
 	//	glyph provider implementation
 	//
 
@@ -73,7 +75,7 @@ namespace Rtt
 		{
 			Rtt_LogException("Failed to init FreeType, error = %d\n", error);
 		}
-		
+
 		if (m_base_dir.size() == 0)
 		{
 			m_base_dir = '/';
@@ -114,13 +116,11 @@ namespace Rtt
 		int file_size = 0;
 		Uint8* file_ptr = NULL;
 
-		// hack
-		#ifdef _WIN32
-			const char* defaultFontFile = "C:\\Windows\\Fonts\\tahoma.ttf";
-		#else
-			const char* defaultFontFile = "/usr/share/fonts/truetype/freefont/FreeSans.ttf";
-		#endif
-		
+		// default fallback font
+		std::string defaultFontPath(LinuxFileUtils::GetStartupPath(NULL));
+		defaultFontPath.append("/Resources/FreeSans.ttf");
+		const char* defaultFontFile = defaultFontPath.c_str();
+
 		if (fontname.size() == 0)
 		{
 			// use default
@@ -320,7 +320,7 @@ namespace Rtt
 	}
 
 	int glyph_freetype_provider::draw_line(alpha* im, face_entity* fe, const std::vector<Uint32>& ch,
-		int i1, int i2, int* pen_x, int pen_y, const char* alignment, int boxw, int fontsize, float xscale)
+	                                       int i1, int i2, int* pen_x, int pen_y, const char* alignment, int boxw, int fontsize, float xscale)
 	{
 		int line_width = 0;
 		for (int i = i1; i < i2; i++)
@@ -337,8 +337,7 @@ namespace Rtt
 		{
 			*pen_x = boxw - line_width - 4;		// hack, чуть справа отступ
 		}
-		else
-		if (strcmp(alignment, "center") == 0)
+		else if (strcmp(alignment, "center") == 0)
 		{
 			*pen_x = (boxw - line_width) / 2;
 		}
@@ -378,15 +377,15 @@ namespace Rtt
 
 				}
 			}
-			// increment pen position 
+			// increment pen position
 			*pen_x += ge->m_advance;
 		}
 		return line_width;
 	}
 
 	smart_ptr<alpha> glyph_freetype_provider::render_string(const std::string& str, const char* alignment, const std::string& fontname,
-		bool is_bold, bool is_italic, int fontsize, const std::vector<int>& xleading, const std::vector<int>& yleading, 
-		int boxw, int boxh, bool multiline, float xscale, float yscale, float* baseline)
+	        bool is_bold, bool is_italic, int fontsize, const std::vector<int>& xleading, const std::vector<int>& yleading,
+	        int boxw, int boxh, bool multiline, float xscale, float yscale, float* baseline)
 	{
 		face_entity* fe = get_face_entity(fontname, is_bold, is_italic);
 		if (fe == NULL)
@@ -433,7 +432,7 @@ namespace Rtt
 		multiline = true;
 
 		rect r = getBoundingBox(fe, ch, fontsize, vertAdvance, xscale, boxw, boxh);
-		if (boxw == 0) 
+		if (boxw == 0)
 		{
 			boxw = r.width;
 		}
@@ -443,7 +442,8 @@ namespace Rtt
 		}
 
 		// it's needs for corona ?
-		if ((boxw & 0x3) != 0) {
+		if ((boxw & 0x3) != 0)
+		{
 			boxw = (boxw + 3) & -4;
 		}
 
@@ -586,7 +586,7 @@ namespace Rtt
 		(*utf8_buffer)++;
 		if ((c & 0x80) == 0) return (Uint32)c;	// Conventional 7-bit ASCII.
 
-																						// Multi-byte sequences.
+		// Multi-byte sequences.
 		if ((c & 0xE0) == 0xC0)
 		{
 			// Two-byte sequence.
@@ -692,4 +692,3 @@ namespace Rtt
 
 
 }
-

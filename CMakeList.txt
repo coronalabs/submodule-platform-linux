@@ -101,6 +101,7 @@ include_directories (
 	${CORONA_ROOT}/external/b2Separator-cpp
   ${CORONA_ROOT}/external/smoothpolygon
   ${CORONA_ROOT}/modules/simulator
+  ${CORONA_ROOT}/platform
   ${CORONA_ROOT}/platform/android
 )
 
@@ -825,7 +826,7 @@ add_executable( simulator
 
 
 		# Solar2D Linux specific files
-		${CORONA_ROOT}/platform/linux/main.cpp
+#		${CORONA_ROOT}/platform/linux/main.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_Freetype.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxAudioRecorder.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxBitmap.cpp
@@ -851,6 +852,28 @@ add_executable( simulator
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxWebView.cpp
 		${CORONA_ROOT}/platform/linux/NetworkLibrary.cpp
 		${CORONA_ROOT}/platform/linux/NetworkSupport.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_AndroidBuildDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_ConsoleApp.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxBuildDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxClearSandboxDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxCloneProjectDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsole.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsoleApp.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsolePlatform.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxFileUtils.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClient.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClientConnection.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServer.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServerConnection.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxKeyListener.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxMenuEvents.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxMouseListener.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxNewProjectDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxPreferencesDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxRelaunchProjectDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntime.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeErrorDialog.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxUtils.cpp
 
 		# Simulator
 		${CORONA_ROOT}/modules/simulator/Rtt_LuaLibSimulator.cpp
@@ -863,6 +886,10 @@ add_executable( simulator
 		${CORONA_ROOT}/platform/shared/Rtt_TargetAndroidAppStore.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_TargetDevice.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_WebAppPackager.cpp
+		${CORONA_ROOT}/platform/shared/Rtt_ProjectSettings.cpp
+		${CORONA_ROOT}/platform/shared/Rtt_ReadOnlyProjectSettings.cpp
+		${CORONA_ROOT}/platform/shared/Rtt_NativeWindowMode.cpp
+		${CORONA_ROOT}/platform/shared/ListKeyStore.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_HTTPClientLinux.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxSimulatorServices.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxSimulatorView.cpp
@@ -871,7 +898,7 @@ add_executable( simulator
 )
 
 target_link_libraries(simulator	dl GL z pthread openal freetype png cryptopp curl
-	gdk-3 wx_baseu-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1)
+	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1)
 
 # install Resources
 install(DIRECTORY "${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)

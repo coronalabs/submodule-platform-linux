@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -16,24 +16,23 @@
 #include "Rtt_Runtime.h"
 
 #if (wxUSE_MEDIACTRL == 1)
-	
+
 namespace Rtt
 {
-
-	LinuxVideoPlayer::LinuxVideoPlayer(const Rtt::ResourceHandle<lua_State> & handle, Rtt_Allocator & allocator, int w, int h)
+	LinuxVideoPlayer::LinuxVideoPlayer(const Rtt::ResourceHandle<lua_State> &handle, Rtt_Allocator &allocator, int w, int h)
 		: PlatformVideoPlayer(handle)
 		, fVideoObject(NULL)
 	{
 		Rect bounds;
-		bounds.xMin = 0;		
+		bounds.xMin = 0;
 		bounds.xMax = w;
 		bounds.yMin = 0;
 		bounds.yMax = h;
 		fVideoObject = new LinuxVideoObject(bounds);
 
 		lua_State *L = handle.Dereference();
-		Runtime& runtime = *LuaContext::GetRuntime(L);
-		Display& display = runtime.GetDisplay();
+		Runtime &runtime = *LuaContext::GetRuntime(L);
+		Display &display = runtime.GetDisplay();
 		int result = LuaLibDisplay::AssignParentAndPushResult(L, display, fVideoObject, NULL);
 		lua_pop(L, result);
 
@@ -45,9 +44,9 @@ namespace Rtt
 		// fixme add smart-ptr delete fVideoObject;
 	}
 
-	bool LinuxVideoPlayer::Load(const char * path, bool isRemote)
+	bool LinuxVideoPlayer::Load(const char *path, bool isRemote)
 	{
-		fVideoObject->setBackgroundColor(0, 0, 0, 255);		// black
+		fVideoObject->setBackgroundColor(0, 0, 0, 255); // black
 		fVideoObject->load(path, isRemote);
 		return true;
 	}
@@ -55,7 +54,7 @@ namespace Rtt
 	void LinuxVideoPlayer::Play()
 	{
 		// fixme
-		// not needs ?, 	fAutoPlay = true;
+		// not needs ?,fAutoPlay = true;
 	}
 
 	void LinuxVideoPlayer::SetProperty(U32 mask, bool newValue)
@@ -72,7 +71,6 @@ namespace Rtt
 	{
 		DidDismiss(NULL, NULL);
 	}
-
-} // namespace Rtt
+}; // namespace Rtt
 
 #endif

@@ -1,12 +1,15 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#include "Rtt_LinuxInputDevice.h"
+#include "Rtt_LinuxInputDeviceManager.h"
+#include "Rtt_Event.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -15,13 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Rtt_LinuxInputDevice.h"
-#include "Rtt_LinuxInputDeviceManager.h"
-#include "Rtt_Event.h"
-
-namespace Rtt 
+namespace Rtt
 {
-
 	LinuxInputDeviceManager::LinuxInputDeviceManager(Rtt_Allocator *allocatorPointer)
 		: PlatformInputDeviceManager(allocatorPointer)
 	{
@@ -37,18 +35,18 @@ namespace Rtt
 		registerDevice("/dev/input/js1");
 	}
 
-	void LinuxInputDeviceManager::registerDevice(const char* dev)
+	void LinuxInputDeviceManager::registerDevice(const char *dev)
 	{
-		LinuxInputDevice* devicePointer = static_cast<LinuxInputDevice*>( this->Add(InputDeviceType::kJoystick) );
+		LinuxInputDevice *devicePointer = static_cast<LinuxInputDevice*>(this->Add(InputDeviceType::kJoystick));
 		devicePointer->init(dev);
 	}
 
-	PlatformInputDevice* LinuxInputDeviceManager::CreateUsing(const InputDeviceDescriptor &descriptor)
+	PlatformInputDevice *LinuxInputDeviceManager::CreateUsing(const InputDeviceDescriptor &descriptor)
 	{
 		return Rtt_NEW(GetAllocator(), LinuxInputDevice(descriptor));
 	}
 
-	LinuxInputDevice* LinuxInputDeviceManager::GetBySerialNumber(const char* sn)
+	LinuxInputDevice *LinuxInputDeviceManager::GetBySerialNumber(const char *sn)
 	{
 		if (NULL == sn)
 		{
@@ -56,33 +54,37 @@ namespace Rtt
 		}
 
 		const ReadOnlyInputDeviceCollection &collection = GetDevices();
+
 		for (int index = 0; index < collection.GetCount(); index++)
 		{
 			LinuxInputDevice* devicePointer = (LinuxInputDevice*)collection.GetByIndex(index);
+
 			if (devicePointer != NULL) //fixme && ([devicePointer->fSerialNumber isEqualToString:sn]))
 			{
 				return devicePointer;
 			}
 		}
+
 		return NULL;
 	}
 
-	void LinuxInputDeviceManager::Destroy(PlatformInputDevice* devicePointer)
+	void LinuxInputDeviceManager::Destroy(PlatformInputDevice *devicePointer)
 	{
 		Rtt_DELETE(devicePointer);
 	}
 
-	void LinuxInputDeviceManager::dispatchEvents(Runtime* runtime)
+	void LinuxInputDeviceManager::dispatchEvents(Runtime *runtime)
 	{
 		const ReadOnlyInputDeviceCollection &collection = GetDevices();
+
 		for (int index = 0; index < collection.GetCount(); index++)
 		{
 			LinuxInputDevice *devicePointer = (LinuxInputDevice*)collection.GetByIndex(index);
+
 			if (devicePointer != NULL && devicePointer->GetConnectionState() == InputDeviceConnectionState::kConnected)
 			{
 				devicePointer->dispatchEvents(runtime);
 			}
 		}
 	}
-
 }

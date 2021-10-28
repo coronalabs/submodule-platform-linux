@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -12,8 +12,6 @@
 #include <wx/string.h>
 #include <wx/menu.h>
 #include <wx/textctrl.h>
-
-//#include "Core\Rtt_Build.h"
 #include "Rtt_LuaContext.h"
 #include "Rtt_LuaFile.h"
 #include "Rtt_MPlatform.h"
@@ -26,463 +24,305 @@
 #include "Rtt_LinuxPlatform.h"
 #include "Rtt_LinuxSimulatorServices.h"
 #include "Rtt_LinuxSimulatorView.h"
+#include "Rtt_LinuxFileUtils.h"
 #include "Rtt_SimulatorRecents.h"
 #include "Rtt_WebAppPackager.h"
 #include "Rtt_LinuxAppPackager.h"
 #include "Rtt_AndroidAppPackager.h"
 #include "Core/Rtt_FileSystem.h"
 
+#define SIMULATOR_CONFIG_SHOW_RUNTIME_ERRORS "/showRuntimeErrors"
+#define SIMULATOR_CONFIG_RELAUNCH_ON_FILE_CHANGE "/relaunchOnFileChange"
+#define SIMULATOR_CONFIG_OPEN_LAST_PROJECT "/openLastProject"
+#define SIMULATOR_CONFIG_LAST_PROJECT_DIRECTORY "/lastProjectDirectory"
+#define SIMULATOR_CONFIG_WINDOW_X_POSITION "/xPos"
+#define SIMULATOR_CONFIG_WINDOW_Y_POSITION "/yPos"
+#define SIMULATOR_CONFIG_SKIN_ID "/skinID"
+#define SIMULATOR_CONFIG_SKIN_WIDTH "/skinWidth"
+#define SIMULATOR_CONFIG_SKIN_HEIGHT "/skinHeight"
+#define SIMULATOR_CONFIG_SKIN_ZOOMED_WIDTH "/zoomedWidth"
+#define SIMULATOR_CONFIG_SKIN_ZOOMED_HEIGHT "/zoomedHeight"
+#define SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_WIDTH  "/welcomeScreenZoomedWidth"
+#define SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT "/welcomeScreenZoomedHeight"
+
 namespace Rtt
 {
-
-	LinuxPlatformServices::LinuxPlatformServices(MPlatform* platform)
+	LinuxPlatformServices::LinuxPlatformServices(MPlatform *platform)
 		: fPlatform(platform)
 	{
 	}
 
-	void LinuxSimulatorView::onAndroidBuild(wxCommandEvent& e)
+	// initialise vars
+	const float  LinuxSimulatorView::skinScaleFactor = 1.5;
+	const int  LinuxSimulatorView::skinMinWidth = 320;
+	wxString LinuxSimulatorView::Config::settingsFilePath = wxEmptyString;
+	wxString LinuxSimulatorView::Config::lastProjectDirectory  = wxEmptyString;
+	bool LinuxSimulatorView::Config::showRuntimeErrors = true;
+	bool LinuxSimulatorView::Config::openLastProject = false;
+	LinuxPreferencesDialog::RelaunchType LinuxSimulatorView::Config::relaunchOnFileChange = LinuxPreferencesDialog::RelaunchType::Always;
+	int LinuxSimulatorView::Config::windowXPos = 10;
+	int LinuxSimulatorView::Config::windowYPos = 10;
+	int LinuxSimulatorView::Config::skinID = 6223;
+	int LinuxSimulatorView::Config::skinWidth = 320;
+	int LinuxSimulatorView::Config::skinHeight = 480;
+	int LinuxSimulatorView::Config::zoomedWidth = LinuxSimulatorView::Config::skinWidth;
+	int LinuxSimulatorView::Config::zoomedHeight = LinuxSimulatorView::Config::skinHeight;
+	int LinuxSimulatorView::Config::welcomeScreenZoomedWidth = 960;
+	int LinuxSimulatorView::Config::welcomeScreenZoomedHeight = 720;
+	wxConfig *LinuxSimulatorView::Config::configFile;
+	std::map<int, LinuxSimulatorView::SkinProperties> LinuxSimulatorView::fSkins;
+
+	void LinuxSimulatorView::Config::Load()
 	{
-		int rc;
-		
-		androidBuildParams* params = (androidBuildParams*)e.GetEventUserData();
-		CoronaAppContext* ctx = params->fCtx;
-		const char* srcDir = ctx->getAppPath();
-		const char* dstDir = ctx->getSaveFolder().c_str();
-		const char* identity = "";
-		const char* applicationName = ctx->getAppName().c_str();
-
-		// Create the app packager.
-		LinuxPlatform* platform = wxGetApp().getPlatform();
-		MPlatformServices* service = new LinuxPlatformServices(platform);
-
-		std::string resourcesDir = platform->getInstallDir();
-		resourcesDir += LUA_DIRSEP;
-		resourcesDir += "Resources";
-		AndroidAppPackager packager(*service, resourcesDir.c_str());
-
-		// Read the application's "build.settings" file.
-		bool wasSuccessful = packager.ReadBuildSettings(srcDir);
-		if (!wasSuccessful)
+		if (LinuxSimulatorView::Config::settingsFilePath.IsEmpty())
 		{
-			return; 
+			LinuxSimulatorView::Config::settingsFilePath = LinuxFileUtils::GetHomePath();
+			LinuxSimulatorView::Config::settingsFilePath.append("/.Solar2D/simulator.conf");
+			LinuxSimulatorView::Config::configFile = new wxFileConfig(wxEmptyString, wxEmptyString, LinuxSimulatorView::Config::settingsFilePath);
 		}
 
-		// Check if a custom build ID has been assigned.
-		// This is typically assigned to daily build versions of Corona.
-		const char * customBuildId = packager.GetCustomBuildId();
-		if (!Rtt_StringIsEmpty(customBuildId))
+		// read from the simulator config file or create it, if it doesn't exist
+		if (wxFileExists(LinuxSimulatorView::Config::settingsFilePath))
 		{
-			Rtt_Log("\nUsing custom Build Id %s\n", customBuildId);
-		}
-
-		// these are currently unused
-		const char *bundleId = "bundleId"; //TODO
-		const TargetDevice::Platform targetPlatform(TargetDevice::Platform::kAndroidPlatform);
-		const char *versionName = "1.0.0";
-		bool isDistribution = true;
-		
-		// get path to android template
-		std::string templateDir = platform->getInstallDir();
-		templateDir += LUA_DIRSEP;
-		templateDir += "Resources";
-		
-		// these are currently unused
-		const char *provisionFile = "";
-		const char *sdkRoot = templateDir.c_str();
-		const char *targetAppStoreName = "google";
-		std::string package(params->fPackage->GetValue().c_str());
-		std::string keystore(params->fKeystore->GetValue().c_str());
-		const char *keystore_pwd = "android";
-		const char *alias = "androiddebugkey";
-		const char *alias_pwd = "android";
-		int versionCode = 1;
-
-		// Package build settings parameters.
-		AndroidAppPackagerParams androidBuilderParams(
-		applicationName, versionName, identity, provisionFile,	
-		srcDir,	dstDir,	sdkRoot,  
-		targetPlatform, targetAppStoreName,
-		(S32)Rtt::TargetDevice::VersionForPlatform(Rtt::TargetDevice::kAndroidPlatform),
-		customBuildId, NULL,
-		package.c_str(), isDistribution, keystore.c_str(), keystore_pwd, alias, alias_pwd, versionCode );
-
-		// Select build template
-		Rtt::Runtime* runtimePointer = ctx->GetRuntime();
-//		U32 luaModules = runtimePointer->VMContext().GetModules();
-//		androidBuilderParams.InitializeProductId(luaModules);
-
-		const char kBuildSettings[] = "build.settings";
-		Rtt::String buildSettingsPath;
-		ctx->getPlatform()->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);
-		androidBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
-
-		std::string tmp = Rtt_GetSystemTempDirectory();
-		tmp += LUA_DIRSEP;
-		tmp += "CoronaLabs";
-
-		// Have the server build the app. (Warning! This is a long blocking call.)
-		platform->SetActivityIndicator(true);
-		rc = packager.Build(&androidBuilderParams, tmp.c_str());
-		platform->SetActivityIndicator(false);
-
-		params->fDlg->Close();
-
-		wxMessageDialog* dial;
-		if (rc == 0)
-		{
-			dial = new wxMessageDialog(NULL, wxT("Your application was built successfully."), wxT("Corona Simulator"), wxOK | wxICON_INFORMATION);
+			int relaunchOnFileChange = 0;
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_LAST_PROJECT_DIRECTORY), &LinuxSimulatorView::Config::lastProjectDirectory);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SHOW_RUNTIME_ERRORS), &LinuxSimulatorView::Config::showRuntimeErrors);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_OPEN_LAST_PROJECT), &LinuxSimulatorView::Config::openLastProject);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_RELAUNCH_ON_FILE_CHANGE), &relaunchOnFileChange);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WINDOW_X_POSITION), &LinuxSimulatorView::Config::windowXPos);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WINDOW_Y_POSITION), &LinuxSimulatorView::Config::windowYPos);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_ID), &LinuxSimulatorView::Config::skinID);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_WIDTH), &LinuxSimulatorView::Config::skinWidth);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_HEIGHT), &LinuxSimulatorView::Config::skinHeight);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_ZOOMED_WIDTH), &LinuxSimulatorView::Config::zoomedWidth);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_ZOOMED_HEIGHT), &LinuxSimulatorView::Config::zoomedHeight);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_WIDTH), &LinuxSimulatorView::Config::welcomeScreenZoomedWidth);
+			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT), &LinuxSimulatorView::Config::welcomeScreenZoomedHeight);
+			LinuxSimulatorView::Config::relaunchOnFileChange = static_cast<LinuxPreferencesDialog::RelaunchType>(relaunchOnFileChange);
 		}
 		else
 		{
-			dial = new wxMessageDialog(NULL, wxT("Failed to build application."), wxT("Corona Simulator"), wxOK | wxICON_ERROR);
+			LinuxSimulatorView::Config::Save();
 		}
-		dial->ShowModal();
 	}
 
-	void LinuxSimulatorView::onLinuxBuild(wxCommandEvent& e)
+	void LinuxSimulatorView::Config::Save()
 	{
-		linuxBuildParams* params = (linuxBuildParams*)e.GetEventUserData();
-		CoronaAppContext* ctx = params->fCtx;
-		bool useStandartResources = params->fUseStandardResources->GetValue();
-		const char* srcDir = ctx->getAppPath();
-		const char* dstDir = ctx->getSaveFolder().c_str();
-		const char* identity = "no-identity";
-		const char* applicationName = ctx->getAppName().c_str();
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_LAST_PROJECT_DIRECTORY), LinuxSimulatorView::Config::lastProjectDirectory);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_SHOW_RUNTIME_ERRORS), LinuxSimulatorView::Config::showRuntimeErrors);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_OPEN_LAST_PROJECT), LinuxSimulatorView::Config::openLastProject);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_RELAUNCH_ON_FILE_CHANGE), static_cast<int>(LinuxSimulatorView::Config::relaunchOnFileChange));
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_WINDOW_X_POSITION), LinuxSimulatorView::Config::windowXPos);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_WINDOW_Y_POSITION), LinuxSimulatorView::Config::windowYPos);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_SKIN_ID), LinuxSimulatorView::Config::skinID);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_SKIN_WIDTH), LinuxSimulatorView::Config::skinWidth);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_SKIN_HEIGHT), LinuxSimulatorView::Config::skinHeight);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_SKIN_ZOOMED_WIDTH), LinuxSimulatorView::Config::zoomedWidth);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_SKIN_ZOOMED_HEIGHT), LinuxSimulatorView::Config::zoomedHeight);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_WIDTH), LinuxSimulatorView::Config::welcomeScreenZoomedWidth);
+		LinuxSimulatorView::Config::configFile->Write(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT), LinuxSimulatorView::Config::welcomeScreenZoomedHeight);
+		LinuxSimulatorView::Config::configFile->Flush();
+	}
+
+	void LinuxSimulatorView::Config::Cleanup()
+	{
+		delete LinuxSimulatorView::Config::configFile;
+	}
+
+	bool LinuxSimulatorView::LoadSkin(lua_State *L, int skinID, std::string filePath)
+	{
+		int top = lua_gettop(L);
+		int status = Lua::DoFile(L, filePath.c_str(), 0, true);
+		lua_pop(L, 1); // remove DoFile result
+		lua_getglobal(L, "simulator");
+
+		SkinProperties skin;
+
+		if (lua_type(L, -1) == LUA_TTABLE)
+		{
+			lua_getfield(L, -1, "device");
+			if (lua_type(L, -1) == LUA_TSTRING)
+			{
+				skin.device = lua_tostring(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "screenOriginX");
+			if (lua_type(L, -1) == LUA_TNUMBER)
+			{
+				skin.screenOriginX = lua_tointeger(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "screenOriginY");
+			if (lua_type(L, -1) == LUA_TNUMBER)
+			{
+				skin.screenOriginY = lua_tointeger(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "screenWidth");
+			if (lua_type(L, -1) == LUA_TNUMBER)
+			{
+				skin.screenWidth = lua_tointeger(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "screenHeight");
+			if (lua_type(L, -1) == LUA_TNUMBER)
+			{
+				skin.screenHeight = lua_tointeger(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "androidDisplayApproximateDpi");
+			if (lua_type(L, -1) == LUA_TNUMBER)
+			{
+				skin.androidDisplayApproximateDpi  = lua_tointeger(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "displayManufacturer");
+			if (lua_type(L, -1) == LUA_TSTRING)
+			{
+				skin.displayManufacturer = lua_tostring(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "displayName");
+			if (lua_type(L, -1) == LUA_TSTRING)
+			{
+				skin.displayName = lua_tostring(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "isUprightOrientationPortrait");
+			if (lua_type(L, -1) == LUA_TBOOLEAN)
+			{
+				skin.isUprightOrientationPortrait = lua_toboolean(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "supportsScreenRotation");
+			if (lua_type(L, -1) == LUA_TBOOLEAN)
+			{
+				skin.supportsScreenRotation = lua_toboolean(L, -1);
+			}
+			lua_pop(L, 1);
+
+			lua_getfield(L, -1, "windowTitleBarName");
+			if (lua_type(L, -1) == LUA_TSTRING)
+			{
+				skin.windowTitleBarName = lua_tostring(L, -1);
+			}
+			lua_pop(L, 1);
+
+			// pop simulator
+			lua_pop(L, 1);
+			lua_settop(L, top);
+
+			wxString skinTitle(skin.windowTitleBarName);
+			skinTitle.append(wxString::Format(wxT(" (%ix%i)"), skin.screenWidth, skin.screenHeight));
+			skin.skinTitle = skinTitle;
+			skin.id = skinID;
+			skin.selected = false;
+
+			fSkins[skinID] = skin;
+		}
+		else
+		{
+			printf("Couldn't find 'simulator' table\n");
+		}
+
+		return (status == 0);
+	}
+
+	LinuxSimulatorView::SkinProperties LinuxSimulatorView::GetSkinProperties(int skinID)
+	{
+		if (fSkins.count(skinID) > 0)
+		{
+			return fSkins[skinID];
+		}
+
+		return fSkins.begin()->second;
+	}
+
+	LinuxSimulatorView::SkinProperties LinuxSimulatorView::GetSkinProperties(wxString skinTitle)
+	{
+		SkinProperties foundSkin;
+
+		for (int i = 0; i < fSkins.size(); i++)
+		{
+			if (fSkins[i].skinTitle.IsSameAs(skinTitle))
+			{
+				foundSkin = fSkins[i];
+				break;
+			}
+		}
+
+		return foundSkin;
+	}
+
+	void LinuxSimulatorView::DeselectSkins()
+	{
+		for (int i = 0; i < fSkins.size(); i++)
+		{
+			fSkins[i].selected = false;
+		}
+	}
+
+	void LinuxSimulatorView::SelectSkin(int skinID)
+	{
+		if (fSkins.count(skinID) > 0)
+		{
+			DeselectSkins();
+			fSkins[skinID].selected = true;
+		}
+	}
+
+	bool LinuxSimulatorView::IsRunningOnSimulator()
+	{
+#ifdef Rtt_SIMULATOR
+		return true;
+#endif
+
+		return false;
+	}
+
+	void LinuxSimulatorView::OnLinuxPluginGet(const char *appPath, const char *appName, LinuxPlatform *platform)
+	{
+		const char *identity = "no-identity";
 
 		// Create the app packager.
-		LinuxPlatform* platform = wxGetApp().getPlatform();
-		MPlatformServices* service = new LinuxPlatformServices(platform);
+		MPlatformServices *service = new LinuxPlatformServices(platform);
 		LinuxAppPackager packager(*service);
 
 		// Read the application's "build.settings" file.
-		bool wasSuccessful = packager.ReadBuildSettings(srcDir);
-		if (!wasSuccessful)
-		{
-			return; 
-		}
+		bool wasSuccessful = packager.ReadBuildSettings(appPath);
 
-		// Check if a custom build ID has been assigned.
-		// This is typically assigned to daily build versions of Corona.
-		const char * customBuildId = packager.GetCustomBuildId();
-		if (!Rtt_StringIsEmpty(customBuildId))
-		{
-			Rtt_Log("\nUsing custom Build Id %s\n", customBuildId);
-		}
-
-		// these are currently unused
-		const char *bundleId = "bundleId"; //TODO
-		const char *sdkRoot = "";
-		int targetVersion = Rtt::TargetDevice::kLinux;
-		const TargetDevice::Platform targetPlatform(TargetDevice::Platform::kLinuxPlatform);
-		const char *versionName = "1.0.0";
-		bool isDistribution = true;
-		
-		std::string linuxtemplate = platform->getInstallDir();
-		linuxtemplate += LUA_DIRSEP;
-		linuxtemplate += "Resources";
-		linuxtemplate += LUA_DIRSEP;
-		linuxtemplate += "linuxtemplate.zip";
-
-		// Package build settings parameters.
-		LinuxAppPackagerParams linuxBuilderParams(
-		applicationName, versionName, identity, NULL,	
-		srcDir,	dstDir,	NULL,  
-		targetPlatform, targetVersion,
-		Rtt::TargetDevice::kLinux, customBuildId,
-		NULL, bundleId, isDistribution, NULL, useStandartResources);
-
-		// Select build template
-		Rtt::Runtime* runtimePointer = ctx->GetRuntime();
-	//	U32 luaModules = runtimePointer->VMContext().GetModules();
-	//	webBuilderParams.InitializeProductId(luaModules);
-
-		const char kBuildSettings[] = "build.settings";
-		Rtt::String buildSettingsPath;
-		ctx->getPlatform()->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);
-		linuxBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
-
-		std::string tmp = Rtt_GetSystemTempDirectory();
-		tmp += LUA_DIRSEP;
-		tmp += "CoronaLabs";
-
-		// Have the server build the app. (Warning! This is a long blocking call.)
-		platform->SetActivityIndicator(true);
-		int rc = packager.Build(&linuxBuilderParams, tmp.c_str());
-		platform->SetActivityIndicator(false);
-
-		params->fDlg->Close();
-
-		wxMessageDialog* dial;
-		if (rc == 0)
-		{
-			dial = new wxMessageDialog(NULL, wxT("Your application was built successfully."), wxT("Corona Simulator"), wxOK | wxICON_INFORMATION);
-		}
-		else
-		{
-			dial = new wxMessageDialog(NULL, wxT("Failed to build application."), wxT("Corona Simulator"), wxOK | wxICON_ERROR);
-		}
-		dial->ShowModal();
-	}
-
-	void LinuxSimulatorView::onWebBuild(wxCommandEvent& e)
-	{
-		webBuildParams* params = (webBuildParams*)e.GetEventUserData();
-		CoronaAppContext* ctx = params->fCtx;
-		bool useStandartResources = params->fUseStandardResources->GetValue();
-		bool createFBInstantArchive = params->fCreateFBInstance->GetValue();
-		const char* srcDir = ctx->getAppPath();
-		const char* dstDir = ctx->getSaveFolder().c_str();
-		const char* identity = "no-identity";
-		const char* applicationName = ctx->getAppName().c_str();
-
-		// Create the app packager.
-		LinuxPlatform* platform = wxGetApp().getPlatform();
-		MPlatformServices* service = new LinuxPlatformServices(platform);
-		WebAppPackager packager(*service);
-
-		// Read the application's "build.settings" file.
-		bool wasSuccessful = packager.ReadBuildSettings(srcDir);
 		if (!wasSuccessful)
 		{
 			return;
 		}
 
-		// Check if a custom build ID has been assigned.
-		// This is typically assigned to daily build versions of Corona.
-		const char * customBuildId = packager.GetCustomBuildId();
-		if (!Rtt_StringIsEmpty(customBuildId))
-		{
-			Rtt_Log("\nUsing custom Build Id %s\n", customBuildId);
-		}
+		int targetVersion = Rtt::TargetDevice::kLinux;
+		const TargetDevice::Platform targetPlatform(TargetDevice::Platform::kLinuxPlatform);
 
-		// these are currently unused
-		const char *bundleId = "bundleId"; //TODO
-		const char *sdkRoot = "";
-		int targetVersion = Rtt::TargetDevice::kWeb1_0;
-		const TargetDevice::Platform targetPlatform(TargetDevice::Platform::kWebPlatform);
-		const char *versionName = "1.0.0";
-		bool isDistribution = true;
-		
-		std::string webtemplate = platform->getInstallDir();
-		webtemplate += LUA_DIRSEP;
-		webtemplate += "Resources";		
-		webtemplate += LUA_DIRSEP;
-		webtemplate += "webtemplate.zip";
+		std::string linuxtemplate(platform->getInstallDir());
+		linuxtemplate.append("/Resources/template_x64.tgz");
 
 		// Package build settings parameters.
-		WebAppPackagerParams webBuilderParams(
-			applicationName, versionName, identity, NULL,
-			srcDir, dstDir, NULL,
-			targetPlatform, targetVersion,
-			Rtt::TargetDevice::kWebGenericBrowser, customBuildId,
-			NULL, bundleId, isDistribution, useStandartResources, webtemplate.c_str(), createFBInstantArchive);
-
-		// Select build template
-		Rtt::Runtime* runtimePointer = ctx->GetRuntime();
-	//	U32 luaModules = runtimePointer->VMContext().GetModules();
-	//	webBuilderParams.InitializeProductId(luaModules);
+		LinuxAppPackagerParams linuxBuilderParams(
+		    appName, NULL, identity, NULL,
+		    appPath, NULL, NULL,
+		    targetPlatform, targetVersion,
+		    Rtt::TargetDevice::kLinux, NULL,
+		    NULL, NULL, false, NULL, false, false, true);
 
 		const char kBuildSettings[] = "build.settings";
 		Rtt::String buildSettingsPath;
-		ctx->getPlatform()->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);
-		webBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
-
-		std::string tmp = Rtt_GetSystemTempDirectory();
-		tmp += LUA_DIRSEP;
-		tmp += "CoronaLabs";
-
-		// Have the server build the app. (Warning! This is a long blocking call.)
-		platform->SetActivityIndicator(true);
-		int rc = packager.Build(&webBuilderParams, tmp.c_str());
-		platform->SetActivityIndicator(false);
-
-		params->fDlg->Close();
-
-		wxMessageDialog* dial;
-		if (rc == 0)
-		{
-			dial = new wxMessageDialog(NULL, wxT("Your application was built successfully."), wxT("Corona Simulator"), wxOK | wxICON_INFORMATION);
-		}
-		else
-		{
-			dial = new wxMessageDialog(NULL, wxT("Failed to build application."), wxT("Corona Simulator"), wxOK | wxICON_ERROR);
-		}
-		dial->ShowModal();
+		platform->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);
+		linuxBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
+		int rc = packager.Build(&linuxBuilderParams, NULL);
 	}
-
-	void LinuxSimulatorView::onCancel(wxCommandEvent& e)
-	{
-		cancelBuild* eb = (cancelBuild*)e.GetEventUserData();
-		eb->fDlg->Close();
-	}
-
-	/// <summary>Opens a dialog to build the currently selected project as an app.</summary>
-	void LinuxSimulatorView::OnBuildForWeb(CoronaAppContext* ctx)
-	{
-		wxDialog* OpenDialog = new wxDialog(NULL, -1, "HTML5 Build Setup (beta)", wxDefaultPosition, wxSize(550, 280));
-		wxPanel *panel = new wxPanel(OpenDialog, -1);
-		wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-		wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-
-		int y = 15;
-		int h = 30;
-		int x2 = 170;
-		wxSize sz = wxSize(350, 30);
-		new wxStaticText(panel, -1, wxT("Application Name:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getAppName(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Version Code:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, "1", wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Project Path:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getAppPath(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Save to Folder:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getSaveFolder(), wxPoint(x2, y - 2), sz);
-		
-		y += h + 5;
-		wxCheckBox* useStandardResources = new wxCheckBox(panel, -1, "Include Standard Resources", wxPoint(x2, y));
-		y += h;
-		wxCheckBox* createFBInstance = new wxCheckBox(panel, -1, "Create FB Instant archive", wxPoint(x2, y));
-
-		wxButton *okButton = new wxButton(OpenDialog, -1, wxT("Build"), wxDefaultPosition, wxSize(70, 30));
-		okButton->Bind(wxEVT_BUTTON, &LinuxSimulatorView::onWebBuild, wxID_ANY, wxID_ANY, new webBuildParams(OpenDialog, ctx, useStandardResources, createFBInstance));		
-		okButton->SetDefault(); 
-
-		wxButton *closeButton = new wxButton(OpenDialog, -1, wxT("Cancel"), wxDefaultPosition, wxSize(70, 30));
-		closeButton->Bind(wxEVT_BUTTON, &LinuxSimulatorView::onCancel, wxID_ANY, wxID_ANY, new cancelBuild(OpenDialog));		// cancel
-
-		hbox->Add(okButton, 1);
-		hbox->Add(closeButton, 1, wxLEFT, 5);
-
-		vbox->Add(panel, 1);
-		vbox->Add(hbox, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 10);
-
-		OpenDialog->SetSizer(vbox);
-		OpenDialog->Centre();
-		int rc = OpenDialog->ShowModal();
-		OpenDialog->Destroy();
-	}
-
-	void LinuxSimulatorView::OnBuildForLinux(CoronaAppContext* ctx)
-	{
-		wxDialog* OpenDialog = new wxDialog(NULL, -1, "Linux Build Setup (beta)", wxDefaultPosition, wxSize(550, 280));
-		wxPanel *panel = new wxPanel(OpenDialog, -1);
-		wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-		wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-
-		int y = 15;
-		int h = 30;
-		int x2 = 170;
-		wxSize sz = wxSize(350, 30);
-		new wxStaticText(panel, -1, wxT("Application Name:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getAppName(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Version Code:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, "1", wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Project Path:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getAppPath(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Save to Folder:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getSaveFolder(), wxPoint(x2, y - 2), sz);
-		
-		y += h + 5;
-		wxCheckBox* useStandardResources = new wxCheckBox(panel, -1, "Include Standard Resources", wxPoint(x2, y));
-
-		wxButton *okButton = new wxButton(OpenDialog, -1, wxT("Build"), wxDefaultPosition, wxSize(70, 30));
-		okButton->Bind(wxEVT_BUTTON, &LinuxSimulatorView::onLinuxBuild, wxID_ANY, wxID_ANY, new linuxBuildParams(OpenDialog, ctx, useStandardResources));		
-		okButton->SetDefault(); 
-
-		wxButton *closeButton = new wxButton(OpenDialog, -1, wxT("Cancel"), wxDefaultPosition, wxSize(70, 30));
-		closeButton->Bind(wxEVT_BUTTON, &LinuxSimulatorView::onCancel, wxID_ANY, wxID_ANY, new cancelBuild(OpenDialog));		// cancel
-
-		hbox->Add(okButton, 1);
-		hbox->Add(closeButton, 1, wxLEFT, 5);
-
-		vbox->Add(panel, 1);
-		vbox->Add(hbox, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 10);
-
-		OpenDialog->SetSizer(vbox);
-		OpenDialog->Centre();
-		int rc = OpenDialog->ShowModal();
-		OpenDialog->Destroy();
-	}
-
-	void LinuxSimulatorView::OnBuildForAndroid(CoronaAppContext* ctx)
-	{
-		wxDialog* OpenDialog = new wxDialog(NULL, -1, "Android Build Setup", wxDefaultPosition, wxSize(550, 450));
-		wxPanel *panel = new wxPanel(OpenDialog, -1);
-		wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-		wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-
-		int y = 15;
-		int h = 30;
-		int x2 = 170;
-		wxSize sz = wxSize(350, h);
-		
-		std::string package;
-		char uname[256] = {0};
-		int rc = getlogin_r(uname, sizeof(uname));
-		package = "com.coronalabs.";
-		package += uname;
-		package += ".";
-		package += ctx->getAppName();
-		std::replace(package.begin(), package.end(), ' ', '_'); // replace all ' ' to '_'
-		
-		new wxStaticText(panel, -1, wxT("Application Name:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getAppName(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Version Code:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, "1", wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Version Name:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, "1.0.0", wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Package:"), wxPoint(20, y));
-		wxTextCtrl* wxPackage = new wxTextCtrl(panel, -1, package.c_str(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, "A unique Java-style package identifier for your app\n(e.g. com.acme.games.myfarmgame)", wxPoint(x2, y));
-		y += h + 15;
-		new wxStaticText(panel, -1, wxT("Project Path:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getAppPath(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Target App Store:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, "Google Play", wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Keystore:"), wxPoint(20, y));
-		Rtt::String keystore;
-		ctx->getPlatform()->PathForFile("debug.keystore", Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, keystore);
-		wxTextCtrl* wxKeystore = new wxTextCtrl(panel, -1, keystore.GetString(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Key Alias:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, "androiddebugkey", wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxStaticText(panel, -1, wxT("Save to Folder:"), wxPoint(20, y));
-		new wxTextCtrl(panel, -1, ctx->getSaveFolder(), wxPoint(x2, y - 2), sz);
-		y += h;
-		new wxCheckBox(panel, -1, "Create Live Build", wxPoint(x2, y));
-
-		wxButton *okButton = new wxButton(OpenDialog, -1, wxT("Build"), wxDefaultPosition, wxSize(70, 30));
-		okButton->Bind(wxEVT_BUTTON, &LinuxSimulatorView::onAndroidBuild, wxID_ANY, wxID_ANY, 
-		new androidBuildParams(OpenDialog, ctx, wxKeystore, wxPackage));	
-		okButton->SetDefault(); 
-
-		wxButton *closeButton = new wxButton(OpenDialog, -1, wxT("Cancel"), wxDefaultPosition, wxSize(70, 30));
-		closeButton->Bind(wxEVT_BUTTON, &LinuxSimulatorView::onCancel, wxID_ANY, wxID_ANY, new cancelBuild(OpenDialog));		// cancel
-
-		hbox->Add(okButton, 1);
-		hbox->Add(closeButton, 1, wxLEFT, 5);
-
-		vbox->Add(panel, 1);
-		vbox->Add(hbox, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 10);
-
-		OpenDialog->SetSizer(vbox);
-		OpenDialog->Centre();
-		
-		rc = OpenDialog->ShowModal();
-		OpenDialog->Destroy();
-	}
-
-}
-
+} // namespace Rtt

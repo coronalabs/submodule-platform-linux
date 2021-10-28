@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -18,39 +18,39 @@
 #include "Core/Rtt_Assert.h"
 
 #ifdef _WIN32
-	#define strncasecmp _strnicmp
-	#define strcasecmp stricmp
-	#define strtok_r strtok_s
-	#define snprintf _snprintf
-	#define strdup _strdup
+#define strncasecmp _strnicmp
+#define strcasecmp stricmp
+#define strtok_r strtok_s
+#define snprintf _snprintf
+#define strdup _strdup
 #else
-	#define strcmpi strcasecmp
+#define strcmpi strcasecmp
 #endif
 
 bool startsWith( const char * haystack, char * needle )
 {
-    if (!needle || !haystack)
+	if (!needle || !haystack)
 		return false;
 
-    size_t lenHaystack = strlen(haystack);
-    size_t lenNeedle = strlen(needle);
-    if (lenNeedle > lenHaystack)
-        return false;
+	size_t lenHaystack = strlen(haystack);
+	size_t lenNeedle = strlen(needle);
+	if (lenNeedle > lenHaystack)
+		return false;
 
 	return strncasecmp( haystack, needle, lenNeedle ) == 0;
 }
 
 bool endsWith( const char * haystack, char * needle )
 {
-    if (!needle || !haystack)
+	if (!needle || !haystack)
 		return false;
 
-    size_t lenHaystack = strlen(haystack);
-    size_t lenNeedle = strlen(needle);
-    if (lenNeedle >  lenHaystack)
-        return false;
+	size_t lenHaystack = strlen(haystack);
+	size_t lenNeedle = strlen(needle);
+	if (lenNeedle >  lenHaystack)
+		return false;
 
-    return strncasecmp( haystack + lenHaystack - lenNeedle, needle, lenNeedle) == 0;
+	return strncasecmp( haystack + lenHaystack - lenNeedle, needle, lenNeedle) == 0;
 }
 
 
@@ -73,7 +73,7 @@ char *trimWhitespace( char * str )
 	}
 
 	// Write new null terminator
-	*(end+1) = 0;
+	*(end + 1) = 0;
 
 	return str;
 }
@@ -142,24 +142,24 @@ const char* getProgressDirectionName( ProgressDirection progressDirection )
 	else if (progressDirection == None)
 		return "None";
 	else
-		return "UNKONWN";		
+		return "UNKONWN";
 }
 
-void paramValidationFailure( lua_State *luaState, char *message, ... )
+void paramValidationFailure( lua_State *luaState, const char *message, ... )
 {
 	// For now we're just going to log this.  We take a lua_State in case we decide at some point that
 	// we want to do more (like maybe throw a Lua exception).
 	//
 	const char *where = "";
-    if ( luaState == NULL )
-    {
-        // Include the location of the call from the Lua context
-        luaL_where( luaState, 2 );
-        {
-            where = lua_tostring( luaState, -1 );
-        }
-        lua_pop( luaState, 1 );
-    }
+	if ( luaState == NULL )
+	{
+		// Include the location of the call from the Lua context
+		luaL_where( luaState, 2 );
+		{
+			where = lua_tostring( luaState, -1 );
+		}
+		lua_pop( luaState, 1 );
+	}
 
 	if (where == NULL)
 	{
@@ -206,15 +206,15 @@ char * getContentType( const char *contentTypeHeader )
 
 bool isudatatype(lua_State *L, int idx, const char *name)
 {
-    // returns true if a userdata is of a certain type
-    if ( LUA_TUSERDATA != lua_type( L, idx ) )
-        return 0;
-    
-    lua_getmetatable( L, idx );
-    luaL_newmetatable ( L, name );
-    int res = lua_equal( L, -2, -1 );
-    lua_pop( L, 2 ); // pop both tables (metatables) off
-    return ( 0 != res );
+	// returns true if a userdata is of a certain type
+	if ( LUA_TUSERDATA != lua_type( L, idx ) )
+		return 0;
+
+	lua_getmetatable( L, idx );
+	luaL_newmetatable ( L, name );
+	int res = lua_equal( L, -2, -1 );
+	lua_pop( L, 2 ); // pop both tables (metatables) off
+	return ( 0 != res );
 }
 
 void NetworkRequestState::setBytesTransferred( long long nBytesTransferred )
@@ -282,7 +282,6 @@ void NetworkRequestState::setResponseHeaders( const char *headers )
 	//
 	const char *headerDelims = "\r\n";
 	char *_headers = strdup(headers);
-
 	char *nextHeader = NULL;
 	char *header = strtok_r(_headers, headerDelims, &nextHeader);
 	while (header)
@@ -302,7 +301,7 @@ void NetworkRequestState::setResponseHeaders( const char *headers )
 		if (value == NULL)
 		{
 			value = key;
-			key = "HTTP-STATUS-LINE";
+			key = (char *)"HTTP-STATUS-LINE";
 		}
 
 		// We have to concatenate multiple Set-Cookie headers because of the
@@ -343,7 +342,7 @@ int NetworkRequestState::pushToLuaState( lua_State *luaState )
 {
 	int luaTableStackIndex = lua_gettop( luaState );
 	int nPushed = 0;
-	
+
 	lua_pushboolean( luaState, fIsError );
 	lua_setfield( luaState, luaTableStackIndex, "isError" );
 	nPushed++;
@@ -366,7 +365,7 @@ int NetworkRequestState::pushToLuaState( lua_State *luaState )
 			lua_pushstring( luaState, value.c_str() );
 			lua_setfield( luaState, luaHeaderTableStackIndex, key.c_str() );
 		}
-		
+
 		lua_setfield( luaState, luaTableStackIndex, "responseHeaders" );
 		nPushed++;
 	}
@@ -404,13 +403,13 @@ int NetworkRequestState::pushToLuaState( lua_State *luaState )
 			{
 				lua_createtable( luaState, 0, 3 );
 				int luaResponseTableStackIndex = lua_gettop( luaState );
-				
+
 				lua_pushstring( luaState, fResponseBody.bodyFile->getFilename().c_str() );
 				lua_setfield( luaState, luaResponseTableStackIndex, "filename" );
-				
+
 				lua_pushlightuserdata( luaState, fResponseBody.bodyFile->getBaseDirectory() );
 				lua_setfield( luaState, luaResponseTableStackIndex, "baseDirectory" );
-				
+
 				lua_pushstring( luaState, fResponseBody.bodyFile->getFullPath().c_str() );
 				lua_setfield( luaState, luaResponseTableStackIndex, "fullPath" );
 			}
@@ -424,7 +423,7 @@ int NetworkRequestState::pushToLuaState( lua_State *luaState )
 	lua_pushinteger( luaState, fStatus );
 	lua_setfield( luaState, luaTableStackIndex, "status" );
 	nPushed++;
-	
+
 	lua_pushstring( luaState, fRequestURL.c_str() );
 	lua_setfield( luaState, luaTableStackIndex, "url" );
 	nPushed++;
@@ -451,7 +450,7 @@ int NetworkRequestState::pushToLuaState( lua_State *luaState )
 			lua_pushstring( luaState, value.c_str() );
 			lua_setfield( luaState, luaDebugTableStackIndex, key.c_str() );
 		}
-		
+
 		lua_setfield( luaState, luaTableStackIndex, "debug" );
 		nPushed++;
 	}
@@ -465,10 +464,10 @@ int NetworkRequestState::pushToLuaState( lua_State *luaState )
 
 LuaCallback::LuaCallback( lua_State* luaState, CoronaLuaRef luaReference )
 {
-	
-	//Get the main thread state, in case we are on a 
+
+	//Get the main thread state, in case we are on a
 	lua_State *coronaState = luaState;
-	
+
 	lua_State *mainState = CoronaLuaGetCoronaThread(luaState);
 	if (NULL != mainState )
 	{
@@ -479,7 +478,7 @@ LuaCallback::LuaCallback( lua_State* luaState, CoronaLuaRef luaReference )
 	fLuaState = coronaState;
 
 	fLuaReference = luaReference;
-        
+
 	fMinNotificationIntervalMs = 1000;
 	fLastNotificationTime = 0;
 }
@@ -610,7 +609,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 	{
 		if ( CoronaLuaIsListener( luaState, arg, "networkRequest" ) )
 		{
-			CoronaLuaRef ref = CoronaLuaNewRef( luaState, arg ); 
+			CoronaLuaRef ref = CoronaLuaNewRef( luaState, arg );
 			fLuaCallback = new LuaCallback( luaState, ref );
 
 			++arg;
@@ -620,7 +619,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 	// Fourth argument - params table (optional)
 	//
 	int paramsTableStackIndex = arg;
-	
+
 	if (!isInvalid && !lua_isnoneornil( luaState, arg ))
 	{
 		if ( LUA_TTABLE == lua_type( luaState, arg ) )
@@ -632,7 +631,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 			{
 				if ( LUA_TTABLE == lua_type( luaState, -1 ) )
 				{
-					for (lua_pushnil(luaState); lua_next(luaState,-2); lua_pop(luaState,1))
+					for (lua_pushnil(luaState); lua_next(luaState, -2); lua_pop(luaState, 1))
 					{
 						// Fetch the table entry's string key.
 						// An index of -2 accesses the key that was pushed into the Lua stack by luaState.next() up above.
@@ -650,7 +649,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 						}
 
 						UTF8String value = UTF8String();
-						
+
 						// Fetch the table entry's value in string form.
 						// An index of -1 accesses the entry's value that was pushed into the Lua stack by luaState.next() above.
 						switch (lua_type(luaState, -1))
@@ -661,7 +660,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 								value.append( stringValue );
 							}
 							break;
-								
+
 							case LUA_TNUMBER:
 							{
 								double numericValue = lua_tonumber(luaState, -1);
@@ -682,7 +681,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 								}
 							}
 							break;
-								
+
 							case LUA_TBOOLEAN:
 							{
 								bool booleanValue = (lua_toboolean(luaState, -1) != 0);
@@ -690,11 +689,11 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 							}
 							break;
 						}
-						
+
 						if (!value.empty())
 						{
 //							printf("Header - %s: %s", keyName, value.c_str());
-							
+
 							if ( strcmpi( "Content-Type", keyName ) == 0 )
 							{
 //								printf("Processing Content-Type request header");
@@ -728,8 +727,8 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 			//If this is a POST request and the user hasn't filled in the content-type
 			//we make an assumption (to preserve existing functionality)
 			if 	(fRequestHeaders.find("Content-Type") == fRequestHeaders.end() &&
-				fMethod.compare("POST") == 0 &&
-				!wasRequestContentTypePresent)
+			        fMethod.compare("POST") == 0 &&
+			        !wasRequestContentTypePresent)
 			{
 				fRequestHeaders["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8";
 				wasRequestContentTypePresent = true;
@@ -743,7 +742,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 				{
 					// If we got something, make sure it's a string
 					const char *bodyTypeValue = lua_tostring( luaState, -1 );
-					
+
 					if ( strcmpi( "text", bodyTypeValue) == 0 )
 					{
 						fIsBodyTypeText = true;
@@ -814,16 +813,16 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 						// Body type for body from file is always binary
 						//
 						fIsBodyTypeText = false;
-						
+
 						// Extract filename/baseDirectory
 						//
 						lua_getfield( luaState, -1, "filename" ); // required
-						
+
 						if ( LUA_TSTRING == lua_type( luaState, -1 ) )
 						{
 							const char *filename = lua_tostring( luaState, -1 );
 							lua_pop( luaState, 1 );
-							
+
 							void *baseDirectory = NULL;
 							lua_getfield( luaState, -1, "baseDirectory"); // optional
 							if (!lua_isnoneornil( luaState, 1 ))
@@ -831,7 +830,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 								baseDirectory = lua_touserdata( luaState, -1 );
 							}
 							lua_pop( luaState, 1 );
-							
+
 							// Prepare and call Lua function
 							int	numParams = 1;
 							lua_getglobal( luaState, "_network_pathForFile" );
@@ -841,32 +840,32 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 								lua_pushlightuserdata( luaState, baseDirectory ); // Push argument #2
 								numParams++;
 							}
-							
+
 							Corona::Lua::DoCall( luaState, numParams, 2); // 1/2 arguments, 2 returns
-							
+
 							bool isResourceFile = ( 0 != lua_toboolean( luaState, -1 ) );
 							const char *path = lua_tostring( luaState, -2 );
 							lua_pop( luaState, 2 ); // Pop results
-														
+
 //							printf("body pathForFile from LUA: %s, isResourceFile: %s", path, isResourceFile ? "true" : "false");
-							
+
 							fRequestBody.bodyType = TYPE_FILE;
 							fRequestBody.bodyFile = new CoronaFileSpec(filename, baseDirectory, path, isResourceFile);
 
 							// Determine file size
 							//
-							Rtt_ASSERT(0&&"todo");
+							Rtt_ASSERT(0 && "todo");
 							//struct _stat64 buf;
 							//if (_stati64(fRequestBody.bodyFile->getFullPath().c_str(), &buf) == 0)
-						//	{
-						//		fRequestBodySize = buf.st_size;
-						//		printf("Size of body file is: %li", fRequestBodySize);
-						//	}
+							//	{
+							//		fRequestBodySize = buf.st_size;
+							//		printf("Size of body file is: %li", fRequestBodySize);
+							//	}
 						}
 						else
 						{
 							paramValidationFailure( luaState, "body 'filename' value is required and must be a string value" );
-							isInvalid = true; 
+							isInvalid = true;
 						}
 					}
 					break;
@@ -900,7 +899,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 						paramValidationFailure( luaState, "'progress' value of params table was invalid, if provided, must be either \"upload\" or \"download\", but was: \"%s\"", progress );
 						isInvalid = true;
 					}
-					
+
 //					printf("Progress: %s", getProgressDirectionName(fProgressDirection) );
 				}
 				else
@@ -910,7 +909,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 				}
 			}
 			lua_pop( luaState, 1 );
-			
+
 			lua_getfield( luaState, paramsTableStackIndex, "response" );
 			if (!lua_isnil( luaState, -1 ))
 			{
@@ -919,12 +918,12 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 					// Extract filename/baseDirectory
 					//
 					lua_getfield( luaState, -1, "filename" ); // required
-					
+
 					if ( LUA_TSTRING == lua_type( luaState, -1 ) )
 					{
 						const char *filename = lua_tostring( luaState, -1 );
 						lua_pop( luaState, 1 );
-						
+
 						void *baseDirectory = NULL;
 						lua_getfield( luaState, -1, "baseDirectory"); // optional
 						if (!lua_isnoneornil( luaState, 1 ))
@@ -932,7 +931,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 							baseDirectory = lua_touserdata( luaState, -1 );
 						}
 						lua_pop( luaState, 1 );
-						
+
 						// Prepare and call Lua function
 						int	numParams = 1;
 						lua_getglobal( luaState, "_network_pathForFile" );
@@ -942,13 +941,13 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 							lua_pushlightuserdata( luaState, baseDirectory ); // Push argument #2
 							numParams++;
 						}
-						
+
 						Corona::Lua::DoCall( luaState, numParams, 2 ); // 1/2 arguments, 2 returns
-						
+
 						bool isResourceFile = ( 0 != lua_toboolean( luaState, -1 ) );
 						const char *path = lua_tostring( luaState, -2 );
 						lua_pop( luaState, 2 ); // Pop results
-													
+
 //						printf("response pathForFile from LUA: %s, isResourceFile: %s", path, isResourceFile ? "true" : "false");
 
 						fResponseFile = new CoronaFileSpec(filename, baseDirectory, path, isResourceFile);
@@ -956,7 +955,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 					else
 					{
 						paramValidationFailure( luaState, "response 'filename' value is required and must be a string value (got %s)", lua_typename(luaState, lua_type(luaState, -1)) );
-						isInvalid = true;                        
+						isInvalid = true;
 					}
 				}
 				else
@@ -982,7 +981,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 				}
 			}
 			lua_pop( luaState, 1 );
-			
+
 			fIsDebug = false;
 			lua_getfield( luaState, paramsTableStackIndex, "debug" );
 			if (!lua_isnil( luaState, -1 ))
@@ -993,7 +992,7 @@ NetworkRequestParameters::NetworkRequestParameters( lua_State *luaState)
 				}
 			}
 			lua_pop( luaState, 1 );
-			
+
 			fHandleRedirects = true;
 			lua_getfield( luaState, paramsTableStackIndex, "handleRedirects" );
 			if (!lua_isnil( luaState, -1 ))
@@ -1097,7 +1096,7 @@ UTF8String NetworkRequestParameters::getRequestHeaderString( )
 		UTF8String value = (*iter).second;
 		requestHeaders += key + ": " + value;
 	}
-	return requestHeaders; 
+	return requestHeaders;
 }
 
 StringMap* NetworkRequestParameters::getRequestHeaders( )

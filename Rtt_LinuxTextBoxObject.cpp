@@ -1,13 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
 //////////////////////////////////////////////////////////////////////////////
-
-#include <string.h>
 
 #include "Core/Rtt_Build.h"
 #include "Rtt_LinuxTextBoxObject.h"
@@ -20,11 +18,11 @@
 #include "Rtt_LinuxContext.h"
 #include "Display/Rtt_Display.h"
 #include "Rtt_Freetype.h"
+#include <string.h>
 
 namespace Rtt
 {
-
-	LinuxTextBoxObject::LinuxTextBoxObject(const Rect& bounds, bool isSingleLine)
+	LinuxTextBoxObject::LinuxTextBoxObject(const Rect &bounds, bool isSingleLine)
 		: Super(bounds, isSingleLine ? "input" : "textarea")
 		, fIsSingleLine(isSingleLine)
 	{
@@ -40,39 +38,41 @@ namespace Rtt
 		{
 			Rect outBounds;
 			GetScreenBounds(outBounds);
-			
+
 			Rtt_ASSERT(fWindow == NULL);
 			fWindow = new myTextCtrl(this, outBounds.xMin, outBounds.yMin, outBounds.Width(), outBounds.Height(), fIsSingleLine);
 			return true;
 		}
+
 		return false;
 	}
 
-	void LinuxTextBoxObject::Prepare(const Display& display)
+	void LinuxTextBoxObject::Prepare(const Display &display)
 	{
 		if (fWindow)
 		{
 			Rect outBounds{};
 			GetScreenBounds(outBounds);
-			
+
 			fWindow->SetPosition((wxPoint(outBounds.xMin, outBounds.yMin)));
 			fWindow->SetSize(outBounds.Width(), outBounds.Height());
 		}
 	}
 
-	const LuaProxyVTable& LinuxTextBoxObject::ProxyVTable() const
+	const LuaProxyVTable &LinuxTextBoxObject::ProxyVTable() const
 	{
 		return PlatformDisplayObject::GetTextFieldObjectProxyVTable();
 	}
 
 	int LinuxTextBoxObject::addEventListener(lua_State *L)
 	{
-		const LuaProxyVTable& table = PlatformDisplayObject::GetTextFieldObjectProxyVTable();
+		const LuaProxyVTable &table = PlatformDisplayObject::GetTextFieldObjectProxyVTable();
 		LinuxTextBoxObject *o = (LinuxTextBoxObject *)luaL_todisplayobject(L, 1, table);
+
 		if (o && lua_isstring(L, 2))
 		{
-			const char* eventName = lua_tostring(L, 2);
-			myTextCtrl* t = (myTextCtrl*)o->fWindow;
+			const char *eventName = lua_tostring(L, 2);
+			myTextCtrl *t = (myTextCtrl*)o->fWindow;
 
 			// Store callback
 			if (CoronaLuaIsListener(L, 3, eventName) && strcmp(eventName, "userInput") == 0)	// hack
@@ -82,9 +82,11 @@ namespace Rtt
 				{
 					CoronaLuaDeleteRef(L, t->fLuaReference);
 				}
+
 				t->fLuaReference = CoronaLuaNewRef(L, 3);		// listenerIndex=3
 			}
 		}
+
 		return 0;
 	}
 
@@ -92,13 +94,15 @@ namespace Rtt
 	{
 		Rtt_ASSERT(key);
 
-		wxTextCtrl* fControl = dynamic_cast<wxTextCtrl*>(fWindow);
+		wxTextCtrl *fControl = dynamic_cast<wxTextCtrl*>(fWindow);
+
 		if (fControl == NULL)
 		{
 			return 0;
 		}
 
 		int result = 1;
+
 		if (strcmp("text", key) == 0)
 		{
 			wxString val = fControl->GetValue();
@@ -113,8 +117,8 @@ namespace Rtt
 		}
 		else if (strcmp("font", key) == 0)
 		{
-			Runtime* runtime = LuaContext::GetRuntime(L);
-			auto fontPointer = Rtt_NEW(runtime->GetAllocator(), LinuxFont(*runtime->GetAllocator(), "", 32, false));
+			Runtime *runtime = LuaContext::GetRuntime(L);
+			auto fontPointer = Rtt_NEW(runtime->GetAllocator(), LinuxFont(*runtime->GetAllocator(), "", 16, false));
 			LuaLibNative::PushFont(L, fontPointer);
 		}
 		else if (strcmp("setTextColor", key) == 0)
@@ -125,16 +129,20 @@ namespace Rtt
 		{
 			lua_pushcfunction(L, SetReturnKey);
 		}
+		else if (strcmp("setSelection", key) == 0)
+		{
+			lua_pushcfunction(L, SetSelection);
+		}
 		else if (strcmp("align", key) == 0)
 		{
 			char buf[16] = {0};
-			Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implememnted\n", key);
+			Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implemented\n", key);
 			lua_pushstring(L, buf);
 		}
 		else if (strcmp("isSecure", key) == 0)
 		{
 			char buf[64] = {0};
-			Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implememnted\n", key);
+			Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implemented\n", key);
 			lua_pushboolean(L, strcmp(buf, "password") == 0);
 		}
 		else if (strcmp("inputType", key) == 0)
@@ -142,7 +150,7 @@ namespace Rtt
 			if (fIsSingleLine)
 			{
 				char buf[64] = {0};
-				Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implememnted\n", key);
+				Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implemented\n", key);
 				lua_pushstring(L, buf);
 			}
 			else
@@ -155,7 +163,7 @@ namespace Rtt
 			if (!fIsSingleLine)
 			{
 				bool val = 0; //jsTextFieldGetEditable(fElementID);
-				Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implememnted\n", key);
+				Rtt_LogException("LinuxTextBoxObject: ValueForKey '%s' is not implemented\n", key);
 				lua_pushboolean(L, val);
 			}
 		}
@@ -182,7 +190,8 @@ namespace Rtt
 	{
 		Rtt_ASSERT(key);
 
-		wxTextCtrl* fControl = dynamic_cast<wxTextCtrl*>(fWindow);
+		wxTextCtrl *fControl = dynamic_cast<wxTextCtrl*>(fWindow);
+
 		if (fControl == NULL)
 		{
 			return false;
@@ -193,6 +202,7 @@ namespace Rtt
 		if (strcmp("text", key) == 0)
 		{
 			const char *s = lua_tostring(L, valueIndex);
+
 			if (Rtt_VERIFY(s))
 			{
 				fControl->ChangeValue(s);
@@ -208,7 +218,7 @@ namespace Rtt
 				if (size > 0)
 				{
 					wxFont font = fControl->GetFont();
-					font.SetPixelSize(wxSize(0, size));		// hack 0.8
+					font.SetPixelSize(wxSize(0, size)); // hack 0.8
 					fControl->SetFont(font);
 				}
 				else
@@ -220,16 +230,18 @@ namespace Rtt
 		else if (strcmp("font", key) == 0)
 		{
 			PlatformFont *font = LuaLibNative::ToFont(L, valueIndex);
+
 			if (font)
 			{
 				int size = font->Size();
-				const char* name = font->Name();
-				const char* face = glyph_freetype_provider::getFace(name);
+				const char *name = font->Name();
+				const char *face = glyph_freetype_provider::getFace(name);
+
 				if (size > 0 && face)
 				{
 					bool rc = wxFont::AddPrivateFont(name);
 					wxFont wxf = fControl->GetFont();
-					wxf.SetPixelSize(wxSize(0, size));		// hack 0.8
+					wxf.SetPixelSize(wxSize(0, size)); // hack 0.8
 					wxf.SetFaceName(face);
 					fControl->SetFont(wxf);
 				}
@@ -238,35 +250,35 @@ namespace Rtt
 		else if (strcmp("placeholder", key) == 0)
 		{
 			const char *s = lua_tostring(L, valueIndex);
-			//			jsTextFieldSetPlaceholder(fElementID, s ? s : "");
-			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implememnted\n", key);
+			//	jsTextFieldSetPlaceholder(fElementID, s ? s : "");
+			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implemented\n", key);
 		}
 		else if (strcmp("isSecure", key) == 0)
 		{
 			bool secure = lua_toboolean(L, valueIndex) ? true : false;
-			//			jsTextFieldSetSecure(fElementID, secure);
-			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implememnted\n", key);
+			//	jsTextFieldSetSecure(fElementID, secure);
+			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implemented\n", key);
 		}
 		else if (strcmp("align", key) == 0)
 		{
-			const char * align = lua_tostring(L, valueIndex);
-			//			jsTextFieldSetAlign(fElementID, align);
-			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implememnted\n", key);
+			const char *align = lua_tostring(L, valueIndex);
+			//	jsTextFieldSetAlign(fElementID, align);
+			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implemented\n", key);
 		}
 		else if (strcmp("inputType", key) == 0)
 		{
-			const char * inputType = lua_tostring(L, valueIndex);
+			const char *inputType = lua_tostring(L, valueIndex);
 			if (inputType)
 			{
-				//				jsTextFieldSetInputType(fElementID, inputType);
-				Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implememnted\n", key);
+				//	jsTextFieldSetInputType(fElementID, inputType);
+				Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implemented\n", key);
 			}
 		}
 		else if (strcmp("isEditable", key) == 0)
 		{
 			bool isEditable = lua_toboolean(L, valueIndex) ? true : false;
-			//			jsTextFieldSetEditable(fElementID, isEditable);
-			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implememnted\n", key);
+			//	jsTextFieldSetEditable(fElementID, isEditable);
+			Rtt_LogException("LinuxTextBoxObject: SetValueForKey '%s' is not implemented\n", key);
 		}
 		else
 		{
@@ -278,8 +290,9 @@ namespace Rtt
 
 	int LinuxTextBoxObject::SetTextColor(lua_State *L)
 	{
-		const LuaProxyVTable& table = PlatformDisplayObject::GetTextFieldObjectProxyVTable();
+		const LuaProxyVTable &table = PlatformDisplayObject::GetTextFieldObjectProxyVTable();
 		LinuxTextBoxObject *obj = (LinuxTextBoxObject*)luaL_todisplayobject(L, 1, table);
+
 		if (obj == NULL)
 		{
 			return 0;
@@ -294,7 +307,7 @@ namespace Rtt
 		char rgb[8];
 		snprintf(rgb, sizeof(rgb), "#%02X%02X%02X", r, g, b);
 		//jsTextFieldSetColor(obj->fElementID, rgb);
-		Rtt_LogException("LinuxVideoObject is not implememnted\n");
+		Rtt_LogException("LinuxTextBoxObject:SetTextColor() is not implemented\n");
 
 		return 0;
 	}
@@ -302,6 +315,7 @@ namespace Rtt
 	int LinuxTextBoxObject::SetReturnKey(lua_State *L)
 	{
 		PlatformDisplayObject *o = (PlatformDisplayObject*)LuaProxy::GetProxyableObject(L, 1);
+
 		if (&o->ProxyVTable() == &PlatformDisplayObject::GetTextFieldObjectProxyVTable())
 		{
 			const char *keyType = lua_tostring(L, 2);
@@ -310,8 +324,14 @@ namespace Rtt
 		return 0;
 	}
 
-	LinuxTextBoxObject::myTextCtrl::myTextCtrl(LinuxTextBoxObject* parent, int x, int y, int w, int h, bool singleLine)
-		: wxTextCtrl(wxGetApp().getParent(), -1, "", wxPoint(x, y), wxSize(w, h), singleLine ? wxTE_MULTILINE : wxTE_MULTILINE)
+	int LinuxTextBoxObject::SetSelection(lua_State *L)
+	{
+		Rtt_LogException("LinuxTextBoxObject:SetSelection() is not implemented\n");
+		return 0;
+	}
+
+	LinuxTextBoxObject::myTextCtrl::myTextCtrl(LinuxTextBoxObject *parent, int x, int y, int w, int h, bool singleLine)
+		: wxTextCtrl(wxGetApp().GetParent(), -1, "", wxPoint(x, y), wxSize(w, h), singleLine ? wxTE_MULTILINE : wxTE_MULTILINE)
 		, fParent(parent)
 		, fLuaReference(NULL)
 	{
@@ -333,15 +353,25 @@ namespace Rtt
 		}
 	}
 
-	void LinuxTextBoxObject::myTextCtrl::onTextEvent(wxCommandEvent& e)
+	void LinuxTextBoxObject::myTextCtrl::onTextEvent(wxCommandEvent &e)
 	{
 		e.Skip();
 
 		int eventID = 0;
-		wxEventType etype = e.GetEventType();
-		if (etype == wxEVT_SET_FOCUS) eventID = 1;
-		else if (etype == wxEVT_TEXT) eventID = 2;
-		else if (etype == wxEVT_KILL_FOCUS) eventID = 3;
+		wxEventType eType = e.GetEventType();
+
+		if (eType == wxEVT_SET_FOCUS)
+		{
+			eventID = 1;
+		}
+		else if (eType == wxEVT_TEXT)
+		{
+			eventID = 2;
+		}
+		else if (eType == wxEVT_KILL_FOCUS)
+		{
+			eventID = 3;
+		}
 
 		static const char* phase[] = {"", "began", "editing", "ended", "submitted"};
 		Rtt_ASSERT(eventID > 0 && eventID < (sizeof(phase) / sizeof(phase[0])));
@@ -362,50 +392,48 @@ namespace Rtt
 
 		switch (eventID)
 		{
-		case 1:		// began
-			// User begins editing "defaultField"
-			break;
+			case 1: // began
+				// User begins editing "defaultField"
+				break;
 
-		case 2:		// editing
-		{
-			wxString strval = GetValue();
+			case 2: // editing
+			{
+				wxString strval = GetValue();
 
-			lua_pushstring(L, strval.c_str());
-			lua_setfield(L, luaTableStackIndex, "newCharacters");
-			nPushed++;
+				lua_pushstring(L, strval.c_str());
+				lua_setfield(L, luaTableStackIndex, "newCharacters");
+				nPushed++;
 
-			int val = 0; //jsVideoTotalTime(fElementID);
-			lua_pushnumber(L, val);
-			lua_setfield(L, luaTableStackIndex, "numDeleted");
-			nPushed++;
+				int val = 0; //jsVideoTotalTime(fElementID);
+				lua_pushnumber(L, val);
+				lua_setfield(L, luaTableStackIndex, "numDeleted");
+				nPushed++;
 
-			lua_pushstring(L, fOldValue.c_str());
-			lua_setfield(L, luaTableStackIndex, "oldText");
-			nPushed++;
+				lua_pushstring(L, fOldValue.c_str());
+				lua_setfield(L, luaTableStackIndex, "oldText");
+				nPushed++;
 
-			int pos = GetInsertionPoint();
-			lua_pushnumber(L, pos);
-			lua_setfield(L, luaTableStackIndex, "startPosition");
-			nPushed++;
+				int pos = GetInsertionPoint();
+				lua_pushnumber(L, pos);
+				lua_setfield(L, luaTableStackIndex, "startPosition");
+				nPushed++;
 
-			lua_pushstring(L, strval.c_str());
-			lua_setfield(L, luaTableStackIndex, "text");
-			nPushed++;
+				lua_pushstring(L, strval.c_str());
+				lua_setfield(L, luaTableStackIndex, "text");
+				nPushed++;
 
-			fOldValue = strval;
+				fOldValue = strval;
 
-			break;
-		}
-		case 3:		// ended
-			// Output resulting text from "defaultField"
-			break;
+				break;
+			}
+			case 3: // ended
+				// Output resulting text from "defaultField"
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 		CoronaLuaDispatchEvent(L, fLuaReference, 0);
 	}
-
-
-} // namespace Rtt
+}; // namespace Rtt

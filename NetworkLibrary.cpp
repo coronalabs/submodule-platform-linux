@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -50,6 +50,7 @@ void NetworkNotifierTask::operator()( Scheduler & sender )
 	if (fRequestParams != NULL && fRequestState != NULL)
 	{
 		int still_running = 0;
+		long status = 0;
 		CURLM* cm = fRequestParams->getMultiCURL();
 		CURL* curl = fRequestParams->getCURL();
 		if (cm && curl) // not cancelled ?
@@ -60,7 +61,7 @@ void NetworkNotifierTask::operator()( Scheduler & sender )
 				return;
 			}
 
-			long status = 0;
+
 			CURLcode rc = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
 			// It is worth noting that browsers report a status of 0 in case of XMLHttpRequest errors too.
@@ -87,13 +88,14 @@ void NetworkNotifierTask::operator()( Scheduler & sender )
 					}
 				}
 			}
-			else
-			if (fRequestParams->fResponse.size() > 0)
+			else if (fRequestParams->fResponse.size() > 0)
 			{
 				fRequestState->fResponseBody.bodyType = TYPE_BYTES;
 				const uint8_t* buf = (const uint8_t*) fRequestParams->fResponse.data();
 				fRequestState->fResponseBody.bodyBytes = new ByteVector(buf, buf + fRequestParams->fResponse.size());
 			}
+
+			fRequestState->setStatus(status);
 
 			LuaCallback* func = fRequestParams->getLuaCallback();
 			func->callWithNetworkRequestState(fRequestState);
@@ -121,27 +123,27 @@ NetworkLibrary::~NetworkLibrary()
 }
 
 // CoronaRuntimeListener
-void		NetworkLibrary::onStarted(lua_State *L)
+void NetworkLibrary::onStarted(lua_State *L)
 {
 }
 
 // CoronaRuntimeListener
-void		NetworkLibrary::onSuspended(lua_State *L)
+void NetworkLibrary::onSuspended(lua_State *L)
 {
 }
 
 // CoronaRuntimeListener
-void		NetworkLibrary::onResumed(lua_State *L)
+void NetworkLibrary::onResumed(lua_State *L)
 {
 }
 
 // CoronaRuntimeListener
-void		NetworkLibrary::onExiting(lua_State *L)
+void NetworkLibrary::onExiting(lua_State *L)
 {
 	fSystemEventListener = NetworkLibrary::RemoveSystemEventListener(L, fSystemEventListener);
 }
 
-int		NetworkLibrary::Open(lua_State *L)
+int NetworkLibrary::Open(lua_State *L)
 {
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	curl_version_info_data* vinfo = curl_version_info(CURLVERSION_NOW);
@@ -149,7 +151,7 @@ int		NetworkLibrary::Open(lua_State *L)
 	{
 		Rtt_LogException("Network plugin: SSL not enabled\n");
 	}
-	 
+
 	// Register __gc callback
 	const char kMetatableName[] = __FILE__; // Globally unique string to prevent collision
 	CoronaLuaInitializeGCMetatable(L, kMetatableName, Finalizer);
@@ -193,7 +195,7 @@ NetworkLibrary::Finalizer(lua_State *L)
 	return 0;
 }
 
-NetworkLibrary*		NetworkLibrary::ToLibrary(lua_State *L)
+NetworkLibrary* NetworkLibrary::ToLibrary(lua_State *L)
 {
 	// library is pushed as part of the closure
 	Self *library = (Self *)lua_touserdata(L, lua_upvalueindex(1));
@@ -238,35 +240,35 @@ int	NetworkLibrary::sendRequest(lua_State *L)
 		const Body* body = requestParams->getRequestBody();
 		switch (body->bodyType)
 		{
-		case TYPE_STRING:
-		{
-			Rtt_ASSERT(body->bodyString);
-			UTF8String postParams = *body->bodyString;
-			const char* buf = (const char*)body->bodyString->c_str();
-			rc = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buf);
-			break;
-		}
-		case TYPE_BYTES:
-		{
-			Rtt_ASSERT(body->bodyString);
-			unsigned char* buf = &body->bodyBytes->operator[](0);
-			long buflen = body->bodyBytes->size();
-			rc = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buf);
-			rc = curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, buflen);
-			break;
-		}
-		case TYPE_NONE:
-			break;
+			case TYPE_STRING:
+			{
+				Rtt_ASSERT(body->bodyString);
+				UTF8String postParams = *body->bodyString;
+				const char* buf = (const char*)body->bodyString->c_str();
+				rc = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buf);
+				break;
+			}
+			case TYPE_BYTES:
+			{
+				Rtt_ASSERT(body->bodyString);
+				unsigned char* buf = &body->bodyBytes->operator[](0);
+				long buflen = body->bodyBytes->size();
+				rc = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buf);
+				rc = curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, buflen);
+				break;
+			}
+			case TYPE_NONE:
+				break;
 
-		default:
-			Rtt_ASSERT(0 && "todo");
-			break;
+			default:
+				Rtt_ASSERT(0 && "todo");
+				break;
 		}
 
 		StringMap* hd = requestParams->getRequestHeaders();
 		if (hd && hd->size() > 0)
 		{
-			struct curl_slist* headers = NULL; // init to NULL is important 
+			struct curl_slist* headers = NULL; // init to NULL is important
 			StringMap::iterator iter;
 			for (iter = hd->begin(); iter != hd->end(); iter++)
 			{
@@ -280,7 +282,7 @@ int	NetworkLibrary::sendRequest(lua_State *L)
 
 		rc = curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-		// tell libcurl to follow redirection 
+		// tell libcurl to follow redirection
 		rc = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
 		rc = curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
@@ -298,7 +300,6 @@ int	NetworkLibrary::sendRequest(lua_State *L)
 		requestState->setPhase("ended");
 		requestState->setBytesEstimated(requestParams->fResponse.size());
 		requestState->setBytesTransferred(requestParams->fResponse.size());
-
 		int still_running = 0;
 		CURLM* cm = requestParams->getMultiCURL();
 		curl_multi_perform(cm, &still_running);
@@ -335,7 +336,7 @@ int	NetworkLibrary::cancel(lua_State *L)
 }
 
 // [Lua] network.getConnectionStatus( )
-int		NetworkLibrary::getConnectionStatus(lua_State *L)
+int NetworkLibrary::getConnectionStatus(lua_State *L)
 {
 	//		DWORD connectionFlags = WinInetConnectivity::getConnectedState();
 	bool isMobile = false; // fixme, (connectionFlags & INET_CONNECTION_MODEM) != 0;
@@ -355,7 +356,7 @@ int		NetworkLibrary::getConnectionStatus(lua_State *L)
 // This static method receives "system" event messages from Corona, at which point it determines the instance
 // that registered the listener and dispatches the system events to that instance.
 //
-int		NetworkLibrary::ProcessSystemEvent(lua_State *luaState)
+int NetworkLibrary::ProcessSystemEvent(lua_State *luaState)
 {
 	void *ud = lua_touserdata(luaState, lua_upvalueindex(1));
 	NetworkLibrary *networkLibrary = (NetworkLibrary *)ud;
@@ -383,7 +384,7 @@ int		NetworkLibrary::ProcessSystemEvent(lua_State *luaState)
 	return 0;
 }
 
-int		NetworkLibrary::AddSystemEventListener(lua_State *L, NetworkLibrary *networkLibrary)
+int NetworkLibrary::AddSystemEventListener(lua_State *L, NetworkLibrary *networkLibrary)
 {
 	int ref = LUA_REFNIL;
 
@@ -422,7 +423,7 @@ int		NetworkLibrary::AddSystemEventListener(lua_State *L, NetworkLibrary *networ
 	return ref;
 }
 
-int		NetworkLibrary::RemoveSystemEventListener(lua_State *L, int systemEventListenerRef)
+int NetworkLibrary::RemoveSystemEventListener(lua_State *L, int systemEventListenerRef)
 {
 	// Does the equivalent of the following Lua code:
 	//   Runtime:removeEventListener( "system", ProcessSystemEvent )

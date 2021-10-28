@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 // This file is part of the Corona game engine.
-// For overview and more information on licensing please refer to README.md 
+// For overview and more information on licensing please refer to README.md
 // Home page: https://github.com/coronalabs/corona
 // Contact: support@coronalabs.com
 //
@@ -12,41 +12,38 @@
 #include "Rtt_LinuxDisplayObject.h"
 #include "Rtt_MPlatform.h"
 
-#if ( wxUSE_WEBVIEW == 1)		
+#if (wxUSE_WEBVIEW == 1)
 
-#include <wx/webview.h>
+#include "wx/webview.h"
 
 namespace Rtt
 {
-
-class LinuxWebView : public LinuxDisplayObject
-{
+	class LinuxWebView : public LinuxDisplayObject
+	{
 	public:
 		typedef LinuxWebView Self;
 		typedef LinuxDisplayObject Super;
 
-		LinuxWebView(const Rect& bounds);
+		LinuxWebView(const Rect &bounds);
 		virtual ~LinuxWebView();
-
 		virtual bool Initialize();
-		virtual const LuaProxyVTable& ProxyVTable() const;
+		virtual const LuaProxyVTable &ProxyVTable() const;
 		virtual int ValueForKey(lua_State *L, const char key[]) const;
 		virtual bool SetValueForKey(lua_State *L, const char key[], int valueIndex);
-		virtual void Prepare(const Display& display) override;
-		 
-		void openURL(const char* url);
-		
+		virtual void Prepare(const Display &display) override;
+		void openURL(const char *url);
+
 		struct eventArg: public wxObject
 		{
-			eventArg(LinuxWebView* thiz, const char* url)
-				: fThiz(thiz) 
+			eventArg(LinuxWebView *thiz, const char *url)
+				: fThiz(thiz)
 				, fRequestURL(url)
 			{};
-			
-			LinuxWebView* fThiz;
+
+			LinuxWebView *fThiz;
 			std::string fRequestURL;
 		};
-		
+
 		bool Close();
 
 	protected:
@@ -57,15 +54,12 @@ class LinuxWebView : public LinuxDisplayObject
 		static int Forward(lua_State *L);
 		static int Reload(lua_State *L);
 		static int Resize(lua_State *L);
-		
-		static void onWebPopupNavigatingEvent(wxWebViewEvent& e);
-		static void onWebPopupNavigatedEvent(wxWebViewEvent& e);
-		static void onWebPopupLoadedEvent(wxWebViewEvent& e);
-		static void onWebPopupErrorEvent(wxWebViewEvent& e);		
-		
+		static void onWebPopupNavigatingEvent(wxWebViewEvent &e);
+		static void onWebPopupNavigatedEvent(wxWebViewEvent &e);
+		static void onWebPopupLoadedEvent(wxWebViewEvent &e);
+		static void onWebPopupErrorEvent(wxWebViewEvent &e);
 		static int OnDeleteCookies(lua_State *L);
-};
-
-} // namespace Rtt
+	};
+}; // namespace Rtt
 
 #endif
