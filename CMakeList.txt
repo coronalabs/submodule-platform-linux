@@ -56,7 +56,7 @@ find_path(wxwidget wx-3.1/wx/config.h REQUIRED)
 if (wxwidget)
 	message("wxwidget: ${wxwidget}")
 else()
-	message(FATAL_ERROR "*** no wxWidget-3.1.5, install it from sources: git clone --recurse-submodules https://github.com/wxWidgets/wxWidgets.git")
+	message(FATAL_ERROR "*** no wxWidget-3.1.5, to install install it\nsudo apt install libwebkit2gtk-4.0-dev\ngit clone --recurse-submodules https://github.com/wxWidgets/wxWidgets.git \n./configure\nmake -j4\nmake install")
 endif()
 
 
@@ -264,7 +264,14 @@ FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
 	lua_2_c("${LUA_FILE}" luasocket)
 ENDFOREACH()
 
-add_executable( simulator
+add_executable( Solar2DConsole
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServer.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServerConnection.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsole.cpp
+		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsoleApp.cpp
+)
+
+add_executable( Solar2D
 		${Lua2CppOutputDir}/init.cpp
 		${Lua2CppOutputDir}/runtime.cpp
 		${Lua2CppOutputDir}/easing.cpp
@@ -857,14 +864,10 @@ add_executable( simulator
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxBuildDialog.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxClearSandboxDialog.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxCloneProjectDialog.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsole.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsoleApp.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsolePlatform.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxFileUtils.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClient.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClientConnection.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServer.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServerConnection.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxKeyListener.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxMenuEvents.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxMouseListener.cpp
@@ -874,6 +877,7 @@ add_executable( simulator
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntime.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeErrorDialog.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxUtils.cpp
+		${CORONA_ROOT}/platform/linux/main.cpp
 
 		# Simulator
 		${CORONA_ROOT}/modules/simulator/Rtt_LuaLibSimulator.cpp
@@ -897,14 +901,18 @@ add_executable( simulator
 
 )
 
-target_link_libraries(simulator	dl GL z pthread openal freetype png cryptopp curl
-	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1)
+target_link_libraries(Solar2D	dl GL z pthread openal freetype png crypto++ curl
+	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
+
+target_link_libraries(Solar2DConsole dl GL z pthread png 
+	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
 
 # install Resources
 install(DIRECTORY "${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)
 
 # install binary
-install(TARGETS simulator RUNTIME DESTINATION bin/Solar2D)
+install(TARGETS Solar2D RUNTIME DESTINATION bin/Solar2D)
+install(TARGETS Solar2DConsole RUNTIME DESTINATION bin/Solar2D)
 
 # build template
 
@@ -912,10 +920,10 @@ set(debdir "${CMAKE_CURRENT_BINARY_DIR}/deb")
 
 add_custom_target(copydeb ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CORONA_ROOT}/platform/linux/deb ${debdir}
-    DEPENDS simulator)
+    DEPENDS Solar2D)
 
 add_custom_target(copybinary ALL
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simulator ${debdir}/CONTENTS/usr/bin
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/Solar2D ${debdir}/CONTENTS/usr/bin
     DEPENDS copydeb)
 
 add_custom_target(create_template ALL 

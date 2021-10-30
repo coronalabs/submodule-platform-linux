@@ -76,22 +76,26 @@ struct ConsoleLog
 	int windowYPos = 0;
 	int windowWidth = 640;
 	int windowHeight = 480;
-	wxConfig *config;
+	wxConfig* config;
 } consoleLog;
 
 using namespace std;
 
-Rtt_LinuxConsole::Rtt_LinuxConsole(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &pos, const wxSize &size, long style):
+Rtt_LinuxConsole::Rtt_LinuxConsole(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) :
 	wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
-	struct passwd *pw = getpwuid(getuid());
-	const char *homedir = pw->pw_dir;
+	struct passwd* pw = getpwuid(getuid());
+	const char* homedir = pw->pw_dir;
 	consoleLog.settingsFilePath = homedir;
 
+	// ensure working dir
 	consoleLog.settingsFilePath.append("/.Solar2D");
-	if (!Rtt_IsDirectory(consoleLog.settingsFilePath.c_str()))
+	if (wxDirExists(consoleLog.settingsFilePath.c_str()) == false)
 	{
-		Rtt_MakeDirectory(consoleLog.settingsFilePath.c_str());
+		if (wxMkdir(consoleLog.settingsFilePath) == false)
+		{
+			wxMessageBox(wxT("Failed to create " + consoleLog.settingsFilePath), wxT("Error"), wxOK);
+		}
 	}
 
 	consoleLog.settingsFilePath.append("/console.conf");
@@ -224,9 +228,9 @@ void Rtt_LinuxConsole::SetProperties()
 
 void Rtt_LinuxConsole::DoLayout()
 {
-	wxBoxSizer *sizer1 = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer *sizer2 = new wxBoxSizer(wxHORIZONTAL);
-	wxStaticText *lblFind = new wxStaticText(panelToolBar, wxID_ANY, wxT("Find:"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
+	wxBoxSizer* sizer1 = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* sizer2 = new wxBoxSizer(wxHORIZONTAL);
+	wxStaticText* lblFind = new wxStaticText(panelToolBar, wxID_ANY, wxT("Find:"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
 	lblFind->SetForegroundColour(consoleLog.textColourDarkTheme);
 	sizer2->Add(bitmapBtnSave, 0, wxBOTTOM | wxTOP, 6);
 	sizer2->AddSpacer(5);
@@ -258,22 +262,22 @@ void Rtt_LinuxConsole::DoLayout()
 }
 
 BEGIN_EVENT_TABLE(Rtt_LinuxConsole, wxFrame)
-	EVT_BUTTON(ID_BUTTON_SAVE, Rtt_LinuxConsole::OnBtnSaveClick)
-	EVT_BUTTON(ID_BUTTON_COPY, Rtt_LinuxConsole::OnBtnCopyClick)
-	EVT_BUTTON(ID_BUTTON_CLEAR, Rtt_LinuxConsole::OnBtnEraseClick)
-	EVT_BUTTON(ID_BUTTON_FIND_PREVIOUS, Rtt_LinuxConsole::OnBtnFindPreviousClick)
-	EVT_BUTTON(ID_BUTTON_FIND_NEXT, Rtt_LinuxConsole::OnBtnFindNextClick)
-	EVT_BUTTON(ID_BUTTON_MATCH_CASE, Rtt_LinuxConsole::OnBtnMatchCaseClick)
-	EVT_BUTTON(ID_BUTTON_LOOP_SEARCH, Rtt_LinuxConsole::OnBtnLoopingSearchClick)
-	EVT_BUTTON(ID_BUTTON_THEME, Rtt_LinuxConsole::OnBtnChangeThemeClick)
-	EVT_BUTTON(ID_BUTTON_SAVE_WINDOW_POS, Rtt_LinuxConsole::OnBtnSaveWindowPosClick)
-	EVT_COMMAND(wxID_ANY, eventFindNext, Rtt_LinuxConsole::OnBtnFindNextClick)
+EVT_BUTTON(ID_BUTTON_SAVE, Rtt_LinuxConsole::OnBtnSaveClick)
+EVT_BUTTON(ID_BUTTON_COPY, Rtt_LinuxConsole::OnBtnCopyClick)
+EVT_BUTTON(ID_BUTTON_CLEAR, Rtt_LinuxConsole::OnBtnEraseClick)
+EVT_BUTTON(ID_BUTTON_FIND_PREVIOUS, Rtt_LinuxConsole::OnBtnFindPreviousClick)
+EVT_BUTTON(ID_BUTTON_FIND_NEXT, Rtt_LinuxConsole::OnBtnFindNextClick)
+EVT_BUTTON(ID_BUTTON_MATCH_CASE, Rtt_LinuxConsole::OnBtnMatchCaseClick)
+EVT_BUTTON(ID_BUTTON_LOOP_SEARCH, Rtt_LinuxConsole::OnBtnLoopingSearchClick)
+EVT_BUTTON(ID_BUTTON_THEME, Rtt_LinuxConsole::OnBtnChangeThemeClick)
+EVT_BUTTON(ID_BUTTON_SAVE_WINDOW_POS, Rtt_LinuxConsole::OnBtnSaveWindowPosClick)
+EVT_COMMAND(wxID_ANY, eventFindNext, Rtt_LinuxConsole::OnBtnFindNextClick)
 END_EVENT_TABLE();
 
-void Rtt_LinuxConsole::OnBtnSaveClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnSaveClick(wxCommandEvent& event)
 {
-	struct passwd *pw = getpwuid(getuid());
-	const char *homedir = pw->pw_dir;
+	struct passwd* pw = getpwuid(getuid());
+	const char* homedir = pw->pw_dir;
 	time_t timeNow = time(NULL);
 	char buffer[32];
 	char msBuffer[32];
@@ -292,23 +296,23 @@ void Rtt_LinuxConsole::OnBtnSaveClick(wxCommandEvent &event)
 		string resultMsg("Saved log to: ");
 		resultMsg.append(filePath.c_str());
 
-		wxMessageDialog *msgDialog = new wxMessageDialog(this, resultMsg.c_str(), wxT("Save Log"), wxOK);
+		wxMessageDialog* msgDialog = new wxMessageDialog(this, resultMsg.c_str(), wxT("Save Log"), wxOK);
 		msgDialog->ShowModal();
 	}
 }
 
-void Rtt_LinuxConsole::OnBtnCopyClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnCopyClick(wxCommandEvent& event)
 {
 	txtLog->SetFocus();
 	txtLog->Copy();
 }
 
-void Rtt_LinuxConsole::OnBtnEraseClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnEraseClick(wxCommandEvent& event)
 {
 	ClearLog();
 }
 
-void Rtt_LinuxConsole::OnBtnFindPreviousClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnFindPreviousClick(wxCommandEvent& event)
 {
 	if (!txtFind->IsEmpty())
 	{
@@ -334,7 +338,7 @@ void Rtt_LinuxConsole::OnBtnFindPreviousClick(wxCommandEvent &event)
 	}
 }
 
-void Rtt_LinuxConsole::OnBtnFindNextClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnFindNextClick(wxCommandEvent& event)
 {
 	if (!txtFind->IsEmpty())
 	{
@@ -364,7 +368,7 @@ void Rtt_LinuxConsole::OnBtnFindNextClick(wxCommandEvent &event)
 	}
 }
 
-void Rtt_LinuxConsole::OnBtnMatchCaseClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnMatchCaseClick(wxCommandEvent& event)
 {
 	consoleLog.buttonMatchCaseOn = !consoleLog.buttonMatchCaseOn;
 	bitmapBtnMatchCase->SetBitmap(consoleLog.buttonMatchCaseOn ? wxIcon(match_case_on_xpm) : wxIcon(match_case_xpm));
@@ -374,7 +378,7 @@ void Rtt_LinuxConsole::OnBtnMatchCaseClick(wxCommandEvent &event)
 	ResetSearch();
 }
 
-void Rtt_LinuxConsole::OnBtnLoopingSearchClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnLoopingSearchClick(wxCommandEvent& event)
 {
 	consoleLog.buttonLoopingSearchOn = !consoleLog.buttonLoopingSearchOn;
 	bitmapBtnLoopingSearch->SetBitmap(consoleLog.buttonLoopingSearchOn ? wxIcon(looping_search_on_xpm) : wxIcon(looping_search_xpm));
@@ -384,7 +388,7 @@ void Rtt_LinuxConsole::OnBtnLoopingSearchClick(wxCommandEvent &event)
 	ResetSearch();
 }
 
-void Rtt_LinuxConsole::OnBtnSaveWindowPosClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnSaveWindowPosClick(wxCommandEvent& event)
 {
 	wxPoint windowPosition = GetPosition();
 	wxSize windowSize = GetSize();
@@ -394,16 +398,16 @@ void Rtt_LinuxConsole::OnBtnSaveWindowPosClick(wxCommandEvent &event)
 	consoleLog.config->Write(wxT(CONFIG_WINDOW_HEIGHT), windowSize.GetHeight());
 	consoleLog.config->Flush();
 
-	wxMessageDialog *msgDialog = new wxMessageDialog(this, "Your window preferences have been saved successfully.", wxT("Window Preferences"), wxOK);
+	wxMessageDialog* msgDialog = new wxMessageDialog(this, "Your window preferences have been saved successfully.", wxT("Window Preferences"), wxOK);
 	msgDialog->ShowModal();
 }
 
-void Rtt_LinuxConsole::OnBtnChangeThemeClick(wxCommandEvent &event)
+void Rtt_LinuxConsole::OnBtnChangeThemeClick(wxCommandEvent& event)
 {
 	dropdownMenu->Show(dropdownMenu->IsShown() ? false : true);
 }
 
-void Rtt_LinuxConsole::OnKeyUp(wxKeyEvent &event)
+void Rtt_LinuxConsole::OnKeyUp(wxKeyEvent& event)
 {
 	if (event.GetKeyCode() == WXK_RETURN)
 	{
@@ -473,15 +477,15 @@ void Rtt_LinuxConsole::HighlightLine(int indicatorNo, wxColour colour)
 
 	switch (indicatorNo)
 	{
-		case ID_INDICATOR_WARNING:
-			textTargetID = ID_INDICATOR_WARNING_TEXT;
-			textTargetColour = *wxBLACK;
-			break;
+	case ID_INDICATOR_WARNING:
+		textTargetID = ID_INDICATOR_WARNING_TEXT;
+		textTargetColour = *wxBLACK;
+		break;
 
-		case ID_INDICATOR_ERROR:
-			textTargetID = ID_INDICATOR_ERROR_TEXT;
-			textTargetColour = *wxWHITE;
-			break;
+	case ID_INDICATOR_ERROR:
+		textTargetID = ID_INDICATOR_ERROR_TEXT;
+		textTargetColour = *wxWHITE;
+		break;
 	}
 
 	if (shouldChangeText)
@@ -531,7 +535,7 @@ void Rtt_LinuxConsole::UpdateLogError(wxString message)
 	UpdateStatusText();
 }
 
-DropdownMenu::DropdownMenu(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style):
+DropdownMenu::DropdownMenu(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
 	wxPanel(parent, id, pos, size, wxBORDER_STATIC)
 {
 	chkLightTheme = new wxCheckBox(this, ID_LIGHT_THEME_MENU_ITEM, wxEmptyString);
@@ -559,11 +563,11 @@ void DropdownMenu::SetProperties()
 
 void DropdownMenu::DoLayout()
 {
-	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer *menu2 = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer *menu1 = new wxBoxSizer(wxHORIZONTAL);
-	wxStaticText *lblMenuThemeLight = new wxStaticText(this, wxID_ANY, wxT("Light Theme"));
-	wxStaticText *lblMenuThemeDark = new wxStaticText(this, wxID_ANY, wxT("Dark Theme"));
+	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* menu2 = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* menu1 = new wxBoxSizer(wxHORIZONTAL);
+	wxStaticText* lblMenuThemeLight = new wxStaticText(this, wxID_ANY, wxT("Light Theme"));
+	wxStaticText* lblMenuThemeDark = new wxStaticText(this, wxID_ANY, wxT("Dark Theme"));
 	lblMenuThemeLight->SetMinSize(wxSize(100, 20));
 	lblMenuThemeDark->SetMinSize(wxSize(100, 20));
 	menu1->Add(chkLightTheme, 0, wxTOP, 2);
@@ -577,11 +581,11 @@ void DropdownMenu::DoLayout()
 }
 
 BEGIN_EVENT_TABLE(DropdownMenu, wxPanel)
-	EVT_CHECKBOX(ID_LIGHT_THEME_MENU_ITEM, DropdownMenu::OnChkLightThemeClicked)
-	EVT_CHECKBOX(ID_DARK_THEME_MENU_ITEM, DropdownMenu::OnChkDarkThemeClicked)
+EVT_CHECKBOX(ID_LIGHT_THEME_MENU_ITEM, DropdownMenu::OnChkLightThemeClicked)
+EVT_CHECKBOX(ID_DARK_THEME_MENU_ITEM, DropdownMenu::OnChkDarkThemeClicked)
 END_EVENT_TABLE();
 
-void DropdownMenu::OnChkLightThemeClicked(wxCommandEvent &event)
+void DropdownMenu::OnChkLightThemeClicked(wxCommandEvent& event)
 {
 	chkDarkTheme->SetValue(false);
 	chkLightTheme->SetValue(true);
@@ -590,7 +594,7 @@ void DropdownMenu::OnChkLightThemeClicked(wxCommandEvent &event)
 	Hide();
 }
 
-void DropdownMenu::OnChkDarkThemeClicked(wxCommandEvent &event)
+void DropdownMenu::OnChkDarkThemeClicked(wxCommandEvent& event)
 {
 	chkLightTheme->SetValue(false);
 	chkDarkTheme->SetValue(true);
