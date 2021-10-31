@@ -1,5 +1,4 @@
 #include "Rtt_LinuxConsole.h"
-#include "Rtt_FileSystem.h"
 #include <sys/time.h>
 #include <wx/statbmp.h>
 #include <wx/config.h>

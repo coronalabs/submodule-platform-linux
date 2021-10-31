@@ -146,7 +146,8 @@ SRCS =	shell.lua \
 		$(ROOT)/resources/valid_build_settings.lua \
 		$(ROOT)/resources/webPackageApp.lua \
 		$(ROOT)/resources/linuxPackageApp.lua \
-		$(ROOT)/../platform/android/create_build_properties.lua
+		$(ROOT)/../platform/android/create_build_properties.lua \
+		$(ROOT)/../tools/CoronaBuilder/CoronaBuilder.lua
 		
 
 CPPS = $(patsubst %.lua, lua/%.cpp, $(notdir $(SRCS)))
