@@ -417,39 +417,10 @@
       <File Name="../../external/ALmixer/Isolated/ALmixer_RWops.c"/>
       <File Name="../../external/ALmixer/ALmixer.c"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="libfreetype2">
-      <File Name="../../external/freetype-2.9/src/base/ftfntfmt.c"/>
-      <File Name="../../external/freetype-2.9/src/base/ftglyph.c"/>
-      <File Name="../../external/freetype-2.9/src/base/ftbitmap.c"/>
-      <File Name="../../external/freetype-2.9/src/base/ftlcdfil.c"/>
-      <File Name="../../external/freetype-2.9/src/cid/type1cid.c"/>
-      <File Name="../../external/freetype-2.9/src/sfnt/sfnt.c"/>
-      <File Name="../../external/freetype-2.9/src/winfonts/winfnt.c"/>
-      <File Name="../../external/freetype-2.9/src/raster/raster.c"/>
-      <File Name="../../external/freetype-2.9/src/truetype/truetype.c"/>
-      <File Name="../../external/freetype-2.9/src/smooth/smooth.c"/>
-      <File Name="../../external/freetype-2.9/src/psnames/psmodule.c"/>
-      <File Name="../../external/freetype-2.9/src/pshinter/pshinter.c"/>
-      <File Name="../../external/freetype-2.9/src/pfr/pfr.c"/>
-      <File Name="../../external/freetype-2.9/src/pcf/pcf.c"/>
-      <File Name="../../external/freetype-2.9/src/gzip/ftgzip.c"/>
-      <File Name="../../external/freetype-2.9/src/type42/type42.c"/>
-      <File Name="../../external/freetype-2.9/src/type1/type1.c"/>
-      <File Name="../../external/freetype-2.9/src/bzip2/ftbzip2.c"/>
-      <File Name="../../external/freetype-2.9/src/lzw/ftlzw.c"/>
-      <File Name="../../external/freetype-2.9/src/psaux/psaux.c"/>
-      <File Name="../../external/freetype-2.9/src/cache/ftcache.c"/>
-      <File Name="../../external/freetype-2.9/src/cff/cff.c"/>
-      <File Name="../../external/freetype-2.9/src/bdf/bdf.c"/>
-      <File Name="../../external/freetype-2.9/src/base/ftsystem.c"/>
-      <File Name="../../external/freetype-2.9/src/base/ftinit.c"/>
-      <File Name="../../external/freetype-2.9/src/base/ftbase.c"/>
-      <File Name="../../external/freetype-2.9/src/autofit/autofit.c"/>
-    </VirtualDirectory>
     <VirtualDirectory Name="rtt">
+      <File Name="../../librtt/Core/Rtt_Assert.c"/>
       <File Name="../shared/Rtt_ProjectSettings.cpp"/>
       <File Name="../shared/Rtt_NativeWindowMode.cpp"/>
-      <File Name="../../librtt/Core/Rtt_Assert.cpp"/>
       <File Name="../../librtt/Rtt_LuaCoronaBaseLib.c"/>
       <VirtualDirectory Name="include">
         <File Name="../shared/Rtt_ProjectSettings.h"/>
@@ -1348,9 +1319,14 @@
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-Wfatal-errors;-O0;-std=c++11;-g3;-Wno-narrowing" C_Options="-O0;-g3;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="/usr/include/AL"/>
+        <IncludePath Value="/usr/include/freetype2"/>
+        <IncludePath Value="/usr/local/lib/wx/include/gtk3-unicode-3.1"/>
+        <IncludePath Value="/usr/local/include/wx-3.1"/>
         <IncludePath Value="."/>
         <IncludePath Value="../../external/lua-5.1.3/src"/>
         <IncludePath Value="../../librtt"/>
+        <IncludePath Value="../../tools/car"/>
         <IncludePath Value="../"/>
         <IncludePath Value="../../external/rsa"/>
         <IncludePath Value="../../plugins/shared"/>
@@ -1358,14 +1334,12 @@
         <IncludePath Value="../../external/Box2D"/>
         <IncludePath Value="../../external/ALmixer"/>
         <IncludePath Value="../../external/ALmixer/Isolated"/>
-        <IncludePath Value="../../external/openal-soft-1.12.854/include/AL"/>
         <IncludePath Value="../../external/LuaHashMap"/>
         <IncludePath Value="../../external/b2Separator-cpp"/>
-        <IncludePath Value="../../external\luafilesystem\src"/>
-        <IncludePath Value="../../external\opengl"/>
+        <IncludePath Value="../../external/luafilesystem/src"/>
+        <IncludePath Value="../../external/opengl"/>
         <IncludePath Value="../shared"/>
         <IncludePath Value="../../external/smoothpolygon"/>
-        <IncludePath Value="../../external/freetype-2.9/include"/>
         <IncludePath Value="../../external/ALmixer"/>
         <IncludePath Value="../../external/ALmixer/Isolated"/>
         <IncludePath Value="../../external/mpg123-1.13.1/src/libmpg123"/>
@@ -1373,8 +1347,6 @@
         <IncludePath Value="../../external/tremor/Tremor"/>
         <IncludePath Value="../../modules/simulator"/>
         <IncludePath Value="../../librtt/Core"/>
-        <IncludePath Value="./curl-7.61.0/include"/>
-        <IncludePath Value="./wx/include"/>
         <IncludePath Value="../android"/>
         <IncludePath Value="../../external/hmac"/>
         <IncludePath Value="/usr/lib/jvm/java-14-openjdk/include/"/>
@@ -1398,7 +1370,6 @@
         <Preprocessor Value="wxUSE_GLCANVAS"/>
         <Preprocessor Value="_DEBUG"/>
         <Preprocessor Value="Rtt_LINUX_ENV"/>
-        <Preprocessor Value="FT2_BUILD_LIBRARY"/>
         <Preprocessor Value="ALMIXER_COMPILE_WITHOUT_SDL"/>
         <Preprocessor Value="SOUND_SUPPORTS_WAV"/>
         <Preprocessor Value="SOUND_SUPPORTS_MPG123"/>
@@ -1409,7 +1380,7 @@
         <Preprocessor Value="NO_REAL"/>
         <Preprocessor Value="ENABLE_ALMIXER_THREADS"/>
       </Compiler>
-      <Linker Options="-export-dynamic ./CryptoPP/libcryptopp.a ./curl-7.61.0/libcurl.a ./openssl-1.0.2o/libssl.a ./openssl-1.0.2o/libcrypto.a ./wx/lib/libwx_gtk3u-3.1.a ./wx/lib/libwx_gtk3u_gl-3.1.a ./wx/lib/libwxtiff-3.1.a ./wx/lib/libwxregexu-3.1.a -lGL -lopenal -lgdk-3 -lpangocairo-1.0 -lgthread-2.0 -pthread -lX11 -lXxf86vm -lSM -lgtk-3 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lfontconfig -lfreetype -lpng -lz -lexpat -ljpeg -ldl -lm -lwebkit2gtk-4.0 -ljavascriptcoregtk-4.0 -lgstreamer-1.0 -lgstvideo-1.0" Required="yes"/>
+      <Linker Options="-ldl -lGL -lz -lpthread -lopenal -lfreetype -lpng -lcrypto++ -lcurl -lgdk-3 -lwx_baseu-3.1 -lwx_baseu_net-3.1 -lwx_gtk3u_adv-3.1 -lwx_gtk3u_gl-3.1 -lwx_gtk3u_media-3.1 -lwx_gtk3u_core-3.1 -lwx_gtk3u_html-3.1 -lwx_gtk3u_stc-3.1 -lwx_gtk3u_webview-3.1" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(ProjectName)/$(ProjectName)" IntermediateDirectory="./Simulator" Command="../$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(ProjectName)/" PauseExecWhenProcTerminates="yes" IsGUIProgram="yes" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
@@ -1422,7 +1393,7 @@
         <StartupCommands/>
       </Debugger>
       <PreBuild>
-        <Command Enabled="yes">make -f Solar2DConsole.mk</Command>
+        <Command Enabled="no"># make -f Solar2DConsole.mk</Command>
         <Command Enabled="yes">make -f lua2cpp.mk</Command>
       </PreBuild>
       <PostBuild>

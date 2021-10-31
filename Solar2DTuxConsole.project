@@ -42,7 +42,8 @@
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O0;-g3;-std=c++11;-Wfatal-errors;-Wno-narrowing" C_Options="-O0;-g3;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="./wx/include"/>
+        <IncludePath Value="/usr/local/lib/wx/include/gtk3-unicode-3.1"/>
+        <IncludePath Value="/usr/local/include/wx-3.1"/>
         <Preprocessor Value="wxUSE_MEDIACTRL=1"/>
         <Preprocessor Value="wxUSE_WEBVIEW=1"/>
         <Preprocessor Value="__WXGTK__"/>
@@ -57,9 +58,8 @@
         <Preprocessor Value="wxUSE_UNSAFE_WXSTRING_CONV"/>
         <Preprocessor Value="wxUSE_STD_CONTAINERS_COMPATIBLY"/>
         <Preprocessor Value="wxUSE_GLCANVAS"/>
-        <Preprocessor Value="FT2_BUILD_LIBRARY"/>
       </Compiler>
-      <Linker Options="-export-dynamic ./wx/lib/libwx_gtk3u-3.1.a ./wx/lib/libwx_gtk3u_gl-3.1.a ./wx/lib/libwxtiff-3.1.a ./wx/lib/libwxregexu-3.1.a ./wx/lib/libwxscintilla-3.1.a -lGL -lopenal -lgdk-3 -lpangocairo-1.0 -lgthread-2.0 -pthread -lX11 -lXxf86vm -lSM -lgtk-3 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lfontconfig -lfreetype -lpng -lz -lexpat -ljpeg -ldl -lm -lwebkit2gtk-4.0 -ljavascriptcoregtk-4.0 -lgstreamer-1.0 -lgstvideo-1.0" Required="yes"/>
+      <Linker Options="-lgdk-3 -lwx_baseu-3.1 -lwx_baseu_net-3.1 -lwx_gtk3u_adv-3.1 -lwx_gtk3u_gl-3.1 -lwx_gtk3u_media-3.1 -lwx_gtk3u_core-3.1 -lwx_gtk3u_html-3.1 -lwx_gtk3u_stc-3.1 -lwx_gtk3u_webview-3.1" Required="yes"/>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="Solar2DSimulator/$(ProjectName)" IntermediateDirectory="./Console" Command="../$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="Solar2DSimulator" PauseExecWhenProcTerminates="no" IsGUIProgram="yes" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
