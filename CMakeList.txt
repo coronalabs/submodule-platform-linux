@@ -78,6 +78,8 @@ include_directories (
 	${CORONA_ROOT}/external/openal-soft/include/AL
 	${CORONA_ROOT}/external/ALmixer
 	${CORONA_ROOT}/external/ALmixer/Isolated
+	${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123
+	${CORONA_ROOT}/external/tremor/Tremor
 	${CORONA_ROOT}/external/luasocket/src
 	${CORONA_ROOT}/external/lpeg
 	${CORONA_ROOT}/external/luafilesystem/src
@@ -797,7 +799,7 @@ add_executable( Solar2D
 		${CORONA_ROOT}/external/lua-5.1.3/src/lzio.c
 		${CORONA_ROOT}/external/lua-5.1.3/src/print.c
 
-		# ALmixer
+		# ALmixer + mp3
 		${CORONA_ROOT}/external/ALmixer/ALmixer.c
 		${CORONA_ROOT}/external/ALmixer/CircularQueue.c
 		${CORONA_ROOT}/external/ALmixer/LinkedList.c
@@ -812,6 +814,7 @@ add_executable( Solar2D
 		${CORONA_ROOT}/external/ALmixer/Isolated/LGPL/oggtremor.c
 		${CORONA_ROOT}/external/ALmixer/Isolated/LGPL/wav.c
 		${CORONA_ROOT}/external/ALmixer/Isolated/LGPL/SDL_sound_minimal.c
+
 		${CORONA_ROOT}/external/tremor/Tremor/bitwise.c
 		${CORONA_ROOT}/external/tremor/Tremor/codebook.c
 		${CORONA_ROOT}/external/tremor/Tremor/dsp.c
@@ -826,6 +829,29 @@ add_executable( Solar2D
 		${CORONA_ROOT}/external/tremor/Tremor/res012.c
 		${CORONA_ROOT}/external/tremor/Tremor/vorbisfile.c
 
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/compat.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/dct64.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/equalizer.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/feature.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/format.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/frame.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/icy.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/icy2utf8.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/id3.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/index.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/layer1.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/layer2.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/layer3.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/libmpg123.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/ntom.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/optimize.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/parse.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/readers.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/stringbuf.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/synth.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/synth_8bit.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/synth_s32.c
+		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/tabinit.c
 
 		# Solar2D Linux specific files
 #		${CORONA_ROOT}/platform/linux/main.cpp
@@ -901,8 +927,8 @@ target_compile_definitions( Solar2D PUBLIC
 	__WXGTK__ HAVE_SSIZE_T wxUSE_XTEST wxHAS_INOTIFY wxUSE_SELECT_DISPATCHER WXWIN_COMPATIBILITY_3_0 
 	wxUSE_PRIVATE_FONTS wxUSE_ACTIVITYINDICATOR wxUSE_ADDREMOVECTRL wxUSE_UNSAFE_WXSTRING_CONV
 	wxUSE_STD_CONTAINERS_COMPATIBLY wxUSE_GLCANVAS 
-	_DEBUG Rtt_LINUX_ENV ALMIXER_COMPILE_WITHOUT_SDL SOUND_SUPPORTS_WAV
-	OPT_GENERIC HAVE_STRERROR NO_REAL ENABLE_ALMIXER_THREADS
+	_DEBUG Rtt_LINUX_ENV ALMIXER_COMPILE_WITHOUT_SDL SOUND_SUPPORTS_WAV SOUND_SUPPORTS_MPG123 SOUND_SUPPORTS_OGG
+	OPT_GENERIC HAVE_STRERROR NO_REAL ENABLE_ALMIXER_THREADS LINUX_LIB
 	) 
 
 target_compile_definitions( Solar2DConsole PUBLIC
