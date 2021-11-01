@@ -1,0 +1,42 @@
+settings =
+{
+	orientation =
+	{
+		default = "portrait",
+		supported = { "portrait" }
+	},
+	window =
+	{
+		defaultMode = "normal",
+		minViewWidth = 640,
+		minViewHeight = 480,
+		defaultViewWidth = 640,
+		defaultViewHeight = 480,
+		resizable = false,
+		enableMinimizeButton = true,
+		enableMaximizeButton = false,
+		enableCloseButton = true,
+		suspendWhenMinimized = false,
+		titleText = {
+			default = "Solar2DTux Simulator", -- if not language specific entry is found
+			["en‐us"] = "Solar2DTux Simulator", -- USA
+			["en‐gb"] = "Solar2DTux Simulator", -- britain
+			["en"] = "Solar2DTux Simulator", -- general english
+			["de"] = "Solar2DTux Simulator", -- german
+			["fr"] = "Solar2DTux Simulator", -- french
+			["es"] = "Solar2DTux Simulator", -- spanish
+			["pt"] = "Solar2DTux Simulator", -- portugese
+			["it"] = "Solar2DTux Simulator", -- italian
+			["nl"] = "Solar2DTux Simulator", -- dutch
+			["pl"] = "Solar2DTux Simulator", -- polish
+			["ru"] = "Solar2DTux Simulator", -- russian
+			["da"] = "Solar2DTux Simulator", -- danish
+			["fi"] = "Solar2DTux Simulator", -- finnish
+			["el"] = "Solar2DTux Simulator", -- greek
+			["no"] = "Solar2DTux Simulator", -- norwegian
+			["ro"] = "Solar2DTux Simulator", -- romanian
+			["sv"] = "Solar2DTux Simulator", -- swedish
+			["tr"] = "Solar2DTux Simulator", -- turkish
+		},
+	},
+}
