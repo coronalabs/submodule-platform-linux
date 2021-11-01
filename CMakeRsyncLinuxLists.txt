@@ -9,6 +9,7 @@
 + librtt/***
 + plugins/***
 + modules/***
++ tools/***
 
 + platform/
 + platform/linux/***
