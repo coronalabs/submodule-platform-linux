@@ -345,7 +345,7 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/librtt/Core/Rtt_Allocator.cpp
 		${CORONA_ROOT}/librtt/Core/Rtt_Array.cpp
 		${CORONA_ROOT}/librtt/Core/Rtt_ArrayTuple.cpp
-		${CORONA_ROOT}/librtt/Core/Rtt_Assert.c
+#		${CORONA_ROOT}/librtt/Core/Rtt_Assert.c
 		${CORONA_ROOT}/librtt/Core/Rtt_AutoResource.cpp 
 		${CORONA_ROOT}/librtt/Core/Rtt_FileSystem.cpp
 		${CORONA_ROOT}/librtt/Core/Rtt_Fixed.c
@@ -858,6 +858,7 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/tabinit.c
 
 		# Common Linux specific files
+		${CORONA_ROOT}/platform/linux/Rtt_Assert.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_Freetype.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_LinuxFileUtils.cpp
 		${CORONA_ROOT}/platform/linux/Rtt_HTTPClientLinux.cpp
