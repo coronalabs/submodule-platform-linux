@@ -8,6 +8,7 @@
 #include "Rtt_LinuxPreferencesDialog.h"
 #include "Rtt_LinuxBuildDialog.h"
 #include "Rtt_AndroidBuildDialog.h"
+#include "Rtt_WebBuildDialog.h"
 #include "Rtt_LinuxClearSandboxDialog.h"
 #include "Rtt_ConsoleApp.h"
 #include "wx/aboutdlg.h"
@@ -196,7 +197,11 @@ void LinuxMenuEvents::OnBuildForAndroid(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnBuildForWeb(wxCommandEvent &event)
 {
-	// todo
+	wxGetApp().GetFrame()->CreateSuspendedPanel();
+	Rtt::WebBuildDialog* webBuildDialog = new Rtt::WebBuildDialog(wxGetApp().GetFrame(), -1, wxEmptyString, wxDefaultPosition, wxSize(550, 330));
+	webBuildDialog->SetAppContext(wxGetApp().GetFrame()->GetContext());
+	webBuildDialog->ShowModal();
+	webBuildDialog->Destroy();
 }
 
 void LinuxMenuEvents::OnBuildForLinux(wxCommandEvent &event)

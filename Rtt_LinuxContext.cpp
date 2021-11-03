@@ -913,7 +913,6 @@ void SolarFrame::CreateMenus()
 			wxMenuItem *buildForARM = buildForLinuxMenu->Append(ID_MENU_BUILD_LINUX, _T("ARM	\tCtrl-Alt-A"));
 			buildMenu->AppendSubMenu(buildForLinuxMenu, _T("&Linux"));
 			fileMenu->AppendSubMenu(buildMenu, _T("&Build"));
-			buildForWeb->Enable(false);
 			buildForARM->Enable(false);
 
 			fileMenu->Append(ID_MENU_OPEN_IN_EDITOR, _T("&Open In Editor	\tCtrl-Shift-O"));
