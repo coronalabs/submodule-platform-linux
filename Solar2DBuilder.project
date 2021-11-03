@@ -285,10 +285,6 @@
         <File Name="../../external/luasocket/src/usocket.h"/>
       </VirtualDirectory>
       <File Name="../../external/luasocket/src/select.c"/>
-      <File Name="lua/socket/ltn12.c"/>
-      <File Name="lua/socket/http.c"/>
-      <File Name="lua/socket/headers.c"/>
-      <File Name="lua/socket/ftp.c"/>
       <File Name="../../external/luasocket/src/usocket.c"/>
       <File Name="../../external/luasocket/src/udp.c"/>
       <File Name="../../external/luasocket/src/timeout.c"/>

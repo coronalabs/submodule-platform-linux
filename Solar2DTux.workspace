@@ -3,7 +3,6 @@
   <Project Name="Solar2DSimulator" Path="linux_rtt.project" Active="Yes"/>
   <Project Name="car" Path="car.project" Active="No"/>
   <Project Name="Solar2DConsole" Path="Solar2DTuxConsole.project" Active="No"/>
-  <Project Name="Solar2DBuilder" Path="Solar2DBuilder.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
@@ -11,21 +10,18 @@
       <Project Name="Solar2DSimulator" ConfigName="Release"/>
       <Project Name="Solar2DConsole" ConfigName="Release"/>
       <Project Name="Solar2DBuilder" ConfigName="Release"/>
-      <Project Name="Solar2DBuilder" ConfigName="Release"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="car" ConfigName="Debug"/>
-      <Project Name="Solar2DBuilder" ConfigName="Debug"/>
       <Project Name="Solar2DConsole" ConfigName="Debug"/>
       <Project Name="Solar2DSimulator" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="x64Template" Selected="no">
+    <WorkspaceConfiguration Name="x64Template" Selected="yes">
       <Environment/>
       <Project Name="car" ConfigName="Release"/>
       <Project Name="Solar2DSimulator" ConfigName="X64 Template"/>
       <Project Name="Solar2DConsole" ConfigName="x64 Template"/>
-      <Project Name="Solar2DBuilder" ConfigName="Debug"/>
       <Project Name="Solar2DBuilder" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>

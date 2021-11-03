@@ -147,8 +147,20 @@ SRCS =	shell.lua \
 		$(ROOT)/resources/webPackageApp.lua \
 		$(ROOT)/resources/linuxPackageApp.lua \
 		$(ROOT)/../platform/android/create_build_properties.lua \
-		$(ROOT)/../tools/CoronaBuilder/CoronaBuilder.lua
-		
+		$(ROOT)/../tools/CoronaBuilder/CoronaBuilder.lua \
+		\
+		$(ROOT)/../external/luasocket/src/ftp.lua \
+		$(ROOT)/../external/luasocket/src/headers.lua \
+		$(ROOT)/../external/luasocket/src/http.lua \
+		$(ROOT)/../external/luasocket/src/ltn12.lua \
+		$(ROOT)/../external/luasocket/src/mbox.lua \
+		$(ROOT)/../external/luasocket/src/mime.lua \
+		$(ROOT)/../external/luasocket/src/smtp.lua \
+		$(ROOT)/../external/luasocket/src/socket.lua \
+		$(ROOT)/../external/luasocket/src/ssl.lua \
+		$(ROOT)/../external/luasocket/src/tp.lua \
+		$(ROOT)/../external/luasocket/src/url.lua \
+	
 
 CPPS = $(patsubst %.lua, lua/%.cpp, $(notdir $(SRCS)))
 
@@ -174,12 +186,12 @@ ifeq ($(shell uname -s),Darwin)
 	PLATFORMDIR = ../../bin/mac
 endif
 
-SOCKET_FILES = ftp headers http ltn12 mbox mime smtp socket ssl tp url
-SOCKET_DST = $(patsubst %, lua/socket/%.c, $(SOCKET_FILES))
+#SOCKET_FILES = ftp headers http ltn12 mbox mime smtp socket ssl tp url
+#SOCKET_DST = $(patsubst %, lua/socket/%.c, $(SOCKET_FILES))
 
-lua/socket/%.c : ../../external/luasocket/src/%.lua
-	@mkdir -p lua/socket/
-	$(PLATFORMDIR)/lua2c.sh $< lua/socket/. "$(UPPER_CONFIG)" "$(PLATFORMDIR)"
+#lua/socket/%.c : ../../external/luasocket/src/%.lua
+#	@mkdir -p lua/socket/
+#	$(PLATFORMDIR)/lua2c.sh $< lua/socket/. "$(UPPER_CONFIG)" "$(PLATFORMDIR)"
 
 
 # weird luaload renames

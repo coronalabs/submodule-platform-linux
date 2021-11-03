@@ -16,6 +16,8 @@
       <File Name="../shared/ListKeyStore.cpp" ExcludeProjConfig=""/>
     </VirtualDirectory>
     <VirtualDirectory Name="linux">
+      <File Name="Rtt_WebBuildDialog.h"/>
+      <File Name="Rtt_WebBuildDialog.cpp"/>
       <File Name="Rtt_LinuxUtils.cpp"/>
       <File Name="Rtt_LinuxMenuEvents.cpp"/>
       <File Name="Rtt_LinuxMouseListener.cpp"/>
@@ -122,6 +124,17 @@
       <File Name="Rtt_LinuxAudioRecorder.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="luasockets">
+      <File Name="lua/ftp.cpp"/>
+      <File Name="lua/headers.cpp"/>
+      <File Name="lua/http.cpp"/>
+      <File Name="lua/ltn12.cpp"/>
+      <File Name="lua/mbox.cpp"/>
+      <File Name="lua/mime.cpp"/>
+      <File Name="lua/smtp.cpp"/>
+      <File Name="lua/socket.cpp"/>
+      <File Name="lua/ssl.cpp"/>
+      <File Name="lua/tp.cpp"/>
+      <File Name="lua/url.cpp"/>
       <VirtualDirectory Name="include">
         <File Name="../../external/luasocket/src/auxiliar.h"/>
         <File Name="../../external/luasocket/src/buffer.h"/>
@@ -139,10 +152,6 @@
         <File Name="../../external/luasocket/src/usocket.h"/>
       </VirtualDirectory>
       <File Name="../../external/luasocket/src/select.c"/>
-      <File Name="lua/socket/ltn12.c"/>
-      <File Name="lua/socket/http.c"/>
-      <File Name="lua/socket/headers.c"/>
-      <File Name="lua/socket/ftp.c"/>
       <File Name="../../external/luasocket/src/usocket.c"/>
       <File Name="../../external/luasocket/src/udp.c"/>
       <File Name="../../external/luasocket/src/timeout.c"/>
@@ -720,13 +729,6 @@
       <File Name="../../librtt/Display/Rtt_BitmapMask.cpp"/>
       <File Name="../../external/LuaHashMap/LuaHashMap.c"/>
       <File Name="../../external/ALmixer/luaal.c"/>
-      <File Name="lua/socket/url.c"/>
-      <File Name="lua/socket/tp.c"/>
-      <File Name="lua/socket/ssl.c"/>
-      <File Name="lua/socket/socket.c"/>
-      <File Name="lua/socket/smtp.c"/>
-      <File Name="lua/socket/mime.c"/>
-      <File Name="lua/socket/mbox.c"/>
       <File Name="lua/widget_theme_ios_sheet.cpp"/>
       <File Name="lua/widget_theme_ios7_sheet.cpp"/>
       <File Name="lua/widget_theme_ios7.cpp"/>
@@ -1139,9 +1141,6 @@
     <File Name="main.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="ARM"/>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="X64 Template"/>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="-std=c++11" C_Options="" Assembler="">
@@ -1471,4 +1470,7 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="X64 Template"/>
 </CodeLite_Project>
