@@ -268,6 +268,10 @@
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="luasockets">
+      <File Name="lua/ltn12.cpp"/>
+      <File Name="lua/http.cpp"/>
+      <File Name="lua/headers.cpp"/>
+      <File Name="lua/ftp.cpp"/>
       <VirtualDirectory Name="include">
         <File Name="../../external/luasocket/src/auxiliar.h"/>
         <File Name="../../external/luasocket/src/buffer.h"/>
@@ -863,13 +867,13 @@
       <File Name="../../librtt/Display/Rtt_BitmapMask.cpp"/>
       <File Name="../../external/LuaHashMap/LuaHashMap.c"/>
       <File Name="../../external/ALmixer/luaal.c"/>
-      <File Name="lua/socket/url.c"/>
-      <File Name="lua/socket/tp.c"/>
-      <File Name="lua/socket/ssl.c"/>
-      <File Name="lua/socket/socket.c"/>
-      <File Name="lua/socket/smtp.c"/>
-      <File Name="lua/socket/mime.c"/>
-      <File Name="lua/socket/mbox.c"/>
+      <File Name="lua/url.cpp"/>
+      <File Name="lua/tp.cpp"/>
+      <File Name="lua/ssl.cpp"/>
+      <File Name="lua/socket.cpp"/>
+      <File Name="lua/smtp.cpp"/>
+      <File Name="lua/mime.cpp"/>
+      <File Name="lua/mbox.cpp"/>
       <File Name="lua/widget_theme_ios_sheet.cpp"/>
       <File Name="lua/widget_theme_ios7_sheet.cpp"/>
       <File Name="lua/widget_theme_ios7.cpp"/>
@@ -1370,7 +1374,9 @@
         <Command Enabled="yes">make -f lua2cpp.mk</Command>
       </PreBuild>
       <PostBuild>
-        <Command Enabled="yes">cd Solar2DSimulator&amp;&amp; mv $(ProjectName) ~/.local/share/Corona/Native/Corona/lin/bin/</Command>
+        <Command Enabled="yes">mkdir -p ~/.local/share/Corona/Native/Corona/lin/bin</Command>
+        <Command Enabled="yes">ls</Command>
+        <Command Enabled="yes">cp -rf Solar2DSimulator/$(ProjectName) ~/.local/share/Corona/Native/Corona/lin/bin/</Command>
       </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
