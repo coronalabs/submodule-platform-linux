@@ -151,12 +151,12 @@ namespace Rtt
 						FT_New_Face(m_lib, defaultFontFile, 0, &face);
 						if (face == NULL)
 						{
-							Rtt_LogException("Failed to open font file '%s%s'\n", m_base_dir.c_str(), fontname.c_str());
+							Rtt_Log("WARNING: Cannot open '%s%s'\n", m_base_dir.c_str(), fontname.c_str());
 							return NULL;
 						}
 						else
 						{
-							Rtt_LogException("Failed to open font file '%s%s', used default font file '%s'\n", m_base_dir.c_str(), fontname.c_str(), defaultFontFile);
+							Rtt_Log("WARNING: Cannot open '%s%s', used default font file '%s'\n", m_base_dir.c_str(), fontname.c_str(), defaultFontFile);
 						}
 					}
 				}
