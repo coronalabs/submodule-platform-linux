@@ -1141,6 +1141,9 @@
     <File Name="main.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="ARM"/>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="X64 Template"/>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="-std=c++11" C_Options="" Assembler="">
@@ -1214,7 +1217,7 @@
       </Compiler>
       <Linker Options="-ldl -lGL -lz -lpthread -lopenal -lfreetype -lpng -lcrypto++ -lcurl -lgdk-3 -lwx_baseu-3.1 -lwx_baseu_net-3.1 -lwx_gtk3u_adv-3.1 -lwx_gtk3u_gl-3.1 -lwx_gtk3u_media-3.1 -lwx_gtk3u_core-3.1 -lwx_gtk3u_html-3.1 -lwx_gtk3u_stc-3.1 -lwx_gtk3u_webview-3.1" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(ProjectName)/$(ProjectName)" IntermediateDirectory="./Simulator" Command="../$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(ProjectName)/" PauseExecWhenProcTerminates="yes" IsGUIProgram="yes" IsEnabled="yes"/>
+      <General OutputFile="CoronaSimulator/$(ProjectName)" IntermediateDirectory="./Simulator" Command="CoronaSimulator/$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="Solar2D" PauseExecWhenProcTerminates="yes" IsGUIProgram="yes" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[-j8]]>
@@ -1470,7 +1473,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="X64 Template"/>
 </CodeLite_Project>
