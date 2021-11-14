@@ -56,14 +56,14 @@ static bool IsHomeScreen(string appName)
 
 namespace Rtt
 {
-	static ProjectSettings *fProjectSettings;
+	static ProjectSettings* fProjectSettings;
 
-	SolarAppContext::SolarAppContext(const char *path)
+	SolarAppContext::SolarAppContext(const char* path)
 		: fRuntime(NULL), fRuntimeDelegate(new LinuxRuntimeDelegate()), fMouseListener(NULL), fKeyListener(NULL), fPlatform(NULL), fTouchDeviceExist(false), fMode("normal"), fIsDebApp(false), fSimulator(NULL), fIsStarted(false)
 	{
 		string exeFileName;
-		const char *homeDir = LinuxFileUtils::GetHomePath();
-		const char *appPath = LinuxFileUtils::GetStartupPath(&exeFileName);
+		const char* homeDir = LinuxFileUtils::GetHomePath();
+		const char* appPath = LinuxFileUtils::GetStartupPath(&exeFileName);
 
 		// override appPath if arg isn't null
 		if (path && *path != 0)
@@ -79,7 +79,7 @@ namespace Rtt
 		}
 		else
 		{
-			const char *slash = strrchr(appPath, '/');
+			const char* slash = strrchr(appPath, '/');
 
 			if (slash)
 			{
@@ -163,7 +163,7 @@ namespace Rtt
 
 	bool SolarAppContext::Init()
 	{
-		const char *homeDir = LinuxFileUtils::GetHomePath();
+		const char* homeDir = LinuxFileUtils::GetHomePath();
 		string appDir(homeDir);
 
 		if (LinuxSimulatorView::IsRunningOnSimulator())
@@ -285,8 +285,8 @@ namespace Rtt
 			string countryCode = localeName.ToStdString().substr(3, 5);
 			int minWidth = fProjectSettings->GetMinWindowViewWidth();
 			int minHeight = fProjectSettings->GetMinWindowViewHeight();
-			const char *windowTitle = fProjectSettings->GetWindowTitleTextForLocale(langCode.c_str(), countryCode.c_str());
-			const Rtt::NativeWindowMode *nativeWindowMode = fProjectSettings->GetDefaultWindowMode();
+			const char* windowTitle = fProjectSettings->GetWindowTitleTextForLocale(langCode.c_str(), countryCode.c_str());
+			const Rtt::NativeWindowMode* nativeWindowMode = fProjectSettings->GetDefaultWindowMode();
 			DeviceOrientation::Type orientation = fProjectSettings->GetDefaultOrientation();
 
 			if (windowTitle != NULL)
@@ -340,69 +340,69 @@ namespace Rtt
 				}
 			}
 
-			switch(orientation)
+			switch (orientation)
 			{
-				case DeviceOrientation::kSidewaysRight:
-					fRuntimeDelegate->fOrientation = DeviceOrientation::kSidewaysRight; // bottom of device is to the right
+			case DeviceOrientation::kSidewaysRight:
+				fRuntimeDelegate->fOrientation = DeviceOrientation::kSidewaysRight; // bottom of device is to the right
 
-					if (width > 0 && height > 0)
-					{
-						fRuntimeDelegate->fContentWidth = width;
-						fRuntimeDelegate->fContentHeight = height;
-					}
-					else
-					{
-						// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
-						// use swapped default settings
-						Swap(fRuntimeDelegate->fContentWidth, fRuntimeDelegate->fContentHeight);
-					}
-					break;
+				if (width > 0 && height > 0)
+				{
+					fRuntimeDelegate->fContentWidth = width;
+					fRuntimeDelegate->fContentHeight = height;
+				}
+				else
+				{
+					// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
+					// use swapped default settings
+					Swap(fRuntimeDelegate->fContentWidth, fRuntimeDelegate->fContentHeight);
+				}
+				break;
 
-				case DeviceOrientation::kSidewaysLeft:
-					fRuntimeDelegate->fOrientation = DeviceOrientation::kSidewaysLeft; // bottom of device is to the left
+			case DeviceOrientation::kSidewaysLeft:
+				fRuntimeDelegate->fOrientation = DeviceOrientation::kSidewaysLeft; // bottom of device is to the left
 
-					if (width > 0 && height > 0)
-					{
-						fRuntimeDelegate->fContentWidth = width;
-						fRuntimeDelegate->fContentHeight = height;
-					}
-					else
-					{
-						// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
-						// use swapped default settings
-						Swap(fRuntimeDelegate->fContentWidth, fRuntimeDelegate->fContentHeight);
-					}
-					break;
+				if (width > 0 && height > 0)
+				{
+					fRuntimeDelegate->fContentWidth = width;
+					fRuntimeDelegate->fContentHeight = height;
+				}
+				else
+				{
+					// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
+					// use swapped default settings
+					Swap(fRuntimeDelegate->fContentWidth, fRuntimeDelegate->fContentHeight);
+				}
+				break;
 
-				case DeviceOrientation::kUpright:
-					fRuntimeDelegate->fOrientation = DeviceOrientation::kUpright; // bottom of device is at the bottom
+			case DeviceOrientation::kUpright:
+				fRuntimeDelegate->fOrientation = DeviceOrientation::kUpright; // bottom of device is at the bottom
 
-					if (width > 0 && height > 0)
-					{
-						fRuntimeDelegate->fContentWidth = width;
-						fRuntimeDelegate->fContentHeight = height;
-					}
-					else
-					{
-						// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
-						// use default settings
-					}
-					break;
+				if (width > 0 && height > 0)
+				{
+					fRuntimeDelegate->fContentWidth = width;
+					fRuntimeDelegate->fContentHeight = height;
+				}
+				else
+				{
+					// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
+					// use default settings
+				}
+				break;
 
-				case DeviceOrientation::kUpsideDown:
-					fRuntimeDelegate->fOrientation = DeviceOrientation::kUpsideDown; // bottom of device is at the top
+			case DeviceOrientation::kUpsideDown:
+				fRuntimeDelegate->fOrientation = DeviceOrientation::kUpsideDown; // bottom of device is at the top
 
-					if (width > 0 && height > 0)
-					{
-						fRuntimeDelegate->fContentWidth = width;
-						fRuntimeDelegate->fContentHeight = height;
-					}
-					else
-					{
-						// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
-						// use default settings
-					}
-					break;
+				if (width > 0 && height > 0)
+				{
+					fRuntimeDelegate->fContentWidth = width;
+					fRuntimeDelegate->fContentHeight = height;
+				}
+				else
+				{
+					// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
+					// use default settings
+				}
+				break;
 			}
 		}
 
@@ -416,14 +416,14 @@ namespace Rtt
 		fKeyListener = new LinuxKeyListener(*fRuntime);
 
 		// Initialize Joystick Support:
-		LinuxInputDeviceManager &deviceManager = (LinuxInputDeviceManager &)fPlatform->GetDevice().GetInputDeviceManager();
+		LinuxInputDeviceManager& deviceManager = (LinuxInputDeviceManager&)fPlatform->GetDevice().GetInputDeviceManager();
 		deviceManager.init();
 		wxGetApp().GetParent()->Layout();
 
 		return fullScreen;
 	}
 
-	bool SolarAppContext::LoadApp(SolarGLCanvas *canvas)
+	bool SolarAppContext::LoadApp(SolarGLCanvas* canvas)
 	{
 		fCanvas = canvas;
 
@@ -449,7 +449,7 @@ namespace Rtt
 		if (LinuxSimulatorView::IsRunningOnSimulator())
 		{
 			fSimulator = new LinuxSimulatorServices();
-			lua_State *luaStatePointer = fRuntime->VMContext().L();
+			lua_State* luaStatePointer = fRuntime->VMContext().L();
 			lua_pushlightuserdata(luaStatePointer, fSimulator);
 			Rtt::LuaContext::RegisterModuleLoader(luaStatePointer, Rtt::LuaLibSimulator::kName, Rtt::LuaLibSimulator::Open, 1);
 		}
@@ -492,7 +492,7 @@ namespace Rtt
 // App implementation
 SolarApp::SolarApp()
 {
-	const char *homeDir = LinuxFileUtils::GetHomePath();
+	const char* homeDir = LinuxFileUtils::GetHomePath();
 	string basePath(homeDir);
 	string sandboxPath(homeDir);
 	string pluginPath(homeDir);
@@ -582,7 +582,7 @@ bool SolarApp::OnInit()
 		// grab the build settings (we only need width/height at this stage)
 		if (fProjectSettings->HasBuildSettings())
 		{
-			const Rtt::NativeWindowMode *nativeWindowMode = fProjectSettings->GetDefaultWindowMode();
+			const Rtt::NativeWindowMode* nativeWindowMode = fProjectSettings->GetDefaultWindowMode();
 			bool isWindowMinimizeButtonEnabled = fProjectSettings->IsWindowMinimizeButtonEnabled();
 			bool isWindowMaximizeButtonEnabled = fProjectSettings->IsWindowMaximizeButtonEnabled();
 			bool isWindowCloseButtonEnabled = fProjectSettings->IsWindowCloseButtonEnabled();
@@ -697,7 +697,7 @@ bool SolarApp::OnInit()
 	return false;
 }
 
-void SolarApp::OnEventLoopEnter(wxEventLoopBase *WXUNUSED(loop))
+void SolarApp::OnEventLoopEnter(wxEventLoopBase* WXUNUSED(loop))
 {
 	static bool firstRun = true;
 
@@ -721,34 +721,34 @@ void SolarApp::OnEventLoopEnter(wxEventLoopBase *WXUNUSED(loop))
 	}
 }
 
-wxWindow *SolarApp::GetParent()
+wxWindow* SolarApp::GetParent()
 {
 	return GetFrame();
 }
 
-LinuxPlatform *SolarApp::GetPlatform() const
+LinuxPlatform* SolarApp::GetPlatform() const
 {
 	return fSolarFrame->GetContext()->GetPlatform();
 }
 
 // setup frame events
 wxBEGIN_EVENT_TABLE(SolarFrame, wxFrame)
-	EVT_MENU(ID_MENU_OPEN_WELCOME_SCREEN, SolarFrame::OnOpenWelcome)
-	EVT_MENU(ID_MENU_RELAUNCH_PROJECT, SolarFrame::OnRelaunch)
-	EVT_MENU(ID_MENU_SUSPEND, SolarFrame::OnSuspendOrResume)
-	EVT_MENU(ID_MENU_CLOSE_PROJECT, SolarFrame::OnOpenWelcome)
-	EVT_MENU(ID_MENU_ZOOM_IN, SolarFrame::OnZoomIn)
-	EVT_MENU(ID_MENU_ZOOM_OUT, SolarFrame::OnZoomOut)
-	EVT_COMMAND(wxID_ANY, eventOpenProject, SolarFrame::OnOpen)
-	EVT_COMMAND(wxID_ANY, eventRelaunchProject, SolarFrame::OnRelaunch)
-	EVT_COMMAND(wxID_ANY, eventWelcomeProject, SolarFrame::OnOpenWelcome)
-	EVT_ICONIZE(SolarFrame::OnIconized)
-	EVT_CLOSE(SolarFrame::OnClose)
+EVT_MENU(ID_MENU_OPEN_WELCOME_SCREEN, SolarFrame::OnOpenWelcome)
+EVT_MENU(ID_MENU_RELAUNCH_PROJECT, SolarFrame::OnRelaunch)
+EVT_MENU(ID_MENU_SUSPEND, SolarFrame::OnSuspendOrResume)
+EVT_MENU(ID_MENU_CLOSE_PROJECT, SolarFrame::OnOpenWelcome)
+EVT_MENU(ID_MENU_ZOOM_IN, SolarFrame::OnZoomIn)
+EVT_MENU(ID_MENU_ZOOM_OUT, SolarFrame::OnZoomOut)
+EVT_COMMAND(wxID_ANY, eventOpenProject, SolarFrame::OnOpen)
+EVT_COMMAND(wxID_ANY, eventRelaunchProject, SolarFrame::OnRelaunch)
+EVT_COMMAND(wxID_ANY, eventWelcomeProject, SolarFrame::OnOpenWelcome)
+EVT_ICONIZE(SolarFrame::OnIconized)
+EVT_CLOSE(SolarFrame::OnClose)
 wxEND_EVENT_TABLE()
 
 SolarFrame::SolarFrame(int style)
 	: wxFrame(NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(320, 480), style), fSolarGLCanvas(NULL), fContext(NULL), fMenuMain(NULL), fMenuProject(NULL), fWatcher(NULL),
-	  fProjectPath("")
+	fProjectPath("")
 {
 #ifdef Rtt_SIMULATOR
 	SetIcon(simulator_xpm);
@@ -778,7 +778,7 @@ SolarFrame::SolarFrame(int style)
 	CreateMenus();
 	fSolarGLCanvas = new SolarGLCanvas(this, vAttrs);
 	fRelaunchProjectDialog = new LinuxRelaunchProjectDialog(NULL, wxID_ANY, wxEmptyString);
-	const char *homeDir = LinuxFileUtils::GetHomePath();
+	const char* homeDir = LinuxFileUtils::GetHomePath();
 	fProjectPath = string(homeDir);
 	fProjectPath.append("/Documents/Solar2D Projects");
 
@@ -824,7 +824,7 @@ SolarFrame::~SolarFrame()
 	delete fMenuProject;
 }
 
-void SolarFrame::WatchFolder(const char *path, const char *appName)
+void SolarFrame::WatchFolder(const char* path, const char* appName)
 {
 	if (IsHomeScreen(string(appName)))
 	{
@@ -868,7 +868,7 @@ void SolarFrame::CreateMenus()
 			fMenuMain = new wxMenuBar();
 
 			// file Menu
-			wxMenu *fileMenu = new wxMenu();
+			wxMenu* fileMenu = new wxMenu();
 			fileMenu->Append(ID_MENU_NEW_PROJECT, _T("&New Project	\tCtrl-N"));
 			fileMenu->Append(ID_MENU_OPEN_PROJECT, _T("&Open Project	\tCtrl-O"));
 			fileMenu->AppendSeparator();
@@ -887,7 +887,7 @@ void SolarFrame::CreateMenus()
 			//fMenuMain->Append(fViewMenu, _T("&View"));
 
 			// about menu
-			wxMenu *helpMenu = new wxMenu();
+			wxMenu* helpMenu = new wxMenu();
 			helpMenu->Append(ID_MENU_OPEN_DOCUMENTATION, _T("&Online Documentation..."));
 			helpMenu->Append(ID_MENU_OPEN_SAMPLE_CODE, _T("&Sample projects..."));
 			helpMenu->Append(ID_MENU_HELP_BUILD_ANDROID, _T("&Building For Android"));
@@ -900,17 +900,17 @@ void SolarFrame::CreateMenus()
 			fMenuProject = new wxMenuBar();
 
 			// file Menu
-			wxMenu *fileMenu = new wxMenu();
+			wxMenu* fileMenu = new wxMenu();
 			fileMenu->Append(ID_MENU_NEW_PROJECT, _T("&New Project	\tCtrl-N"));
 			fileMenu->Append(ID_MENU_OPEN_PROJECT, _T("&Open Project	\tCtrl-O"));
 			fileMenu->AppendSeparator();
 
-			wxMenu *buildMenu = new wxMenu();
+			wxMenu* buildMenu = new wxMenu();
 			buildMenu->Append(ID_MENU_BUILD_ANDROID, _T("Android	\tCtrl-B"));
-			wxMenuItem *buildForWeb = buildMenu->Append(ID_MENU_BUILD_WEB, _T("HTML5	\tCtrl-Shift-Alt-B"));
-			wxMenu *buildForLinuxMenu = new wxMenu();
+			wxMenuItem* buildForWeb = buildMenu->Append(ID_MENU_BUILD_WEB, _T("HTML5	\tCtrl-Shift-Alt-B"));
+			wxMenu* buildForLinuxMenu = new wxMenu();
 			buildForLinuxMenu->Append(ID_MENU_BUILD_LINUX, _T("x64	\tCtrl-Alt-B"));
-			wxMenuItem *buildForARM = buildForLinuxMenu->Append(ID_MENU_BUILD_LINUX, _T("ARM	\tCtrl-Alt-A"));
+			wxMenuItem* buildForARM = buildForLinuxMenu->Append(ID_MENU_BUILD_LINUX, _T("ARM	\tCtrl-Alt-A"));
 			buildMenu->AppendSubMenu(buildForLinuxMenu, _T("&Linux"));
 			fileMenu->AppendSubMenu(buildMenu, _T("&Build"));
 			buildForARM->Enable(false);
@@ -931,11 +931,11 @@ void SolarFrame::CreateMenus()
 
 			// hardware menu
 			fHardwareMenu = new wxMenu();
-			wxMenuItem *rotateLeft = fHardwareMenu->Append(wxID_HELP_CONTENTS, _T("&Rotate Left"));
-			wxMenuItem *rotateRight = fHardwareMenu->Append(wxID_HELP_INDEX, _T("&Rotate Right"));
+			wxMenuItem* rotateLeft = fHardwareMenu->Append(wxID_HELP_CONTENTS, _T("&Rotate Left"));
+			wxMenuItem* rotateRight = fHardwareMenu->Append(wxID_HELP_INDEX, _T("&Rotate Right"));
 			//fHardwareMenu->Append(wxID_ABOUT, _T("&Shake"));
 			fHardwareMenu->AppendSeparator();
-			wxMenuItem *back = fHardwareMenu->Append(ID_MENU_BACK_BUTTON, _T("&Back"));
+			wxMenuItem* back = fHardwareMenu->Append(ID_MENU_BACK_BUTTON, _T("&Back"));
 			fHardwareMenu->AppendSeparator();
 			fHardwareMenu->Append(ID_MENU_SUSPEND, _T("&Suspend	\tCtrl-Down"));
 			fMenuProject->Append(fHardwareMenu, _T("&Hardware"));
@@ -950,7 +950,7 @@ void SolarFrame::CreateMenus()
 			fMenuProject->Append(fViewMenu, _T("&View"));
 
 			// about menu
-			wxMenu *helpMenu = new wxMenu();
+			wxMenu* helpMenu = new wxMenu();
 			helpMenu->Append(ID_MENU_OPEN_DOCUMENTATION, _T("&Online Documentation..."));
 			helpMenu->Append(ID_MENU_OPEN_SAMPLE_CODE, _T("&Sample projects..."));
 			helpMenu->Append(ID_MENU_HELP_BUILD_ANDROID, _T("&Building For Android"));
@@ -960,12 +960,12 @@ void SolarFrame::CreateMenus()
 	}
 }
 
-void SolarFrame::CreateViewAsChildMenu(vector<string>skin, wxMenu *targetMenu)
+void SolarFrame::CreateViewAsChildMenu(vector<string>skin, wxMenu* targetMenu)
 {
 	for (int i = 0; i < skin.size(); i++)
 	{
 		LinuxSimulatorView::SkinProperties sProperties = LinuxSimulatorView::GetSkinProperties(skin[i].c_str());
-		wxMenuItem *currentSkin = targetMenu->Append(sProperties.id, skin[i].c_str(), wxEmptyString, wxITEM_CHECK);
+		wxMenuItem* currentSkin = targetMenu->Append(sProperties.id, skin[i].c_str(), wxEmptyString, wxITEM_CHECK);
 		Bind(wxEVT_MENU, &SolarFrame::OnViewAsChanged, sProperties.id);
 
 		if (sProperties.id == LinuxSimulatorView::Config::skinID)
@@ -980,11 +980,11 @@ void SolarFrame::CreateViewAsChildMenu(vector<string>skin, wxMenu *targetMenu)
 	}
 }
 
-void SolarFrame::ClearMenuCheckboxes(wxMenu *menu, wxString currentSkinTitle)
+void SolarFrame::ClearMenuCheckboxes(wxMenu* menu, wxString currentSkinTitle)
 {
 	for (int i = 0; i < menu->GetMenuItemCount(); i++)
 	{
-		wxMenuItem *currentItem = menu->FindItemByPosition(i);
+		wxMenuItem* currentItem = menu->FindItemByPosition(i);
 
 		if (!currentItem->GetItemLabel().IsSameAs(currentSkinTitle))
 		{
@@ -993,11 +993,11 @@ void SolarFrame::ClearMenuCheckboxes(wxMenu *menu, wxString currentSkinTitle)
 	}
 }
 
-void SolarFrame::OnViewAsChanged(wxCommandEvent &event)
+void SolarFrame::OnViewAsChanged(wxCommandEvent& event)
 {
 	int skinID = event.GetId();
 	LinuxSimulatorView::SkinProperties sProperties = LinuxSimulatorView::GetSkinProperties(skinID);
-	SolarFrame *frame = wxGetApp().GetFrame();
+	SolarFrame* frame = wxGetApp().GetFrame();
 	wxDisplay display(wxDisplay::GetFromWindow(frame));
 	wxRect screen = display.GetClientArea();
 	frame->currentSkinWidth = sProperties.screenWidth;
@@ -1043,16 +1043,16 @@ void SolarFrame::OnViewAsChanged(wxCommandEvent &event)
 	wxPostEvent(wxGetApp().GetFrame(), ev);
 }
 
-void SolarFrame::SetMenu(const char *appPath)
+void SolarFrame::SetMenu(const char* appPath)
 {
 	if (LinuxSimulatorView::IsRunningOnSimulator())
 	{
-		const string &appName = GetContext()->GetAppName();
+		const string& appName = GetContext()->GetAppName();
 		SetMenuBar(IsHomeScreen(appName) ? fMenuMain : fMenuProject);
 
 		if (!IsHomeScreen(appName) && fViewMenu->FindItem("View As") == -1)
 		{
-			wxMenu *viewAsMenu = new wxMenu();
+			wxMenu* viewAsMenu = new wxMenu();
 			fViewAsAndroidMenu = new wxMenu();
 			fViewAsIOSMenu = new wxMenu();
 			fViewAsTVMenu = new wxMenu();
@@ -1064,9 +1064,24 @@ void SolarFrame::SetMenu(const char *appPath)
 			vector<string>tvSkins;
 			vector<string>desktopSkins;
 			int currentSkinID = ID_MENU_VIEW_AS;
-			string skinDirPath(LinuxFileUtils::GetStartupPath(NULL));
-			skinDirPath.append("/Resources/Skins");
+
+			const char* startupPath = LinuxFileUtils::GetStartupPath(NULL);
+			string skinDirPath(startupPath);
+			skinDirPath.append("/Resources");
+			if (!Rtt_IsDirectory(skinDirPath.c_str()))
+			{
+				Rtt_LogException("No Resources dir in %s!\n", startupPath);
+				return;
+			}
+
+			skinDirPath.append("/Skins");
 			wxDir skinDir(skinDirPath);
+			if (!skinDir.IsOpened())
+			{
+				Rtt_LogException("Skin directory not found in /Resources!\n");
+				return;
+			}
+
 
 			if (!skinDir.IsOpened())
 			{
@@ -1075,7 +1090,7 @@ void SolarFrame::SetMenu(const char *appPath)
 			}
 
 			wxString filename;
-			lua_State *L = GetContext()->GetRuntime()->VMContext().L();
+			lua_State* L = GetContext()->GetRuntime()->VMContext().L();
 			bool fileExists = skinDir.GetFirst(&filename, wxEmptyString, wxDIR_DEFAULT);
 
 			while (fileExists)
@@ -1155,12 +1170,12 @@ void SolarFrame::SetMenu(const char *appPath)
 	}
 }
 
-void SolarFrame::OnIconized(wxIconizeEvent &event)
+void SolarFrame::OnIconized(wxIconizeEvent& event)
 {
 	fContext->RestartRenderer();
 }
 
-void SolarFrame::OnClose(wxCloseEvent &event)
+void SolarFrame::OnClose(wxCloseEvent& event)
 {
 	fContext->GetRuntime()->End();
 
@@ -1175,7 +1190,7 @@ void SolarFrame::OnClose(wxCloseEvent &event)
 	}
 }
 
-void SolarFrame::OnFileSystemEvent(wxFileSystemWatcherEvent &event)
+void SolarFrame::OnFileSystemEvent(wxFileSystemWatcherEvent& event)
 {
 	if (fContext->GetRuntime()->IsSuspended())
 	{
@@ -1183,33 +1198,33 @@ void SolarFrame::OnFileSystemEvent(wxFileSystemWatcherEvent &event)
 	}
 
 	int type = event.GetChangeType();
-	const wxFileName &f = event.GetPath();
+	const wxFileName& f = event.GetPath();
 	wxString fn = f.GetFullName();
 	wxString fp = f.GetFullPath();
 	wxString ext = f.GetExt();
 
 	switch (type)
 	{
-		case wxFSW_EVENT_CREATE:
-		case wxFSW_EVENT_DELETE:
-		case wxFSW_EVENT_RENAME:
-		case wxFSW_EVENT_MODIFY:
+	case wxFSW_EVENT_CREATE:
+	case wxFSW_EVENT_DELETE:
+	case wxFSW_EVENT_RENAME:
+	case wxFSW_EVENT_MODIFY:
+	{
+		if (ext.IsSameAs("lua"))
 		{
-			if (ext.IsSameAs("lua"))
-			{
-				fRelaunchedViaFileEvent = true;
-				wxCommandEvent ev(eventRelaunchProject);
-				wxPostEvent(wxGetApp().GetFrame(), ev);
-			}
-			break;
+			fRelaunchedViaFileEvent = true;
+			wxCommandEvent ev(eventRelaunchProject);
+			wxPostEvent(wxGetApp().GetFrame(), ev);
 		}
+		break;
+	}
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
-void SolarFrame::OnOpenWelcome(wxCommandEvent &event)
+void SolarFrame::OnOpenWelcome(wxCommandEvent& event)
 {
 	string path(LinuxFileUtils::GetStartupPath(NULL));
 	path.append("/Resources/homescreen/main.lua");
@@ -1219,7 +1234,7 @@ void SolarFrame::OnOpenWelcome(wxCommandEvent &event)
 	wxPostEvent(this, eventOpen);
 }
 
-void SolarFrame::OnRelaunch(wxCommandEvent &event)
+void SolarFrame::OnRelaunch(wxCommandEvent& event)
 {
 	if (fAppPath.size() > 0 && !IsHomeScreen(fContext->GetAppName()))
 	{
@@ -1240,19 +1255,19 @@ void SolarFrame::OnRelaunch(wxCommandEvent &event)
 		{
 			switch (LinuxSimulatorView::Config::relaunchOnFileChange)
 			{
-				case LinuxPreferencesDialog::RelaunchType::Always:
+			case LinuxPreferencesDialog::RelaunchType::Always:
+				doRelaunch = true;
+				break;
+
+			case LinuxPreferencesDialog::RelaunchType::Ask:
+				if (fRelaunchProjectDialog->ShowModal() == wxID_OK)
+				{
 					doRelaunch = true;
-					break;
+				}
+				break;
 
-				case LinuxPreferencesDialog::RelaunchType::Ask:
-					if (fRelaunchProjectDialog->ShowModal() == wxID_OK)
-					{
-						doRelaunch = true;
-					}
-					break;
-
-				default:
-					break;
+			default:
+				break;
 			}
 
 			fRelaunchedViaFileEvent = false;
@@ -1336,9 +1351,9 @@ void SolarFrame::RemoveSuspendedPanel()
 	}
 }
 
-void SolarFrame::OnZoomIn(wxCommandEvent &event)
+void SolarFrame::OnZoomIn(wxCommandEvent& event)
 {
-	SolarFrame *frame = wxGetApp().GetFrame();
+	SolarFrame* frame = wxGetApp().GetFrame();
 	wxDisplay display(wxDisplay::GetFromWindow(frame));
 	wxRect screen = display.GetClientArea();
 	bool doResize = false;
@@ -1350,13 +1365,13 @@ void SolarFrame::OnZoomIn(wxCommandEvent &event)
 
 	if (IsHomeScreen(GetContext()->GetAppName()))
 	{
-		doResize = (proposedWidth < screen.width && proposedHeight < screen.height);
+		doResize = (proposedWidth < screen.width&& proposedHeight < screen.height);
 	}
 	else
 	{
 		if (frame->currentSkinWidth >= proposedWidth && frame->currentSkinHeight >= proposedHeight)
 		{
-			doResize = (proposedWidth < screen.width && proposedHeight < screen.height);
+			doResize = (proposedWidth < screen.width&& proposedHeight < screen.height);
 		}
 	}
 
@@ -1388,9 +1403,9 @@ void SolarFrame::OnZoomIn(wxCommandEvent &event)
 	}
 }
 
-void SolarFrame::OnZoomOut(wxCommandEvent &event)
+void SolarFrame::OnZoomOut(wxCommandEvent& event)
 {
-	SolarFrame *frame = wxGetApp().GetFrame();
+	SolarFrame* frame = wxGetApp().GetFrame();
 	int proposedWidth = frame->GetContext()->GetRuntimeDelegate()->fContentWidth / LinuxSimulatorView::skinScaleFactor;
 	int proposedHeight = frame->GetContext()->GetRuntimeDelegate()->fContentHeight / LinuxSimulatorView::skinScaleFactor;
 
@@ -1415,7 +1430,7 @@ void SolarFrame::OnZoomOut(wxCommandEvent &event)
 	}
 }
 
-void SolarFrame::OnSuspendOrResume(wxCommandEvent &event)
+void SolarFrame::OnSuspendOrResume(wxCommandEvent& event)
 {
 	if (LinuxSimulatorView::IsRunningOnSimulator())
 	{
@@ -1434,7 +1449,7 @@ void SolarFrame::OnSuspendOrResume(wxCommandEvent &event)
 	}
 }
 
-void SolarFrame::OnOpen(wxCommandEvent &event)
+void SolarFrame::OnOpen(wxCommandEvent& event)
 {
 	wxString path = event.GetString();
 	path = path.SubString(0, path.size() - 10); // without main.lua
@@ -1523,13 +1538,13 @@ void SolarFrame::OnOpen(wxCommandEvent &event)
 
 // setup glcanvas events
 wxBEGIN_EVENT_TABLE(SolarGLCanvas, wxGLCanvas)
-	EVT_PAINT(SolarGLCanvas::OnPaint)
-	EVT_TIMER(TIMER_ID, SolarGLCanvas::OnTimer)
-	EVT_WINDOW_CREATE(SolarGLCanvas::OnWindowCreate)
-	EVT_SIZE(SolarGLCanvas::OnSize)
+EVT_PAINT(SolarGLCanvas::OnPaint)
+EVT_TIMER(TIMER_ID, SolarGLCanvas::OnTimer)
+EVT_WINDOW_CREATE(SolarGLCanvas::OnWindowCreate)
+EVT_SIZE(SolarGLCanvas::OnSize)
 wxEND_EVENT_TABLE()
 
-SolarGLCanvas::SolarGLCanvas(SolarFrame *parent, const wxGLAttributes &canvasAttrs)
+SolarGLCanvas::SolarGLCanvas(SolarFrame* parent, const wxGLAttributes& canvasAttrs)
 	: wxGLCanvas(parent, canvasAttrs), fContext(NULL), fTimer(this, TIMER_ID)
 {
 	fSolarFrame = parent;
@@ -1574,7 +1589,7 @@ void SolarGLCanvas::StartTimer(float frameDuration)
 	fTimer.Start((int)frameDuration);
 }
 
-void SolarGLCanvas::OnTimer(wxTimerEvent &event)
+void SolarGLCanvas::OnTimer(wxTimerEvent& event)
 {
 	if (!fContext->fIsStarted)
 	{
@@ -1582,17 +1597,17 @@ void SolarGLCanvas::OnTimer(wxTimerEvent &event)
 		fContext->GetRuntime()->BeginRunLoop();
 	}
 
-	Rtt::Runtime *runtime = fContext->GetRuntime();
+	Rtt::Runtime* runtime = fContext->GetRuntime();
 
 	if (!runtime->IsSuspended())
 	{
-		LinuxInputDeviceManager &deviceManager = (LinuxInputDeviceManager &)fContext->GetPlatform()->GetDevice().GetInputDeviceManager();
+		LinuxInputDeviceManager& deviceManager = (LinuxInputDeviceManager&)fContext->GetPlatform()->GetDevice().GetInputDeviceManager();
 		deviceManager.dispatchEvents(runtime);
 		(*runtime)();
 	}
 }
 
-void SolarGLCanvas::OnPaint(wxPaintEvent &WXUNUSED(event))
+void SolarGLCanvas::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
 	if (fWindowHeight > 0)
 	{
@@ -1600,7 +1615,7 @@ void SolarGLCanvas::OnPaint(wxPaintEvent &WXUNUSED(event))
 	}
 }
 
-void SolarGLCanvas::OnWindowCreate(wxWindowCreateEvent &event)
+void SolarGLCanvas::OnWindowCreate(wxWindowCreateEvent& event)
 {
 	// SetCurrent() must have an active window created before being called, making this hte perfect place to do it.
 	Rtt_ASSERT(fGLContext);
@@ -1609,7 +1624,7 @@ void SolarGLCanvas::OnWindowCreate(wxWindowCreateEvent &event)
 	Refresh(false);
 }
 
-void SolarGLCanvas::OnSize(wxSizeEvent &event)
+void SolarGLCanvas::OnSize(wxSizeEvent& event)
 {
 	event.Skip();
 

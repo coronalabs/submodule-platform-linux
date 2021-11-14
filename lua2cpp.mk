@@ -147,19 +147,7 @@ SRCS =	shell.lua \
 		$(ROOT)/resources/webPackageApp.lua \
 		$(ROOT)/resources/linuxPackageApp.lua \
 		$(ROOT)/../platform/android/create_build_properties.lua \
-		$(ROOT)/../tools/CoronaBuilder/CoronaBuilder.lua \
-		\
-		$(ROOT)/../external/luasocket/src/ftp.lua \
-		$(ROOT)/../external/luasocket/src/headers.lua \
-		$(ROOT)/../external/luasocket/src/http.lua \
-		$(ROOT)/../external/luasocket/src/ltn12.lua \
-		$(ROOT)/../external/luasocket/src/mbox.lua \
-		$(ROOT)/../external/luasocket/src/mime.lua \
-		$(ROOT)/../external/luasocket/src/smtp.lua \
-		$(ROOT)/../external/luasocket/src/socket.lua \
-		$(ROOT)/../external/luasocket/src/ssl.lua \
-		$(ROOT)/../external/luasocket/src/tp.lua \
-		$(ROOT)/../external/luasocket/src/url.lua \
+		$(ROOT)/../tools/CoronaBuilder/CoronaBuilder.lua
 	
 
 CPPS = $(patsubst %.lua, lua/%.cpp, $(notdir $(SRCS)))
@@ -186,14 +174,6 @@ ifeq ($(shell uname -s),Darwin)
 	PLATFORMDIR = ../../bin/mac
 endif
 
-#SOCKET_FILES = ftp headers http ltn12 mbox mime smtp socket ssl tp url
-#SOCKET_DST = $(patsubst %, lua/socket/%.c, $(SOCKET_FILES))
-
-#lua/socket/%.c : ../../external/luasocket/src/%.lua
-#	@mkdir -p lua/socket/
-#	$(PLATFORMDIR)/lua2c.sh $< lua/socket/. "$(UPPER_CONFIG)" "$(PLATFORMDIR)"
-
-
 # weird luaload renames
 
 RENAMES = lua/network_luaload.cpp lua/valid_config_lua_luaload.cpp lua/valid_build_settings_luaload.cpp lua/ValidateSettings_luaload.cpp
@@ -206,10 +186,20 @@ endef
 $(foreach src, $(RENAMES), $(eval $(call ruletemp, $(src))) )
 
 
-
 # aggregate target
 
 all: $(CPPS) lua/CoronaLibrary-lua.cpp $(SOCKET_DST) $(RENAMES)
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/ftp.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/headers.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/http.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/ltn12.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/mbox.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/mime.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/smtp.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/socket.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/ssl.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/tp.lua lua
+	./lua_to_native.sh -m luasocket ../../external/luasocket/src/url.lua lua
 
 clean:
 	mkdir -p lua
