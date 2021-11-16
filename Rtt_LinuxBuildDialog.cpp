@@ -206,8 +206,11 @@ namespace Rtt
 		resultDialog->SetTitle("Build Result");
 		resultDialog->SetMessage(buildResult == 0 ? "Your application was built successfully." : "Failed to build the application.\nSee the console for more info.");
 		resultDialog->SetMessageDialogStyle(dialogResultFlags);
+
+		platform->SetActivityIndicator(true);
 		resultDialog->ShowModal();
 		wxYield();
+		platform->SetActivityIndicator(false);
 
 		if (buildResult == 0 && runAfterBuild)
 		{

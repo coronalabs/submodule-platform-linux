@@ -11,6 +11,9 @@
 
 namespace Rtt
 {
+	class AndroidAppPackager;
+	class AndroidAppPackagerParams;
+	
 	class AndroidBuildDialog: public wxDialog
 	{
 	public:
@@ -25,6 +28,7 @@ namespace Rtt
 		void OnCancelClicked(wxCommandEvent &event);
 
 	private:
+		static int fetchBuildResult(AndroidAppPackager* packager, AndroidAppPackagerParams* androidBuilderParams, const std::string& tmp);
 		void SetProperties();
 		void DoLayout();
 

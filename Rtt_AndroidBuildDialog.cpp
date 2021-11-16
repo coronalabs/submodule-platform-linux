@@ -20,6 +20,7 @@
 #include "Core/Rtt_FileSystem.h"
 #include <string.h>
 #include <wx/valtext.h>
+#include <future>
 
 #define GOOGLE_PLAY_STORE_TARGET "Google Play"
 #define AMAZON_STORE_TARGET "Amazon"
@@ -281,6 +282,12 @@ namespace Rtt
 		}
 	}
 
+	int AndroidBuildDialog::fetchBuildResult(AndroidAppPackager* packager, AndroidAppPackagerParams* androidBuilderParams, const std::string& tmp)
+	{
+		// build the app (warning! this is blocking call)
+		return packager->Build(androidBuilderParams, tmp.c_str());
+	}
+
 	void AndroidBuildDialog::OnBuildClicked(wxCommandEvent &event)
 	{
 		LinuxPlatform *platform = wxGetApp().GetPlatform();
@@ -438,13 +445,22 @@ namespace Rtt
 		fAppContext->GetPlatform()->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);
 		androidBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
 
-		// build the app (warning! this is blocking call)
 		platform->SetActivityIndicator(true);
-		int buildResult = packager.Build(&androidBuilderParams, tmp.c_str());
+		SetCursor(wxCURSOR_WAIT);		// cursor on dialog window
+	
+		// the only goal of using async here is the showing wait cursor on build dialog window
+		std::future<int> futureBuildResult = std::async(std::launch::async, fetchBuildResult, &packager, &androidBuilderParams, tmp);		
+		
+		// wait for result
+		while (futureBuildResult.wait_for(std::chrono::milliseconds(100)) != std::future_status::ready)
+		{
+			wxYield();
+		}
+		int buildResult = futureBuildResult.get();
+			
+		SetCursor(wxCURSOR_ARROW);		// restore cursor
 		platform->SetActivityIndicator(false);
-		EndModal(wxID_OK);
-		wxGetApp().GetFrame()->RemoveSuspendedPanel();
-
+		
 		if (buildResult == 0)
 		{
 			Rtt_Log("Android build succeeded.\n");
@@ -453,6 +469,10 @@ namespace Rtt
 		{
 			Rtt_Log("Android build failed. Check the log for more details.\n");
 		}
+
+		EndModal(wxID_OK);
+		wxGetApp().GetFrame()->RemoveSuspendedPanel();
+
 
 		int dialogResultFlags = buildResult == 0 ? wxOK | wxICON_INFORMATION : wxOK | wxICON_ERROR;
 		resultDialog->SetTitle("Build Result");
