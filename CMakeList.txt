@@ -929,6 +929,52 @@ add_executable( Solar2D
 	${CORONA_ROOT}/platform/shared/ListKeyStore.cpp
 )
 
+add_executable( Solar2DSimulator
+	${SOLAR2D_SOURCES}
+
+	${CORONA_ROOT}/platform/linux/main.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxContext.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxAudioRecorder.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxBitmap.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxData.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxDisplayObject.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxFont.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxImageProvider.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxPlatform.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeDelegate.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxScreenSurface.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxTextBoxObject.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoObject.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoPlayer.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoProvider.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxWebPopup.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxWebView.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_AndroidBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_ConsoleApp.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_WebBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxClearSandboxDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxCloneProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClient.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClientConnection.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxKeyListener.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxMenuEvents.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxMouseListener.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxNewProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxPreferencesDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxRelaunchProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntime.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeErrorDialog.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxUtils.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxSimulatorServices.cpp
+	${CORONA_ROOT}/platform/linux/Rtt_LinuxContextNewProject.cpp
+
+	${CORONA_ROOT}/platform/shared/Rtt_ProjectSettings.cpp
+	${CORONA_ROOT}/platform/shared/Rtt_ReadOnlyProjectSettings.cpp
+	${CORONA_ROOT}/platform/shared/Rtt_NativeWindowMode.cpp
+	${CORONA_ROOT}/platform/shared/ListKeyStore.cpp
+)
+
 add_executable( Solar2DBuilder
 	${SOLAR2D_SOURCES}
 
@@ -945,6 +991,15 @@ add_executable( Solar2DBuilder
 )
 
 target_compile_definitions( Solar2D PUBLIC
+	Rtt_LUA_COMPILER LUA_DL_DLOPEN wxUSE_MEDIACTRL=1 wxUSE_WEBVIEW=1
+	__WXGTK__ HAVE_SSIZE_T wxUSE_XTEST wxHAS_INOTIFY wxUSE_SELECT_DISPATCHER WXWIN_COMPATIBILITY_3_0 
+	wxUSE_PRIVATE_FONTS wxUSE_ACTIVITYINDICATOR wxUSE_ADDREMOVECTRL wxUSE_UNSAFE_WXSTRING_CONV
+	wxUSE_STD_CONTAINERS_COMPATIBLY wxUSE_GLCANVAS 
+	_DEBUG Rtt_LINUX_ENV ALMIXER_COMPILE_WITHOUT_SDL SOUND_SUPPORTS_WAV SOUND_SUPPORTS_MPG123 SOUND_SUPPORTS_OGG
+	OPT_GENERIC HAVE_STRERROR NO_REAL ENABLE_ALMIXER_THREADS LINUX_LIB
+	) 
+
+target_compile_definitions( Solar2DSimulator PUBLIC
 	Rtt_LUA_COMPILER Rtt_SIMULATOR LUA_DL_DLOPEN wxUSE_MEDIACTRL=1 wxUSE_WEBVIEW=1
 	__WXGTK__ HAVE_SSIZE_T wxUSE_XTEST wxHAS_INOTIFY wxUSE_SELECT_DISPATCHER WXWIN_COMPATIBILITY_3_0 
 	wxUSE_PRIVATE_FONTS wxUSE_ACTIVITYINDICATOR wxUSE_ADDREMOVECTRL wxUSE_UNSAFE_WXSTRING_CONV
@@ -970,6 +1025,9 @@ target_compile_definitions( Solar2DConsole PUBLIC
 target_link_libraries(Solar2D	dl GL z pthread openal freetype png crypto++ curl
 	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
 
+target_link_libraries(Solar2DSimulator	dl GL z pthread openal freetype png crypto++ curl
+	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
+
 target_link_libraries(Solar2DBuilder dl GL z pthread openal freetype png crypto++ curl
 	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
 
@@ -983,6 +1041,7 @@ install(DIRECTORY "${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/" DES
 
 # install binary
 install(TARGETS Solar2D RUNTIME DESTINATION bin/Solar2D)
+install(TARGETS Solar2DSimulator RUNTIME DESTINATION bin/Solar2D)
 install(TARGETS Solar2DConsole RUNTIME DESTINATION bin/Solar2D)
 install(TARGETS Solar2DBuilder RUNTIME DESTINATION bin/Solar2D)
 
