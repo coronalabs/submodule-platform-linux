@@ -82,6 +82,7 @@ elseif(CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
 		add_custom_command(
 			OUTPUT "${Lua2CppOutputDir}/${F}"
 			MAIN_DEPENDENCY "${LUA_FILE}"
+			COMMAND dos2unix "${CORONA_ROOT}/platform/linux/lua_to_native.sh"
 			COMMAND ${CMAKE_COMMAND} -E env BUILD_CONFIG="${BUILD_CONFIG}" "${CORONA_ROOT}/platform/linux/lua_to_native.sh" ${MODULE_COMMAND1} ${MODULE_COMMAND2} "${LUA_FILE}" "${Lua2CppOutputDir}/"
 		)
 	endfunction()
