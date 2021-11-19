@@ -1,1 +1,0 @@
-../../platform/linux/Simulator/Resources/template/javaFiles/com/coronalabs/vitaly/Clock/R.java
