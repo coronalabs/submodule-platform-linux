@@ -162,12 +162,23 @@ namespace Rtt
 		}
 
 		// ensure we have write access to the target output directory
-		if (!wxFileName::IsDirWritable(outputDir))
+		if (wxDirExists(outputDir))
 		{
-			resultDialog->SetMessage(wxT("I don't have write access to the selected output directory."));
-			checksPassed = false;
+			if (!wxFileName::IsDirWritable(outputDir))
+			{
+				resultDialog->SetMessage(wxT("No write access to the selected output directory."));
+				checksPassed = false;
+			}
 		}
-
+		else
+		{
+			if (!Rtt_MakeDirectory(outputDir))
+			{
+				resultDialog->SetMessage(wxT("Failed to create the selected output directory."));
+				checksPassed = false;
+			}
+		}
+		
 		// checks failed, show failure popup
 		if (!checksPassed)
 		{
