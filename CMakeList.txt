@@ -1046,19 +1046,7 @@ install(TARGETS Solar2DConsole RUNTIME DESTINATION bin/Solar2D)
 install(TARGETS Solar2DBuilder RUNTIME DESTINATION bin/Solar2D)
 
 # build template
-
-set(debdir "${CMAKE_CURRENT_BINARY_DIR}/deb")
-
-add_custom_target(copydeb ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CORONA_ROOT}/platform/linux/deb ${debdir}
-    DEPENDS Solar2D)
-
-add_custom_target(copybinary ALL
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/Solar2D ${debdir}/CONTENTS/usr/bin
-    DEPENDS copydeb)
-
 add_custom_target(create_template ALL 
-	COMMAND ${CMAKE_COMMAND} -E tar cfvz "${CMAKE_CURRENT_BINARY_DIR}/linuxtemplate.tar.gz" "."
-	WORKING_DIRECTORY ${debdir}
-	DEPENDS copybinary)
+	COMMAND ${CMAKE_COMMAND} -E tar cfvz "${CMAKE_CURRENT_BINARY_DIR}/linuxtemplate_x64.tgz" "./Solar2D"
+	DEPENDS Solar2D)
 
