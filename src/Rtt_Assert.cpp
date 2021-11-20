@@ -15,7 +15,7 @@
 
 #ifdef Rtt_LINUX_ENV
 #ifndef CORONABUILDER_LINUX
-#include "../../platform/linux/Rtt_ConsoleApp.h"
+#include "Rtt_ConsoleApp.h"
 #endif
 #endif
 

@@ -98,7 +98,7 @@ include_directories (
   ${CORONA_ROOT}/modules/simulator
   ${CORONA_ROOT}/platform
   ${CORONA_ROOT}/platform/android
-  ${CORONA_ROOT}/platform/linux
+  ${CORONA_ROOT}/platform/linux/src
   ${CORONA_ROOT}/tools/car
 )
 
@@ -265,10 +265,10 @@ FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
 ENDFOREACH()
 
 add_executable( Solar2DConsole
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServer.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCServerConnection.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsole.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsoleApp.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCServer.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCServerConnection.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxConsole.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxConsoleApp.cpp
 )
 
 SET( SOLAR2D_SOURCES
@@ -858,70 +858,70 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/external/mpg123-1.13.1/src/libmpg123/tabinit.c
 
 		# Common Linux specific files
-		${CORONA_ROOT}/platform/linux/Rtt_Assert.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_Freetype.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxFileUtils.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_HTTPClientLinux.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxInputDevice.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxInputDeviceManager.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxCrypto.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxDevice.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxConsolePlatform.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxSimulatorView.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_Assert.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_Freetype.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxFileUtils.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_HTTPClientLinux.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxInputDevice.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxInputDeviceManager.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxCrypto.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxDevice.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxConsolePlatform.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxSimulatorView.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_LinuxAppPackager.cpp
 		${CORONA_ROOT}/platform/android/Rtt_AndroidAppPackager.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_WebAppPackager.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_PlatformAppPackager.cpp
-		${CORONA_ROOT}/platform/linux/NetworkLibrary.cpp
-		${CORONA_ROOT}/platform/linux/NetworkSupport.cpp
+		${CORONA_ROOT}/platform/linux/src/NetworkLibrary.cpp
+		${CORONA_ROOT}/platform/linux/src/NetworkSupport.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_TargetAndroidAppStore.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_DeviceBuildData.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_TargetDevice.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_PlatformDictionaryWrapper.cpp
 		${CORONA_ROOT}/platform/shared/Rtt_PlatformObjectWrapper.cpp
 		${CORONA_ROOT}/modules/simulator/Rtt_LuaLibSimulator.cpp
-		${CORONA_ROOT}/platform/linux/Rtt_LinuxContainer.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContainer.cpp
 )
 
 add_executable( Solar2D
 	${SOLAR2D_SOURCES}
 
-	${CORONA_ROOT}/platform/linux/main.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxContext.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxAudioRecorder.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxBitmap.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxData.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxDisplayObject.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxFont.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxImageProvider.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxPlatform.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeDelegate.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxScreenSurface.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxTextBoxObject.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoObject.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoPlayer.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoProvider.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxWebPopup.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxWebView.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_AndroidBuildDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_ConsoleApp.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxBuildDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_WebBuildDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxClearSandboxDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxCloneProjectDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClient.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClientConnection.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxKeyListener.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxMenuEvents.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxMouseListener.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxNewProjectDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxPreferencesDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRelaunchProjectDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntime.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeErrorDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxUtils.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxSimulatorServices.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxContextNewProject.cpp
+	${CORONA_ROOT}/platform/linux/src/main.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContext.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxAudioRecorder.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxBitmap.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxData.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxDisplayObject.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxFont.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxImageProvider.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxPlatform.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntimeDelegate.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxScreenSurface.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxTextBoxObject.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxVideoObject.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxVideoPlayer.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxVideoProvider.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxWebPopup.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxWebView.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_AndroidBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_ConsoleApp.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_WebBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxClearSandboxDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxCloneProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCClient.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCClientConnection.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxKeyListener.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxMenuEvents.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxMouseListener.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxNewProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxPreferencesDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRelaunchProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntime.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntimeErrorDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxUtils.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxSimulatorServices.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContextNewProject.cpp
 
 	${CORONA_ROOT}/platform/shared/Rtt_ProjectSettings.cpp
 	${CORONA_ROOT}/platform/shared/Rtt_ReadOnlyProjectSettings.cpp
@@ -932,42 +932,42 @@ add_executable( Solar2D
 add_executable( Solar2DSimulator
 	${SOLAR2D_SOURCES}
 
-	${CORONA_ROOT}/platform/linux/main.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxContext.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxAudioRecorder.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxBitmap.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxData.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxDisplayObject.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxFont.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxImageProvider.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxPlatform.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeDelegate.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxScreenSurface.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxTextBoxObject.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoObject.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoPlayer.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxVideoProvider.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxWebPopup.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxWebView.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_AndroidBuildDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_ConsoleApp.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxBuildDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_WebBuildDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxClearSandboxDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxCloneProjectDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClient.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxIPCClientConnection.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxKeyListener.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxMenuEvents.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxMouseListener.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxNewProjectDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxPreferencesDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRelaunchProjectDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntime.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxRuntimeErrorDialog.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxUtils.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxSimulatorServices.cpp
-	${CORONA_ROOT}/platform/linux/Rtt_LinuxContextNewProject.cpp
+	${CORONA_ROOT}/platform/linux/src/main.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContext.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxAudioRecorder.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxBitmap.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxData.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxDisplayObject.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxFont.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxImageProvider.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxPlatform.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntimeDelegate.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxScreenSurface.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxTextBoxObject.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxVideoObject.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxVideoPlayer.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxVideoProvider.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxWebPopup.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxWebView.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_AndroidBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_ConsoleApp.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_WebBuildDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxClearSandboxDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxCloneProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCClient.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCClientConnection.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxKeyListener.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxMenuEvents.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxMouseListener.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxNewProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxPreferencesDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRelaunchProjectDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntime.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntimeErrorDialog.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxUtils.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxSimulatorServices.cpp
+	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContextNewProject.cpp
 
 	${CORONA_ROOT}/platform/shared/Rtt_ProjectSettings.cpp
 	${CORONA_ROOT}/platform/shared/Rtt_ReadOnlyProjectSettings.cpp

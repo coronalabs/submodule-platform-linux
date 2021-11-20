@@ -49,20 +49,28 @@ elif [[ "${OS,,}" == *"pop"* ]]; then
 fi
 
 # remove the existing solar platform tools directory
-rm -rf ~/.local/share/Corona
+#rm -rf ~/.local/share/Corona
 # extract the solar platform tools directory
-tar -xzf Solar2DSimulator/Resources/platform_tools.tgz -C ~/.local/share/
+#tar -xzf Solar2DSimulator/Resources/platform_tools.tgz -C ~/.local/share/
 # move Solar2DBuilder into the platform tools directory
-mv Solar2DBuilder ~/.local/share/Corona/Native/Corona/lin/bin/
+#mv Solar2DBuilder ~/.local/share/Corona/Native/Corona/lin/bin/
 
 # install required dependencies via Apt
 if [[ $USE_APT == 1 ]]; then
   # nake sure we have the latest package lists
   sudo apt-get update
   # install dependencies
+
+  sudo apt-get install cmake -y
+  sudo apt-get install -y ninja-build
+  sudo apt-get install dos2unix -y
   sudo apt-get install build-essential -y
   sudo apt-get install libopenal-dev -y
+  sudo apt-get install libcrypto++-dev -y
   sudo apt-get install libgtk-3-dev -y
+  sudo apt-get install libgl1-mesa-dev -y
+  sudo apt-get install libglu1-mesa-dev -y
+  sudo apt-get install libcurl4-openssl-dev -y
   sudo apt-get install libpng-dev -y
   sudo apt-get install zlib1g-dev -y
   sudo apt-get install libgstreamer1.0-dev -y
@@ -86,6 +94,7 @@ if [[ $USE_APT == 1 ]]; then
   sudo ln -s /usr/lib/libreadline.so /usr/lib/libreadline.so.7
 # install required dependencies via Pacman
 elif [[ $USE_PACMAN == 1 ]]; then
+  sudo pacman -Sy cmake --noconfirm
   sudo pacman -Sy base-devel --noconfirm
   sudo pacman -Sy gcc --noconfirm
   sudo pacman -Sy readline --noconfirm
@@ -111,9 +120,23 @@ elif [[ $USE_PACMAN == 1 ]]; then
   sudo ln -s /usr/lib/libreadline.so /usr/lib/libreadline.so.7
 fi
 
-# copy wx web extensions
-sudo mkdir -p /usr/local/lib/wx/3.1.3/web-extensions/
-sudo cp wx/lib/webkit2_extu-3.1.3.so /usr/local/lib/wx/3.1.3/web-extensions/webkit2_extu-3.1.3.so
+# install wxWidgets-3.1.4
+wxurl=https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.4/wxWidgets-3.1.4.tar.bz2
+wxtar=~/Downloads/wxWidgets-3.1.4.tar.bz2
+if [ -f "$wxtar" ]; then
+  echo "Using existing wxWidgets"
+else
+  cd ~/Downloads
+  wget "$wxurl"
+  tar -xf "$wxtar" -C ~
+
+  cd ~/wxWidgets-3.1.4
+  mkdir buildgtk
+  cd buildgtk
+  ../configure --with-gtk
+  make -j4
+  sudo make install
+fi
 
 echo "In order to build for Android, you need to install Android Studio, install Android Api level 28 via the SDK manager and accept the license agreements."
 echo "Then you can build via Solar2DTux for Android."

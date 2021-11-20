@@ -7,10 +7,6 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#if defined(_MSC_VER) && _MSC_VER >= 1400
-#include <vld.h>
-#endif
-
 #if !wxUSE_GLCANVAS
 #error "OpenGL required: set wxUSE_GLCANVAS to 1 and rebuild the library"
 #endif
