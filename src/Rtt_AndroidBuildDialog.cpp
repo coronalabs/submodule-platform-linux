@@ -20,6 +20,7 @@
 #include "Core/Rtt_FileSystem.h"
 #include <string.h>
 #include <wx/valtext.h>
+#include <wx/stdpaths.h>
 #include <future>
 
 #define GOOGLE_PLAY_STORE_TARGET "Google Play"
@@ -383,17 +384,20 @@ namespace Rtt
 		if (!wxFileName::Exists("/usr/bin/unzip"))
 		{
 			checksPassed = false;
-			resultDialog->SetMessage(wxT("unzip tool not found at /usr/bin - please install it via your package manager."));
+			resultDialog->SetMessage(wxT("/usr/bin/unzip not found"));
 		}
 
 		// ensure Solar2DBuilder exists at the correct location
-		wxString solar2DBuilderPath(LinuxFileUtils::GetHomePath());
-		solar2DBuilderPath.append("/.local/share/Corona/Native/Corona/lin/bin/Solar2DBuilder");
+		wxString solar2DBuilderPath = wxStandardPaths::Get().GetExecutablePath();
+		size_t k = solar2DBuilderPath.find_last_of("/\\");
+		Rtt_ASSERT(k > 0);
 
+		solar2DBuilderPath.Remove(k + 1, solar2DBuilderPath.size() - k - 1);
+		solar2DBuilderPath.append("Solar2DBuilder");
 		if (!wxFileName::Exists(solar2DBuilderPath))
 		{
 			checksPassed = false;
-			resultDialog->SetMessage(wxT("Solar2DBuilder not found at ~/.local/share/Corona/Native/Corona/lin/bin/Solar2DBuilder - please re-install Solar2DTux."));
+			resultDialog->SetMessage(solar2DBuilderPath + " not found");
 		}
 
 		// ensure we have write access to the target output directory
