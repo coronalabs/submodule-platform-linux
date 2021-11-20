@@ -236,7 +236,7 @@ SET( LUA_SOURCES
 	"${CORONA_ROOT}/platform/resources/linuxPackageApp.lua"
 	"${CORONA_ROOT}/platform/resources/webPackageApp.lua"
 	"${CORONA_ROOT}/plugins/network/shared/network.lua"
-	"${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/create_build_properties.lua"
+	"${CORONA_ROOT}/platform/linux/Resources/create_build_properties.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/CoronaBuilder.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/BuilderPluginDownloader.lua"
 	"${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua"
@@ -1037,7 +1037,7 @@ target_link_libraries(Solar2DConsole dl GL z pthread png
 	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
 
 # install Resources
-install(DIRECTORY "${CORONA_ROOT}/platform/linux/CoronaSimulator/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)
+install(DIRECTORY "${CORONA_ROOT}/platform/linux/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)
 
 # install binary
 install(TARGETS Solar2D RUNTIME DESTINATION bin/Solar2D)
