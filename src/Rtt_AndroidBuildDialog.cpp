@@ -388,17 +388,40 @@ namespace Rtt
 		}
 
 		// ensure Solar2DBuilder exists at the correct location
-		wxString solar2DBuilderPath = wxStandardPaths::Get().GetExecutablePath();
-		size_t k = solar2DBuilderPath.find_last_of("/\\");
+		wxString exePath = wxStandardPaths::Get().GetExecutablePath();
+		size_t k = exePath.find_last_of("/\\");
 		Rtt_ASSERT(k > 0);
 
-		solar2DBuilderPath.Remove(k + 1, solar2DBuilderPath.size() - k - 1);
+		exePath.Remove(k + 1, exePath.size() - k - 1);
+		
+		wxString solar2DBuilderPath = exePath;
 		solar2DBuilderPath.append("Solar2DBuilder");
 		if (!wxFileName::Exists(solar2DBuilderPath))
 		{
 			checksPassed = false;
 			resultDialog->SetMessage(solar2DBuilderPath + " not found");
 		}
+		
+		// ensure Resource is not a link
+		{
+			wxString resourcesPath = exePath;
+			resourcesPath.append("Resources");
+			struct stat buf;
+			if (lstat(resourcesPath.c_str(), &buf) == 0)
+			{
+				if (S_ISLNK(buf.st_mode))		
+				{
+					checksPassed = false;
+					resultDialog->SetMessage(resourcesPath + " is a link, it must be regular folder");
+				}
+			}
+			else
+			{
+				checksPassed = false;
+				resultDialog->SetMessage(resourcesPath + " failed to stat");
+			}
+		}
+		
 
 		// ensure we have write access to the target output directory
 		if (wxDirExists(outputDir))
