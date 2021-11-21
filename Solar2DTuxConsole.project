@@ -18,15 +18,15 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <VirtualDirectory Name="include">
-      <File Name="Rtt_LinuxIPCServerConnection.h"/>
-      <File Name="Rtt_LinuxIPCServer.h"/>
-      <File Name="Rtt_LinuxConsoleApp.h"/>
-      <File Name="Rtt_LinuxConsole.h"/>
+      <File Name="src/Rtt_LinuxIPCServerConnection.h"/>
+      <File Name="src/Rtt_LinuxIPCServer.h"/>
+      <File Name="src/Rtt_LinuxConsoleApp.h"/>
+      <File Name="src/Rtt_LinuxConsole.h"/>
     </VirtualDirectory>
-    <File Name="Rtt_LinuxIPCServerConnection.cpp"/>
-    <File Name="Rtt_LinuxConsoleApp.cpp"/>
-    <File Name="Rtt_LinuxIPCServer.cpp"/>
-    <File Name="Rtt_LinuxConsole.cpp"/>
+    <File Name="src/Rtt_LinuxIPCServerConnection.cpp"/>
+    <File Name="src/Rtt_LinuxConsoleApp.cpp"/>
+    <File Name="src/Rtt_LinuxIPCServer.cpp"/>
+    <File Name="src/Rtt_LinuxConsole.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>

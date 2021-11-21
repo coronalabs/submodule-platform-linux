@@ -28,10 +28,10 @@
     <File Name="../../tools/CoronaBuilder/Rtt_AppPackagerFactory.cpp"/>
     <File Name="../../tools/CoronaBuilder/Rtt_AppPackagerAndroidFactory.cpp"/>
     <VirtualDirectory Name="linux">
-      <File Name="Rtt_LinuxConsolePlatform.cpp"/>
-      <File Name="Rtt_Freetype.cpp" ExcludeProjConfig=""/>
-      <File Name="Rtt_LinuxFileUtils.cpp" ExcludeProjConfig=""/>
-      <File Name="Rtt_HTTPClientLinux.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxConsolePlatform.cpp"/>
+      <File Name="src/Rtt_Freetype.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxFileUtils.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_HTTPClientLinux.cpp" ExcludeProjConfig=""/>
       <VirtualDirectory Name="packagers">
         <VirtualDirectory Name="include">
           <File Name="../shared/Rtt_WebAppPackager.h"/>
@@ -45,60 +45,60 @@
         <File Name="../android/Rtt_AndroidAppPackager.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="simulator">
-        <File Name="Rtt_LinuxSimulatorView.cpp" ExcludeProjConfig=""/>
+        <File Name="src/Rtt_LinuxSimulatorView.cpp" ExcludeProjConfig=""/>
         <VirtualDirectory Name="include">
-          <File Name="Rtt_LinuxSimulatorView.h"/>
-          <File Name="Rtt_LinuxSimulatorServices.h"/>
+          <File Name="src/Rtt_LinuxSimulatorView.h"/>
+          <File Name="src/Rtt_LinuxSimulatorServices.h"/>
         </VirtualDirectory>
       </VirtualDirectory>
       <VirtualDirectory Name="dialogs">
         <VirtualDirectory Name="include">
-          <File Name="Rtt_LinuxClearSandboxDialog.h"/>
-          <File Name="Rtt_LinuxBuildDialog.h"/>
-          <File Name="Rtt_LinuxRelaunchProjectDialog.h"/>
-          <File Name="Rtt_LinuxRuntimeErrorDialog.h"/>
-          <File Name="Rtt_LinuxPreferencesDialog.h"/>
-          <File Name="Rtt_LinuxNewProjectDialog.h"/>
-          <File Name="Rtt_LinuxCloneProjectDialog.h"/>
+          <File Name="src/Rtt_LinuxClearSandboxDialog.h"/>
+          <File Name="src/Rtt_LinuxBuildDialog.h"/>
+          <File Name="src/Rtt_LinuxRelaunchProjectDialog.h"/>
+          <File Name="src/Rtt_LinuxRuntimeErrorDialog.h"/>
+          <File Name="src/Rtt_LinuxPreferencesDialog.h"/>
+          <File Name="src/Rtt_LinuxNewProjectDialog.h"/>
+          <File Name="src/Rtt_LinuxCloneProjectDialog.h"/>
         </VirtualDirectory>
       </VirtualDirectory>
       <VirtualDirectory Name="include">
-        <File Name="Rtt_LinuxConsolePlatform.h"/>
-        <File Name="Rtt_LinuxMenuEvents.h"/>
-        <File Name="Rtt_LinuxMouseListener.h"/>
-        <File Name="Rtt_ConsoleApp.h"/>
-        <File Name="Rtt_LinuxKeyListener.h"/>
-        <File Name="Rtt_LinuxRuntime.h"/>
-        <File Name="Rtt_Freetype.h"/>
-        <File Name="Rtt_LinuxFileUtils.h"/>
-        <File Name="Rtt_LinuxIPCClient.h"/>
-        <File Name="Rtt_LinuxIPCClientConnection.h"/>
-        <File Name="Rtt_LinuxWebView.h"/>
-        <File Name="Rtt_LinuxWebPopup.h"/>
-        <File Name="Rtt_LinuxVideoProvider.h"/>
-        <File Name="Rtt_LinuxVideoPlayer.h"/>
-        <File Name="Rtt_LinuxVideoObject.h"/>
-        <File Name="Rtt_LinuxTextBoxObject.h"/>
-        <File Name="Rtt_LinuxScreenSurface.h"/>
-        <File Name="Rtt_LinuxRuntimeDelegate.h"/>
-        <File Name="Rtt_LinuxPlatform.h"/>
-        <File Name="Rtt_LinuxInputDeviceManager.h"/>
-        <File Name="Rtt_LinuxImageProvider.h"/>
-        <File Name="Rtt_LinuxInputDevice.h"/>
-        <File Name="Rtt_LinuxFont.h"/>
-        <File Name="Rtt_LinuxDisplayObject.h"/>
-        <File Name="Rtt_LinuxDevice.h"/>
-        <File Name="Rtt_LinuxCrypto.h"/>
-        <File Name="Rtt_LinuxContext.h"/>
-        <File Name="Rtt_LinuxContainer.h"/>
-        <File Name="Rtt_LinuxBitmap.h"/>
-        <File Name="Rtt_LinuxAudioRecorder.h"/>
+        <File Name="src/Rtt_LinuxConsolePlatform.h"/>
+        <File Name="src/Rtt_LinuxMenuEvents.h"/>
+        <File Name="src/Rtt_LinuxMouseListener.h"/>
+        <File Name="src/Rtt_ConsoleApp.h"/>
+        <File Name="src/Rtt_LinuxKeyListener.h"/>
+        <File Name="src/Rtt_LinuxRuntime.h"/>
+        <File Name="src/Rtt_Freetype.h"/>
+        <File Name="src/Rtt_LinuxFileUtils.h"/>
+        <File Name="src/Rtt_LinuxIPCClient.h"/>
+        <File Name="src/Rtt_LinuxIPCClientConnection.h"/>
+        <File Name="src/Rtt_LinuxWebView.h"/>
+        <File Name="src/Rtt_LinuxWebPopup.h"/>
+        <File Name="src/Rtt_LinuxVideoProvider.h"/>
+        <File Name="src/Rtt_LinuxVideoPlayer.h"/>
+        <File Name="src/Rtt_LinuxVideoObject.h"/>
+        <File Name="src/Rtt_LinuxTextBoxObject.h"/>
+        <File Name="src/Rtt_LinuxScreenSurface.h"/>
+        <File Name="src/Rtt_LinuxRuntimeDelegate.h"/>
+        <File Name="src/Rtt_LinuxPlatform.h"/>
+        <File Name="src/Rtt_LinuxInputDeviceManager.h"/>
+        <File Name="src/Rtt_LinuxImageProvider.h"/>
+        <File Name="src/Rtt_LinuxInputDevice.h"/>
+        <File Name="src/Rtt_LinuxFont.h"/>
+        <File Name="src/Rtt_LinuxDisplayObject.h"/>
+        <File Name="src/Rtt_LinuxDevice.h"/>
+        <File Name="src/Rtt_LinuxCrypto.h"/>
+        <File Name="src/Rtt_LinuxContext.h"/>
+        <File Name="src/Rtt_LinuxContainer.h"/>
+        <File Name="src/Rtt_LinuxBitmap.h"/>
+        <File Name="src/Rtt_LinuxAudioRecorder.h"/>
       </VirtualDirectory>
-      <File Name="Rtt_LinuxInputDeviceManager.cpp" ExcludeProjConfig=""/>
-      <File Name="Rtt_LinuxInputDevice.cpp" ExcludeProjConfig=""/>
-      <File Name="Rtt_LinuxDevice.cpp" ExcludeProjConfig=""/>
-      <File Name="Rtt_LinuxCrypto.cpp" ExcludeProjConfig=""/>
-      <File Name="Rtt_LinuxContainer.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxInputDeviceManager.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxInputDevice.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxDevice.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxCrypto.cpp" ExcludeProjConfig=""/>
+      <File Name="src/Rtt_LinuxContainer.cpp" ExcludeProjConfig=""/>
     </VirtualDirectory>
     <VirtualDirectory Name="CryptoPP">
       <VirtualDirectory Name="include">
@@ -1061,11 +1061,11 @@
     </VirtualDirectory>
     <VirtualDirectory Name="network">
       <VirtualDirectory Name="include">
-        <File Name="NetworkSupport.h"/>
-        <File Name="NetworkLibrary.h"/>
+        <File Name="src/NetworkSupport.h"/>
+        <File Name="src/NetworkLibrary.h"/>
       </VirtualDirectory>
-      <File Name="NetworkSupport.cpp"/>
-      <File Name="NetworkLibrary.cpp"/>
+      <File Name="src/NetworkSupport.cpp"/>
+      <File Name="src/NetworkLibrary.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="lua">
       <VirtualDirectory Name="include">
@@ -1302,7 +1302,7 @@
         <IncludePath Value="/usr/include/freetype2"/>
         <IncludePath Value="/usr/local/lib/wx/include/gtk3-unicode-3.1"/>
         <IncludePath Value="/usr/local/include/wx-3.1"/>
-        <IncludePath Value="."/>
+        <IncludePath Value="./src"/>
         <IncludePath Value="../../external/lua-5.1.3/src"/>
         <IncludePath Value="../../librtt"/>
         <IncludePath Value="../../tools/car"/>
