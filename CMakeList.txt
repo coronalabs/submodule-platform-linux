@@ -1036,17 +1036,20 @@ target_link_libraries(Solar2DBuilder dl GL z pthread openal freetype png crypto+
 target_link_libraries(Solar2DConsole dl GL z pthread png 
 	gdk-3 wx_baseu-3.1 wx_baseu_net-3.1 wx_gtk3u_adv-3.1 wx_gtk3u_gl-3.1 wx_gtk3u_media-3.1 wx_gtk3u_core-3.1 wx_gtk3u_html-3.1 wx_gtk3u_stc-3.1 wx_gtk3u_webview-3.1)
 
-# install Resources
-install(DIRECTORY "${CORONA_ROOT}/platform/linux/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)
+# build template
+add_custom_target(create_template ALL 
+	COMMAND ${CMAKE_COMMAND} -E tar cfvz "${CMAKE_CURRENT_BINARY_DIR}/Resources/linuxtemplate_x64.tgz" "./Solar2D"
+	DEPENDS Solar2D)
 
-# install binary
+
+# build Resources
+include(platform/linux/CMakeResources.txt)
+
+# install binaries
 install(TARGETS Solar2D RUNTIME DESTINATION bin/Solar2D)
 install(TARGETS Solar2DSimulator RUNTIME DESTINATION bin/Solar2D)
 install(TARGETS Solar2DConsole RUNTIME DESTINATION bin/Solar2D)
 install(TARGETS Solar2DBuilder RUNTIME DESTINATION bin/Solar2D)
 
-# build template
-add_custom_target(create_template ALL 
-	COMMAND ${CMAKE_COMMAND} -E tar cfvz "${CMAKE_CURRENT_BINARY_DIR}/linuxtemplate_x64.tgz" "./Solar2D"
-	DEPENDS Solar2D)
-
+# install Resources
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)

@@ -85,13 +85,15 @@ if [[ $USE_APT == 1 ]]; then
   sudo apt-get install libwebkit2gtk-4.0-dev -y
   sudo apt-get install libgstreamer1.0-0-dbg -y
   sudo apt-get install libzopfli1 -y
-  sudo apt-get install openjdk-8-jdk-headless -y
-  sudo apt-get install openjdk-8-jre-headless -y
   sudo apt-get install p7zip -y
   sudo apt-get install p7zip-full -y
   sudo apt-get install lua5.1 -y
   sudo apt-get install gradle -y
   sudo ln -s /usr/lib/libreadline.so /usr/lib/libreadline.so.7
+  sudo apt-get install openjdk-8-jdk-headless -y
+  sudo apt-get install openjdk-8-jre-headless -y
+  sudo apt-get install android-sdk -y
+
 # install required dependencies via Pacman
 elif [[ $USE_PACMAN == 1 ]]; then
   sudo pacman -Sy cmake --noconfirm

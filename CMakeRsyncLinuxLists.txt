@@ -37,5 +37,7 @@
 + external/ALmixer/***
 + external/mpg123-1.13.1/***
 + external/tremor/***
++ external/apache-ant-1.8.1/
++ external/apache-ant-1.8.1/lib/***
 
 - *

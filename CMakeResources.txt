@@ -1,0 +1,28 @@
+#
+# build Resources folder, in config time
+#
+
+SET(RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/Resources")
+
+# copy Resources folder
+file(COPY "${CORONA_ROOT}/platform/linux/Resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# copy common widget*.png
+file(GLOB WIDGETS ${CORONA_ROOT}/subrepos/widget/widget*.png)
+foreach(pngFile IN LISTS WIDGETS)
+  file(COPY ${pngFile} DESTINATION ${RESOURCES})
+endforeach()
+
+# copy .jar files
+file(COPY "${CORONA_ROOT}/platform/android/resources/_coronatest.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/external/apache-ant-1.8.1/lib/ant.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/external/apache-ant-1.8.1/lib/ant-launcher.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/platform/android/project/ListKeyStore/ListKeyStore.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/platform/android/project/AntInvoke/AntInvoke.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/platform/android/AntLiveManifest/AntLiveManifest.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+
+# copy lua binaries
+file(COPY "${CORONA_ROOT}/bin/linux/lua" DESTINATION "${RESOURCES}/Native/Corona/linux/bin" FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/bin/linux/luac" DESTINATION "${RESOURCES}/Native/Corona/linux/bin" FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+
+
