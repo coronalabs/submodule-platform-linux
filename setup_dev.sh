@@ -1,144 +1,51 @@
 #!/bin/bash 
-# this file is run inside ubuntu environment
-if [[ "$OSTYPE" != "linux-gnu" ]]
-then
-    echo "This script is meant to run on Linux"
-    exit 1
-fi
 
-if [ -f /etc/os-release ]; then
-    # freedesktop.org and systemd
-    . /etc/os-release
-    OS=$NAME
-elif type lsb_release >/dev/null 2>&1; then
-    # linuxbase.org
-    OS=$(lsb_release -si)
-elif [ -f /etc/lsb-release ]; then
-    # For some versions of Debian/Ubuntu without lsb_release command
-    . /etc/lsb-release
-    OS=$DISTRIB_ID
-elif [ -f /etc/debian_version ]; then
-    # Older Debian/Ubuntu/etc.
-    OS=Debian
-elif [ -f /etc/SuSe-release ]; then
-    # Older SuSE/etc.
-    ...
-elif [ -f /etc/redhat-release ]; then
-    # Older Red Hat, CentOS, etc.
-    ...
-else
-    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
-    OS=$(uname -s)
-fi
 
-USE_APT=0
-USE_PACMAN=0
+if [ -x "$(command -v apk)" ]; then
+#  sudo apk add --no-cache $packagesNeeded
+  echo "You must manually install dependencies"
+elif [ -x "$(command -v apt-get)" ]; then
 
-if [[ "${OS,,}" == *"manjaro"* ]]; then
-  USE_PACMAN=1
-elif [[ "${OS,,}" == *"arch"* ]]; then
-  USE_PACMAN=1
-elif [[ "${OS,,}" == *"endeavour"* ]]; then
-  USE_PACMAN=1
-elif [[ "${OS,,}" == *"ubuntu"* ]]; then
-  USE_APT=1
-elif [[ "${OS,,}" == *"mint"* ]]; then
-  USE_APT=1
-elif [[ "${OS,,}" == *"pop"* ]]; then
-  USE_APT=1
-fi
-
-# remove the existing solar platform tools directory
-#rm -rf ~/.local/share/Corona
-# extract the solar platform tools directory
-#tar -xzf Solar2DSimulator/Resources/platform_tools.tgz -C ~/.local/share/
-# move Solar2DBuilder into the platform tools directory
-#mv Solar2DBuilder ~/.local/share/Corona/Native/Corona/lin/bin/
-
-# install required dependencies via Apt
-if [[ $USE_APT == 1 ]]; then
-  # nake sure we have the latest package lists
   sudo apt-get update
-  # install dependencies
+  sudo apt-get install -y cmake ninja-build dos2unix
+  sudo apt-get install -y build-essential libwxgtk3.0-gtk3-dev zlib1g-dev libgl1-mesa-dev libglu1-mesa-dev libopenal-dev libfreetype6-dev libpng-dev libcrypto++-dev
+  sudo apt-get install -y libcurl4-openssl-dev libpng-dev libjpeg-dev libssl-dev libvorbis-dev libogg-dev uuid-dev zlib1g-dev 
+  sudo apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libwebkit2gtk-4.0-dev libgtk-3-dev
 
-  sudo apt-get install cmake -y
-  sudo apt-get install -y ninja-build
-  sudo apt-get install dos2unix -y
-  sudo apt-get install build-essential -y
-  sudo apt-get install libopenal-dev -y
-  sudo apt-get install libcrypto++-dev -y
-  sudo apt-get install libgtk-3-dev -y
-  sudo apt-get install libgl1-mesa-dev -y
-  sudo apt-get install libglu1-mesa-dev -y
-  sudo apt-get install libcurl4-openssl-dev -y
-  sudo apt-get install libpng-dev -y
-  sudo apt-get install zlib1g-dev -y
-  sudo apt-get install libgstreamer1.0-dev -y
-  sudo apt-get install libgstreamer-plugins-base1.0-dev -y
-  sudo apt-get install libjpeg-dev -y
-  sudo apt-get install libssl-dev -y
-  sudo apt-get install libvorbis-dev -y
-  sudo apt-get install libogg-dev -y
-  sudo apt-get install uuid-dev -y
-  sudo apt-get install libxxf86vm-dev -y
-  sudo apt-get install libwebkit2gtk-4.0-37 -y
-  sudo apt-get install libwebkit2gtk-4.0-dev -y
-  sudo apt-get install libgstreamer1.0-0-dbg -y
-  sudo apt-get install libzopfli1 -y
-  sudo apt-get install p7zip -y
-  sudo apt-get install p7zip-full -y
-  sudo apt-get install lua5.1 -y
-  sudo apt-get install gradle -y
-  sudo ln -s /usr/lib/libreadline.so /usr/lib/libreadline.so.7
-  sudo apt-get install openjdk-8-jdk-headless -y
-  sudo apt-get install openjdk-8-jre-headless -y
-  sudo apt-get install android-sdk -y
+  # install libreadline7_7
+  TEMP_DEB="$(mktemp)" &&
+  wget -O "$TEMP_DEB" 'http://mirrors.kernel.org/ubuntu/pool/main/r/readline/libreadline7_7.0-3_amd64.deb' &&
+  sudo dpkg -i "$TEMP_DEB"
+  rm -f "$TEMP_DEB"
 
-# install required dependencies via Pacman
-elif [[ $USE_PACMAN == 1 ]]; then
-  sudo pacman -Sy cmake --noconfirm
-  sudo pacman -Sy base-devel --noconfirm
-  sudo pacman -Sy gcc --noconfirm
-  sudo pacman -Sy readline --noconfirm
-  sudo pacman -Sy openal --noconfirm
-  sudo pacman -Sy gtk3 --noconfirm
-  sudo pacman -Sy libpng --noconfirm
-  sudo pacman -Sy zlib --noconfirm
-  sudo pacman -Sy gstreamer --noconfirm
-  sudo pacman -Sy gst-plugins-base --noconfirm
-  sudo pacman -Sy libjpeg-turbo --noconfirm
-  sudo pacman -Sy openssl --noconfirm
-  sudo pacman -Sy libvorbis --noconfirm
-  sudo pacman -Sy libogg --noconfirm
-  sudo pacman -Sy util-linux --noconfirm
-  sudo pacman -Sy libxxf86vm --noconfirm
-  sudo pacman -Sy webkit2gtk --noconfirm
-  sudo pacman -Sy zopfli --noconfirm
-  sudo pacman -Sy jdk14-openjdk --noconfirm
-  sudo pacman -Sy jre14-openjdk --noconfirm
-  sudo pacman -Sy p7zip --noconfirm
-  sudo pacman -Sy lua51 --noconfirm
-  sudo pacman -Sy gradle --noconfirm
-  sudo ln -s /usr/lib/libreadline.so /usr/lib/libreadline.so.7
-fi
+  # install wxWidgets-3.1.4
+  wxurl=https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.4/wxWidgets-3.1.4.tar.bz2
+  wxtar=~/Downloads/wxWidgets-3.1.4.tar.bz2
+  if [ -f "$wxtar" ]; then
+    echo "Using existing wxWidgets"
+  else
+    cd ~/Downloads
+    wget "$wxurl"
+    tar -xf "$wxtar" -C ~
 
-# install wxWidgets-3.1.4
-wxurl=https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.4/wxWidgets-3.1.4.tar.bz2
-wxtar=~/Downloads/wxWidgets-3.1.4.tar.bz2
-if [ -f "$wxtar" ]; then
-  echo "Using existing wxWidgets"
+    cd ~/wxWidgets-3.1.4
+    mkdir buildgtk
+    cd buildgtk
+    ../configure --with-gtk
+    make -j4
+    sudo make install
+  fi
+
+elif [ -x "$(command -v dnf)" ]; then
+#  sudo dnf install $packagesNeeded
+  echo "You must manually install dependencies"
+elif [ -x "$(command -v zypper)" ]; then 
+#  sudo zypper install $packagesNeeded
+  echo "You must manually install dependencies"
 else
-  cd ~/Downloads
-  wget "$wxurl"
-  tar -xf "$wxtar" -C ~
-
-  cd ~/wxWidgets-3.1.4
-  mkdir buildgtk
-  cd buildgtk
-  ../configure --with-gtk
-  make -j4
-  sudo make install
+  echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
 fi
+
 
 echo "In order to build for Android, you need to install Android Studio, install Android Api level 28 via the SDK manager and accept the license agreements."
 echo "Then you can build via Solar2DTux for Android."
