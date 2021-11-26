@@ -156,7 +156,7 @@ Rtt_LinuxConsole::Rtt_LinuxConsole(wxWindow* parent, wxWindowID id, const wxStri
 
 void Rtt_LinuxConsole::SetProperties()
 {
-	SetTitle(wxT("Solar2DTux Console"));
+	SetTitle(wxT("Solar2D Console"));
 	int statusbarWidths[] = { -1 };
 	statusbar->SetStatusWidths(1, statusbarWidths);
 

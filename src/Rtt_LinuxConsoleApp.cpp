@@ -3,21 +3,21 @@
 bool Rtt_LinuxConsoleApp::OnInit()
 {
 	wxInitAllImageHandlers();
-	Solar2DTuxConsole = new Rtt_LinuxConsole(NULL, wxID_ANY, wxEmptyString);
-	SetTopWindow(Solar2DTuxConsole);
-	Solar2DTuxConsole->Show();
+	Solar2DConsole = new Rtt_LinuxConsole(NULL, wxID_ANY, wxEmptyString);
+	SetTopWindow(Solar2DConsole);
+	Solar2DConsole->Show();
 
 	return true;
 }
 
 void Rtt_LinuxConsoleApp::ClearLog()
 {
-	Solar2DTuxConsole->ClearLog();
+	Solar2DConsole->ClearLog();
 }
 
 void Rtt_LinuxConsoleApp::UpdateLog(wxString message)
 {
-	Solar2DTuxConsole->UpdateLog(message);
+	Solar2DConsole->UpdateLog(message);
 }
 
 void Rtt_LinuxConsoleApp::UpdateLog(wxString message, int messageType)
@@ -25,15 +25,15 @@ void Rtt_LinuxConsoleApp::UpdateLog(wxString message, int messageType)
 	switch(messageType)
 	{
 		case MessageType::Warning:
-			Solar2DTuxConsole->UpdateLogWarning(message);
+			Solar2DConsole->UpdateLogWarning(message);
 			break;
 
 		case MessageType::Error:
-			Solar2DTuxConsole->UpdateLogError(message);
+			Solar2DConsole->UpdateLogError(message);
 			break;
 
 		default:
-			Solar2DTuxConsole->UpdateLog(message);
+			Solar2DConsole->UpdateLog(message);
 			break;
 	}
 }

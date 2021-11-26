@@ -8,7 +8,7 @@ class Rtt_LinuxConsoleApp: public wxApp
 {
 public:
 	enum MessageType {Normal, Warning, Error};
-	Rtt_LinuxConsole *Solar2DTuxConsole;
+	Rtt_LinuxConsole *Solar2DConsole;
 	bool OnInit();
 	void ClearLog();
 	void UpdateLog(wxString message);

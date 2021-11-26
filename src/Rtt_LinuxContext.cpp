@@ -1494,7 +1494,7 @@ void SolarFrame::OnOpen(wxCommandEvent& event)
 	{
 		if (LinuxSimulatorView::IsRunningOnSimulator())
 		{
-			newWindowTitle = "Solar2DTux Simulator";
+			newWindowTitle = "Solar2D Simulator";
 		}
 	}
 

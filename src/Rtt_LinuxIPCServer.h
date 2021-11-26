@@ -8,7 +8,7 @@
 // the hostname
 #define IPC_HOST "localhost"
 // the IPC topic
-#define IPC_TOPIC "IPC Solar2DTux"
+#define IPC_TOPIC "IPC Solar2D"
 // the name of the item we're being advised about
 #define IPC_ADVISE_NAME "Item"
 

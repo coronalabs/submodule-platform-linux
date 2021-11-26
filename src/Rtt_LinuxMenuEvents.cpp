@@ -245,8 +245,9 @@ void LinuxMenuEvents::OnOpenSampleProjects(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnHelpBuildForAndroid(wxCommandEvent &event)
 {
-	string command("xdg-open https://github.com/DannyGlover/Solar2DTux/blob/dev/platform/linux/docs/BuildingForAndroid.md");
-	wxExecute(command);
+	// todo
+	//string command("xdg-open https://github.com/DannyGlover/Solar2D/blob/dev/platform/linux/docs/BuildingForAndroid.md");
+	//wxExecute(command);
 }
 
 void LinuxMenuEvents::OnAbout(wxCommandEvent &WXUNUSED(event))
@@ -255,11 +256,11 @@ void LinuxMenuEvents::OnAbout(wxCommandEvent &WXUNUSED(event))
 	wxIcon icon = wxIcon("/opt/Solar2D/Resources/logo_small.png", wxBITMAP_TYPE_PNG, 60, 60);
 	string version("Version: ");
 	version.append(to_string(Rtt_BUILD_YEAR)).append(".").append(to_string(Rtt_LOCAL_BUILD_REVISION));
-	info.SetName("Solar2DTux");
+	info.SetName("Solar2D");
 	info.SetVersion(version);
 	info.SetCopyright(Rtt_STRING_COPYRIGHT);
 	info.AddDeveloper("Danny Glover, Robert Craig. Based on initial port by the CoronaLabs team.");
-	info.SetWebSite("https://github.com/DannyGlover/Solar2DTux");
+	info.SetWebSite("https://github.com/DannyGlover/Solar2D");
 	info.SetIcon(icon);
 	info.SetLicence(_("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS\nBE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN\nACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\nCONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."));
 	info.SetDescription(_("Solar2D is a cross-platform framework ideal for rapidly creating apps and games for mobile devices, TV, desktop systems and HTML5.\n\nThat means you can create your project once and publish it to multiple types of devices, including Apple iPhone and iPad, Android phones and tablets, Amazon Fire, Mac Desktop, Windows Desktop, Linux, HTML5 and even connected TVs such as Apple TV, Fire TV, and Android TV."));

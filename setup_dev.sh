@@ -48,4 +48,4 @@ fi
 
 
 echo "In order to build for Android, you need to install Android Studio, install Android Api level 28 via the SDK manager and accept the license agreements."
-echo "Then you can build via Solar2DTux for Android."
+echo "Then you can build via Solar2D for Android."
