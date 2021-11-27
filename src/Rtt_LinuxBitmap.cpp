@@ -279,7 +279,7 @@ namespace Rtt
 		float xscale = 1;
 		float yscale = 1;
 		const char *fontFile = inFont.Name();
-		int fontSize = inFont.Size() - 2;
+		int fontSize = inFont.Size();
 		
 		if (width > 0 && width < 4)
 		{

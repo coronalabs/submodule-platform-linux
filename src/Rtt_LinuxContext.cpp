@@ -1399,8 +1399,8 @@ void SolarFrame::OnZoomIn(wxCommandEvent& event)
 		}
 		else
 		{
-			LinuxSimulatorView::Config::welcomeScreenZoomedWidth = proposedWidth;
-			LinuxSimulatorView::Config::welcomeScreenZoomedHeight = proposedHeight;
+//			LinuxSimulatorView::Config::welcomeScreenZoomedWidth = proposedWidth;
+//			LinuxSimulatorView::Config::welcomeScreenZoomedHeight = proposedHeight;
 			LinuxSimulatorView::Config::Save();
 		}
 	}
@@ -1537,13 +1537,14 @@ void SolarFrame::OnOpen(wxCommandEvent& event)
 	fContext->SetCanvas(fSolarGLCanvas);
 	SetMenu(path.c_str());
 
+	// Vitaly: for what this ?
 	// restore home screen zoom level
-	if (IsHomeScreen(appName))
-	{
-		fContext->GetRuntimeDelegate()->fContentWidth = LinuxSimulatorView::Config::welcomeScreenZoomedWidth;
-		fContext->GetRuntimeDelegate()->fContentHeight = LinuxSimulatorView::Config::welcomeScreenZoomedHeight;
-		ChangeSize(fContext->GetRuntimeDelegate()->fContentWidth, fContext->GetRuntimeDelegate()->fContentHeight);
-	}
+//	if (IsHomeScreen(appName))
+//	{
+//		fContext->GetRuntimeDelegate()->fContentWidth = LinuxSimulatorView::Config::welcomeScreenZoomedWidth;
+//		fContext->GetRuntimeDelegate()->fContentHeight = LinuxSimulatorView::Config::welcomeScreenZoomedHeight;
+//		ChangeSize(fContext->GetRuntimeDelegate()->fContentWidth, fContext->GetRuntimeDelegate()->fContentHeight);
+//	}
 
 	fContext->RestartRenderer();
 	GetCanvas()->Refresh(false);
