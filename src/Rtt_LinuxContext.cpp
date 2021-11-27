@@ -9,6 +9,7 @@
 
 #define _chdir chdir
 #include <string.h>
+#include <fstream>
 #include "Core/Rtt_Build.h"
 #include "Core/Rtt_Time.h"
 #include "Rtt_Runtime.h"
@@ -53,6 +54,8 @@ static bool IsHomeScreen(string appName)
 {
 	return appName.compare(HOMESCREEN_ID) == 0;
 }
+
+bool ReadRecentDocs(vector<string>& Names, vector<string>& Paths);
 
 namespace Rtt
 {
@@ -1449,9 +1452,38 @@ void SolarFrame::OnSuspendOrResume(wxCommandEvent& event)
 	}
 }
 
+void SolarFrame::UpdateRecentDocs(const std::string& appName, const std::string& path)
+{
+	vector<string> Names;
+	vector<string> Paths;
+	if (ReadRecentDocs(Names, Paths))
+	{
+		Names.erase(remove(Names.begin(), Names.end(), appName), Names.end());
+		Paths.erase(remove(Paths.begin(), Paths.end(), path), Paths.end());
+
+		// max size is 7
+		vector<string> recent_docs;
+		for (int i = max(0, (int)Names.size() - 6); i < Names.size(); i++)
+		{
+			recent_docs.push_back(Names[i] + "=" + Paths[i]);
+		}
+		recent_docs.push_back(appName + "=" + path);
+
+		string recent_path = LinuxFileUtils::GetHomePath();
+		recent_path += "/.Solar2D/recent_projects.conf";
+		ofstream f(recent_path);
+		if (f.is_open())
+		{
+			ostream_iterator<string> it(f, "\n");
+			copy(recent_docs.begin(), recent_docs.end(), it);
+		}
+	}
+}
+
 void SolarFrame::OnOpen(wxCommandEvent& event)
 {
 	wxString path = event.GetString();
+	string fullPath = (const char*)path.c_str();
 	path = path.SubString(0, path.size() - 10); // without main.lua
 
 	delete fContext;
@@ -1476,6 +1508,7 @@ void SolarFrame::OnOpen(wxCommandEvent& event)
 	if (!IsHomeScreen(appName))
 	{
 		fAppPath = fContext->GetAppPath(); // save for relaunch
+		UpdateRecentDocs(appName, fullPath);
 	}
 
 	bool fullScreen = fContext->Init();

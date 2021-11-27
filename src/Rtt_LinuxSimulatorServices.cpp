@@ -182,8 +182,7 @@ namespace Rtt
 	// Gets a list of recent projects
 	void LinuxSimulatorServices::GetRecentDocs(LightPtrArray<RecentProjectInfo> *list) const
 	{
-		Rtt_LogException("todo: GetRecentDocs not available on Linux\n");
-		//fSimulatorView.GetRecentDocs(list);
+		LinuxSimulatorView::GetRecentDocs(list);
 	}
 
 	const char *LinuxSimulatorServices::GetSubscription(S32 *expirationTimestamp) const

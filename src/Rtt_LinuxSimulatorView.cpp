@@ -12,6 +12,8 @@
 #include <wx/string.h>
 #include <wx/menu.h>
 #include <wx/textctrl.h>
+#include <sstream>
+#include <fstream>
 #include "Rtt_LuaContext.h"
 #include "Rtt_LuaFile.h"
 #include "Rtt_MPlatform.h"
@@ -45,18 +47,76 @@
 #define SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_WIDTH  "/welcomeScreenZoomedWidth"
 #define SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT "/welcomeScreenZoomedHeight"
 
+using namespace std;
+
+string& ltrim(string& str, const string& chars)
+{
+	str.erase(0, str.find_first_not_of(chars));
+	return str;
+}
+
+string& rtrim(string& str, const string& chars)
+{
+	str.erase(str.find_last_not_of(chars) + 1);
+	return str;
+}
+
+string& trim(string& str, const std::string& chars = "\t\n\v\f\r ")
+{
+	return ltrim(rtrim(str, chars), chars);
+}
+
+void split(vector<string>& cont, const string& str, const string& delims)
+{
+	const char* s = str.c_str();
+	const char* delim = strstr(s, delims.c_str());
+	while (delim)
+	{
+		string item(s, delim - s);
+		cont.push_back(trim(item));
+		s = delim + delims.size();
+		delim = strstr(s, delims.c_str());
+	}
+	if (*s != 0)
+		cont.push_back(s);
+}
+
+bool ReadRecentDocs(vector<string>& Names, vector<string>& Paths)
+{
+	std::string recent_path = Rtt::LinuxFileUtils::GetHomePath();
+	recent_path += "/.Solar2D/recent_projects.conf";
+	ifstream f(recent_path);
+	if (f.is_open())
+	{
+		string line;
+		while (getline(f, line))
+		{
+			std::vector<std::string> items;
+			split(items, line, "=");
+			if (items.size() == 2 && items[0].size() > 0 && items[1].size() > 0)
+			{
+				Names.push_back(items[0]);
+				Paths.push_back(items[1]);
+			}
+		}
+		f.close();
+		return Names.size() > 0;
+	}
+	return false;
+}
+
 namespace Rtt
 {
-	LinuxPlatformServices::LinuxPlatformServices(MPlatform *platform)
+	LinuxPlatformServices::LinuxPlatformServices(MPlatform* platform)
 		: fPlatform(platform)
 	{
 	}
 
-	// initialise vars
+	// static initialise vars
 	const float  LinuxSimulatorView::skinScaleFactor = 1.5;
 	const int  LinuxSimulatorView::skinMinWidth = 320;
 	wxString LinuxSimulatorView::Config::settingsFilePath = wxEmptyString;
-	wxString LinuxSimulatorView::Config::lastProjectDirectory  = wxEmptyString;
+	wxString LinuxSimulatorView::Config::lastProjectDirectory = wxEmptyString;
 	bool LinuxSimulatorView::Config::showRuntimeErrors = true;
 	bool LinuxSimulatorView::Config::openLastProject = false;
 	LinuxPreferencesDialog::RelaunchType LinuxSimulatorView::Config::relaunchOnFileChange = LinuxPreferencesDialog::RelaunchType::Always;
@@ -69,7 +129,7 @@ namespace Rtt
 	int LinuxSimulatorView::Config::zoomedHeight = LinuxSimulatorView::Config::skinHeight;
 	int LinuxSimulatorView::Config::welcomeScreenZoomedWidth = 960;
 	int LinuxSimulatorView::Config::welcomeScreenZoomedHeight = 720;
-	wxConfig *LinuxSimulatorView::Config::configFile;
+	wxConfig* LinuxSimulatorView::Config::configFile;
 	std::map<int, LinuxSimulatorView::SkinProperties> LinuxSimulatorView::fSkins;
 
 	void LinuxSimulatorView::Config::Load()
@@ -129,7 +189,7 @@ namespace Rtt
 		delete LinuxSimulatorView::Config::configFile;
 	}
 
-	bool LinuxSimulatorView::LoadSkin(lua_State *L, int skinID, std::string filePath)
+	bool LinuxSimulatorView::LoadSkin(lua_State* L, int skinID, std::string filePath)
 	{
 		int top = lua_gettop(L);
 		int status = Lua::DoFile(L, filePath.c_str(), 0, true);
@@ -178,7 +238,7 @@ namespace Rtt
 			lua_getfield(L, -1, "androidDisplayApproximateDpi");
 			if (lua_type(L, -1) == LUA_TNUMBER)
 			{
-				skin.androidDisplayApproximateDpi  = lua_tointeger(L, -1);
+				skin.androidDisplayApproximateDpi = lua_tointeger(L, -1);
 			}
 			lua_pop(L, 1);
 
@@ -289,12 +349,12 @@ namespace Rtt
 		return false;
 	}
 
-	void LinuxSimulatorView::OnLinuxPluginGet(const char *appPath, const char *appName, LinuxPlatform *platform)
+	void LinuxSimulatorView::OnLinuxPluginGet(const char* appPath, const char* appName, LinuxPlatform* platform)
 	{
-		const char *identity = "no-identity";
+		const char* identity = "no-identity";
 
 		// Create the app packager.
-		MPlatformServices *service = new LinuxPlatformServices(platform);
+		MPlatformServices* service = new LinuxPlatformServices(platform);
 		LinuxAppPackager packager(*service);
 
 		// Read the application's "build.settings" file.
@@ -313,11 +373,11 @@ namespace Rtt
 
 		// Package build settings parameters.
 		LinuxAppPackagerParams linuxBuilderParams(
-		    appName, NULL, identity, NULL,
-		    appPath, NULL, NULL,
-		    targetPlatform, targetVersion,
-		    Rtt::TargetDevice::kLinux, NULL,
-		    NULL, NULL, false, NULL, false, false, true);
+			appName, NULL, identity, NULL,
+			appPath, NULL, NULL,
+			targetPlatform, targetVersion,
+			Rtt::TargetDevice::kLinux, NULL,
+			NULL, NULL, false, NULL, false, false, true);
 
 		const char kBuildSettings[] = "build.settings";
 		Rtt::String buildSettingsPath;
@@ -325,4 +385,42 @@ namespace Rtt
 		linuxBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
 		int rc = packager.Build(&linuxBuilderParams, NULL);
 	}
+
+	/// Gets a list of recent projects.
+	void LinuxSimulatorView::GetRecentDocs(Rtt::LightPtrArray<Rtt::RecentProjectInfo>* listPointer)
+	{
+		if (listPointer)
+		{
+			listPointer->Clear();
+
+			vector<string> Names;
+			vector<string> Paths;
+			if (ReadRecentDocs(Names, Paths))
+			{
+				for (int i = 0; i < Names.size(); i++)
+				{
+					// Create a recent project info object.
+					RecentProjectInfo* infoPointer = new RecentProjectInfo();
+					if (!infoPointer)
+					{
+						continue;
+					}
+
+					// Copy the project's folder name to the info object.
+					String sTitle;
+					sTitle.Append(Names[i].c_str());
+					infoPointer->formattedString = sTitle;
+
+					// Copy the project's "main.lua" file path to the info object.
+					String sPath;
+					sPath.Append(Paths[i].c_str());
+					infoPointer->fullURLString = sPath;
+
+					// Add the info object to the given collection.
+					listPointer->Append(infoPointer);
+				}
+			}
+		}
+	}
+
 } // namespace Rtt

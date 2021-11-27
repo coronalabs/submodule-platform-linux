@@ -126,6 +126,7 @@ namespace Rtt
 		static void OnLinuxPluginGet(const char *appPath, const char *appName, LinuxPlatform *platform);
 		static void OnCancel(wxCommandEvent &);
 		static void AppWebBuild(SolarAppContext *ctx);
+		static void GetRecentDocs(LightPtrArray<RecentProjectInfo>* listPointer);
 
 	public:
 		static std::map<int, LinuxSimulatorView::SkinProperties> fSkins;
