@@ -32,4 +32,5 @@ file(COPY "${CORONA_ROOT}/platform/resources/Skins" DESTINATION ${RESOURCES})
 
 # homescreen
 file(COPY "${CORONA_ROOT}/simulator-extensions/welcomescreen" DESTINATION ${RESOURCES})
-file(RENAME "${RESOURCES}/welcomescreen" "${RESOURCES}/homescreen") 
+file(REMOVE_RECURSE ${RESOURCES}/homescreen) 
+file(RENAME ${RESOURCES}/welcomescreen ${RESOURCES}/homescreen)

@@ -31,7 +31,6 @@
 + external/Box2D/***
 + external/b2Separator-cpp/***
 + external/smoothpolygon/***
-+ external/libjpeg/***
 + external/loop-2.3-beta/
 + external/loop-2.3-beta/lua/***
 + external/ALmixer/***
