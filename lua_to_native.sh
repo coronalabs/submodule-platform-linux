@@ -54,12 +54,12 @@ popd > /dev/null
 
 SRC_PATH="$SRC_DIR/$SRCFILE"
 
-if [[ $(uname -s) == Darwin ]];then
-    BIN_DIR=mac
-else 
-    BIN_DIR=linux
-fi
-
+#if [[ $(uname -s) == Darwin ]];then
+#    BIN_DIR=mac
+#else 
+#    BIN_DIR=linux
+#fi
+BIN_DIR="$3"
 
 # If the Lua is newer than the CPP, compile it
 if [ "$SRC_PATH" -nt "$DST_DIR/$SRCNAME.cpp" ]
@@ -72,14 +72,7 @@ then
 
 	LU_PATH=$TEMP_DIR/$SRCNAME.lu
 
-	# hack
-	chmod 555 ${BIN_DIR}/lua > /dev/null
-	chmod 555 ${BIN_DIR}/luac > /dev/null
-	chmod 555 ${BIN_DIR}/lua2c.sh > /dev/null
-	dos2unix ${BIN_DIR}/lua2c.sh > /dev/null
-
 	${BIN_DIR}/lua rcc.lua -c ${BIN_DIR} -O$LUA_BUILD_TYPE -o "$LU_PATH" "$SRC_PATH"
-
 	${BIN_DIR}/lua -epackage.path="[[../external/loop-2.3-beta/lua/?.lua]]" ../external/loop-2.3-beta/lua/precompiler.constant.lua -d "$DST_DIR" -o "$SRCNAME" -l "$LU_PATH" -n -m "$MODULE_NAME" "$SRCNAME"
 
 	popd > /dev/null

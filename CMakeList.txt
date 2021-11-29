@@ -255,13 +255,73 @@ SET( LUA_SOCKET_SOURCES
 	"${CORONA_ROOT}/external/luasocket/src/url.lua"
 )
 
+SET( LUA51_SOURCES
+    ${CORONA_ROOT}/external/lua-5.1.3/src/lapi.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lauxlib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lbaselib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lcode.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ldblib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ldebug.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ldo.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ldump.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lfunc.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lgc.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/linit.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/liolib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/llex.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lmathlib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lmem.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/loadlib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lobject.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lopcodes.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/loslib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lparser.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lstate.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lstring.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lstrlib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ltable.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ltablib.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/ltm.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lundump.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lvm.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/lzio.c
+		${CORONA_ROOT}/external/lua-5.1.3/src/print.c
+)
+
+set(Lua2CppOutputDir "${CMAKE_CURRENT_BINARY_DIR}/generated_src")
+file(MAKE_DIRECTORY "${Lua2CppOutputDir}")
+
+# mark lua==>cpp files as GENERATED
+
 FOREACH(LUA_FILE ${LUA_SOURCES})
-	lua_2_cpp("${LUA_FILE}")
+	get_filename_component(finame ${LUA_FILE} NAME_WE)
+	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
+	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
 ENDFOREACH()
 
 FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
-	lua_2_cpp("${LUA_FILE}" luasocket)
+	get_filename_component(finame ${LUA_FILE} NAME_WE)
+	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
+	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
+  message(STATUS ${cppfile})
 ENDFOREACH()
+
+# build lua + luac
+
+add_executable( lua
+	${LUA51_SOURCES}
+	${CORONA_ROOT}/external/lua-5.1.3/src/lua.c
+)
+target_link_libraries(lua	m)
+
+add_executable( luac
+	${LUA51_SOURCES}
+	${CORONA_ROOT}/external/lua-5.1.3/src/luac.c
+)
+target_link_libraries(luac m)
+add_dependencies(luac lua)
+
+# build Solar2D binaries
 
 add_executable( Solar2DConsole
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxIPCServer.cpp
@@ -344,7 +404,6 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/librtt/Core/Rtt_Allocator.cpp
 		${CORONA_ROOT}/librtt/Core/Rtt_Array.cpp
 		${CORONA_ROOT}/librtt/Core/Rtt_ArrayTuple.cpp
-#		${CORONA_ROOT}/librtt/Core/Rtt_Assert.c
 		${CORONA_ROOT}/librtt/Core/Rtt_AutoResource.cpp 
 		${CORONA_ROOT}/librtt/Core/Rtt_FileSystem.cpp
 		${CORONA_ROOT}/librtt/Core/Rtt_Fixed.c
@@ -723,37 +782,8 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/external/smoothpolygon/SmoothPolygon.cpp
 
 		# Lua
-    ${CORONA_ROOT}/external/lua-5.1.3/src/lapi.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lauxlib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lbaselib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lcode.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ldblib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ldebug.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ldo.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ldump.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lfunc.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lgc.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/linit.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/liolib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/llex.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lmathlib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lmem.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/loadlib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lobject.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lopcodes.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/loslib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lparser.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lstate.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lstring.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lstrlib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ltable.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ltablib.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/ltm.c
+		${LUA51_SOURCES}
 		${CORONA_ROOT}/external/lua-5.1.3/src/luac.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lundump.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lvm.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/lzio.c
-		${CORONA_ROOT}/external/lua-5.1.3/src/print.c
 
 		# ALmixer + mp3
 		${CORONA_ROOT}/external/ALmixer/ALmixer.c
@@ -837,7 +867,6 @@ SET( SOLAR2D_SOURCES
 
 add_executable( Solar2D
 	${SOLAR2D_SOURCES}
-
 	${CORONA_ROOT}/platform/linux/src/main.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContext.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxAudioRecorder.cpp
@@ -883,7 +912,6 @@ add_executable( Solar2D
 
 add_executable( Solar2DSimulator
 	${SOLAR2D_SOURCES}
-
 	${CORONA_ROOT}/platform/linux/src/main.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContext.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxAudioRecorder.cpp
@@ -941,6 +969,35 @@ add_executable( Solar2DBuilder
 	${CORONA_ROOT}/tools/CoronaBuilder/Rtt_LuaLibBuilder.cpp
 	${CORONA_ROOT}/tools/car/Rtt_Car.cpp
 )
+
+# adjust EOL in lua_to_native.sh
+add_custom_target(dos2unix
+	COMMAND dos2unix "${CORONA_ROOT}/platform/linux/lua_to_native.sh"
+DEPENDS luac)
+
+FOREACH(LUA_FILE ${LUA_SOURCES})
+	get_filename_component(finame ${LUA_FILE} NAME_WE)
+	add_custom_target(${finame}
+		COMMAND ${CMAKE_COMMAND} -E env BUILD_CONFIG="${BUILD_CONFIG}" "${CORONA_ROOT}/platform/linux/lua_to_native.sh" "${LUA_FILE}" "${Lua2CppOutputDir}/" "${CMAKE_CURRENT_BINARY_DIR}"
+		DEPENDS dos2unix)
+	add_dependencies(Solar2DConsole ${finame})
+	add_dependencies(Solar2D ${finame})
+	add_dependencies(Solar2DSimulator ${finame}) 
+	add_dependencies(Solar2DBuilder ${finame})
+ENDFOREACH()
+
+FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
+	SET(MODULE_COMMAND1 "-m")
+	SET(MODULE_COMMAND2 "luasocket")
+	get_filename_component(finame ${LUA_FILE} NAME_WE)
+	add_custom_target(${finame}
+		COMMAND ${CMAKE_COMMAND} -E env BUILD_CONFIG="${BUILD_CONFIG}" "${CORONA_ROOT}/platform/linux/lua_to_native.sh" ${MODULE_COMMAND1} ${MODULE_COMMAND2} "${LUA_FILE}" "${Lua2CppOutputDir}/" "${CMAKE_CURRENT_BINARY_DIR}"
+		DEPENDS dos2unix)
+	add_dependencies(Solar2DConsole ${finame})
+	add_dependencies(Solar2D ${finame})
+	add_dependencies(Solar2DSimulator ${finame})
+	add_dependencies(Solar2DBuilder ${finame})
+ENDFOREACH()
 
 target_compile_definitions( Solar2D PUBLIC
 	Rtt_LUA_COMPILER LUA_DL_DLOPEN wxUSE_MEDIACTRL=1 wxUSE_WEBVIEW=1
