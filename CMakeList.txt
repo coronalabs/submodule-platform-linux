@@ -235,10 +235,10 @@ SET( LUA_SOURCES
 	"${CORONA_ROOT}/platform/resources/linuxPackageApp.lua"
 	"${CORONA_ROOT}/platform/resources/webPackageApp.lua"
 	"${CORONA_ROOT}/plugins/network/shared/network.lua"
-	"${CORONA_ROOT}/platform/linux/Resources/create_build_properties.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/CoronaBuilder.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/BuilderPluginDownloader.lua"
 	"${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua"
+	"${CORONA_ROOT}/platform/android/create_build_properties.lua"
 )
 
 SET( LUA_SOCKET_SOURCES

@@ -14,7 +14,9 @@ foreach(pngFile IN LISTS WIDGETS)
 endforeach()
 
 # copy Android resources
-#file(COPY "${CORONA_ROOT}/platform/android/create_build_properties.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
+#file(COPY "${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/platform/android/create_build_properties.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/platform/android/resources/build.xml" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/android/resources/_coronatest.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/android/resources/debug.keystore" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/android/project/ListKeyStore/ListKeyStore.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
