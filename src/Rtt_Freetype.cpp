@@ -118,7 +118,7 @@ namespace Rtt
 
 		// default fallback font
 		std::string defaultFontPath(LinuxFileUtils::GetStartupPath(NULL));
-		defaultFontPath.append("/Resources/FreeSans.ttf");
+		defaultFontPath.append("/Resources/homescreen/Exo2-Regular.ttf");
 		const char* defaultFontFile = defaultFontPath.c_str();
 
 		if (fontname.size() == 0)

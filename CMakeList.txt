@@ -973,6 +973,11 @@ add_executable( Solar2DBuilder
 # adjust EOL in lua_to_native.sh
 add_custom_target(dos2unix
 	COMMAND dos2unix "${CORONA_ROOT}/platform/linux/lua_to_native.sh"
+
+	# copy lua binaries
+	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Resources/Native/Corona/linux/bin
+	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/lua" "${CMAKE_CURRENT_BINARY_DIR}/Resources/Native/Corona/linux/bin/"
+	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/luac" "${CMAKE_CURRENT_BINARY_DIR}/Resources/Native/Corona/linux/bin/"
 DEPENDS luac)
 
 FOREACH(LUA_FILE ${LUA_SOURCES})

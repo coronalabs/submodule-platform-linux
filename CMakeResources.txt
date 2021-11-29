@@ -23,10 +23,6 @@ file(COPY "${CORONA_ROOT}/platform/android/AntLiveManifest/AntLiveManifest.jar" 
 file(COPY "${CORONA_ROOT}/external/apache-ant-1.8.1/lib/ant.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/external/apache-ant-1.8.1/lib/ant-launcher.jar" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
-# copy lua binaries
-file(COPY "${CORONA_ROOT}/bin/linux/lua" DESTINATION "${RESOURCES}/Native/Corona/linux/bin" FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
-file(COPY "${CORONA_ROOT}/bin/linux/luac" DESTINATION "${RESOURCES}/Native/Corona/linux/bin" FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
-
 # copy Skins
 file(COPY "${CORONA_ROOT}/platform/resources/Skins" DESTINATION ${RESOURCES})
 
