@@ -237,7 +237,7 @@ SET( LUA_SOURCES
 	"${CORONA_ROOT}/plugins/network/shared/network.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/CoronaBuilder.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/BuilderPluginDownloader.lua"
-	"${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua"
+#	"${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua"
 	"${CORONA_ROOT}/platform/android/create_build_properties.lua"
 )
 
@@ -370,7 +370,7 @@ SET( SOLAR2D_SOURCES
 		${Lua2CppOutputDir}/widget_theme_ios7.cpp
 		${Lua2CppOutputDir}/shell.cpp
 		${Lua2CppOutputDir}/BuilderPluginDownloader.cpp
-		${Lua2CppOutputDir}/CoronaBuilderPluginCollector.cpp
+#		${Lua2CppOutputDir}/CoronaBuilderPluginCollector.cpp
 
 		${CORONA_ROOT}/external/luasocket/src/auxiliar.c
 		${CORONA_ROOT}/external/luasocket/src/compat.c

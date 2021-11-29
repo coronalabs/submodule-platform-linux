@@ -4,8 +4,8 @@
 
 SET(RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/Resources")
 
-# copy Resources folder
-file(COPY "${CORONA_ROOT}/platform/linux/Resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# create Resources folder
+file(MAKE_DIRECTORY ${RESOURCES})
 
 # copy common widget*.png
 file(GLOB WIDGETS ${CORONA_ROOT}/subrepos/widget/widget*.png)
@@ -14,11 +14,13 @@ foreach(pngFile IN LISTS WIDGETS)
 endforeach()
 
 # copy Android resources
-#file(COPY "${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
+
+file(COPY "${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 
 file(COPY "${CORONA_ROOT}/platform/resources/json.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/resources/dkjson.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/resources/CoronaPListSupport.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
+file(COPY "${CORONA_ROOT}/platform/resources/AppSettings.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 
 file(COPY "${CORONA_ROOT}/platform/android/create_build_properties.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/android/resources/build.xml" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
