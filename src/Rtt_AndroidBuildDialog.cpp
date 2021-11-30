@@ -422,6 +422,9 @@ namespace Rtt
 			}
 		}
 		
+		outputDir.append('/');
+		outputDir.append(appName);
+		outputDir.append(".Android");
 
 		// ensure we have write access to the target output directory
 		if (wxDirExists(outputDir))

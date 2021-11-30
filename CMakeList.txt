@@ -303,7 +303,6 @@ FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
 	get_filename_component(finame ${LUA_FILE} NAME_WE)
 	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
 	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
-  message(STATUS ${cppfile})
 ENDFOREACH()
 
 # build lua + luac
