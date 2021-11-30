@@ -69,8 +69,10 @@ namespace Rtt
 		void Resume();
 		void RestartRenderer();
 		int GetFPS() const { return fRuntime ? fRuntime->GetFPS() : 30; }
-		int GetWidth() const { return fRuntimeDelegate->fContentWidth; }
-		int GetHeight() const { return fRuntimeDelegate->fContentHeight; }
+		int GetWidth() const;
+		void SetWidth(int val);
+		int GetHeight() const;
+		void SetHeight(int val);
 		DeviceOrientation::Type GetOrientation() const { return fRuntimeDelegate->fOrientation; }
 		const std::string &GetTitle() const { return fTitle; }
 		void Flush();

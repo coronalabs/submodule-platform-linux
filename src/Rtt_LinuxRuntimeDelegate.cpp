@@ -14,7 +14,7 @@
 
 // Lua Loader for flattened directories
 // This allows .so plugins to load.
-extern "C" int loader_Cflat (lua_State *L);
+extern "C" int loader_Cflat(lua_State * L);
 
 namespace Rtt
 {
@@ -33,20 +33,20 @@ namespace Rtt
 	{
 	}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Public Member Functions
-	void LinuxRuntimeDelegate::DidInitLuaLibraries( const Runtime &sender ) const
+#pragma region Public Member Functions
+	void LinuxRuntimeDelegate::DidInitLuaLibraries(const Runtime& sender) const
 	{
-		lua_State *L = sender.VMContext().L();
-		Lua::InsertPackageLoader( L, &loader_Cflat, -1 );
+		lua_State* L = sender.VMContext().L();
+		Lua::InsertPackageLoader(L, &loader_Cflat, -1);
 	}
 
 	/// Called just before the "main.lua" file has been loaded.
 	/// This is the application's opportunity to register custom APIs into Lua.
-	void LinuxRuntimeDelegate::WillLoadMain(const Runtime &sender) const
+	void LinuxRuntimeDelegate::WillLoadMain(const Runtime& sender) const
 	{
-		lua_State *L = sender.VMContext().L();
+		lua_State* L = sender.VMContext().L();
 
 		if (Rtt_VERIFY(const_cast<Runtime&>(sender).PushLaunchArgs(true) > 0))
 		{
@@ -55,7 +55,7 @@ namespace Rtt
 		}
 	}
 
-	void LinuxRuntimeDelegate::WillLoadConfig(const Runtime &sender, lua_State *L) const
+	void LinuxRuntimeDelegate::WillLoadConfig(const Runtime& sender, lua_State* L) const
 	{
 		// Rtt_ASSERT( ! fDisplay );
 		Rtt_ASSERT(1 == lua_gettop(L));
@@ -64,14 +64,14 @@ namespace Rtt
 		lua_getfield(L, -1, "width");
 		if (lua_tonumber(L, -1) > 0 && fContentWidth == 0) // use width from build.settings if it exist there
 		{
-			fContentWidth = lua_tonumber(L, -1);
+			const_cast<LinuxRuntimeDelegate*>(this)->SetWidth(lua_tonumber(L, -1));
 		}
 		lua_pop(L, 1);
 
 		lua_getfield(L, -1, "height");
 		if (lua_tonumber(L, -1) > 0 && fContentHeight == 0) // use width from build.settings if it exist there
 		{
-			fContentHeight = lua_tonumber(L, -1);
+			const_cast<LinuxRuntimeDelegate*>(this)->SetHeight(lua_tonumber(L, -1));
 		}
 		lua_pop(L, 1);
 
@@ -99,19 +99,19 @@ namespace Rtt
 		// default
 		if (fContentWidth == 0)
 		{
-			fContentWidth = 320;
+			const_cast<LinuxRuntimeDelegate*>(this)->SetWidth(320);
 		}
 		if (fContentHeight == 0)
 		{
-			fContentHeight = 480;
+			const_cast<LinuxRuntimeDelegate*>(this)->SetHeight(480);
 		}
 
 		Rtt_ASSERT(1 == lua_gettop(L));
 	}
 
-	void LinuxRuntimeDelegate::DidLoadConfig(const Runtime &sender, lua_State *L) const
+	void LinuxRuntimeDelegate::DidLoadConfig(const Runtime& sender, lua_State* L) const
 	{
 	}
 
-	#pragma endregion
+#pragma endregion
 }; // namespace Rtt

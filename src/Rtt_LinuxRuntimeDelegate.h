@@ -23,14 +23,21 @@ namespace Rtt
 		LinuxRuntimeDelegate();
 		virtual ~LinuxRuntimeDelegate();
 
-		virtual void DidInitLuaLibraries(const Runtime &sender) const;
-		virtual void WillLoadMain(const Runtime &sender) const;
-		virtual void WillLoadConfig(const Runtime &sender, lua_State *L) const;
-		virtual void DidLoadConfig(const Runtime &sender, lua_State *L) const;
+		virtual void DidInitLuaLibraries(const Runtime& sender) const;
+		virtual void WillLoadMain(const Runtime& sender) const;
+		virtual void WillLoadConfig(const Runtime& sender, lua_State* L) const;
+		virtual void DidLoadConfig(const Runtime& sender, lua_State* L) const;
+
+		inline int GetWidth() const { return fContentWidth; }
+		inline int GetHeight() const { return fContentHeight; }
+		void SetWidth(int val) { fContentWidth = val; }
+		void SetHeight(int val) { fContentHeight = val; }
+
+	private:
+		int fContentWidth;
+		int fContentHeight;
 
 	public:
-		mutable int fContentWidth;
-		mutable int fContentHeight;
 		mutable int fFPS;
 		mutable std::string fScaleMode;
 		mutable DeviceOrientation::Type fOrientation;

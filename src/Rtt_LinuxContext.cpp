@@ -271,6 +271,12 @@ namespace Rtt
 				height = fProjectSettings->GetContentHeight();
 			}
 		}
+		else
+		{
+			// no config.lua, set width & height to default values
+			fRuntimeDelegate->SetWidth(width);
+			fRuntimeDelegate->SetHeight(height);
+		}
 
 		// read build.settings
 		if (fProjectSettings->HasBuildSettings())
@@ -350,14 +356,17 @@ namespace Rtt
 
 				if (width > 0 && height > 0)
 				{
-					fRuntimeDelegate->fContentWidth = width;
-					fRuntimeDelegate->fContentHeight = height;
+					fRuntimeDelegate->SetWidth(width);
+					fRuntimeDelegate->SetHeight(height);
 				}
 				else
 				{
 					// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
 					// use swapped default settings
-					Swap(fRuntimeDelegate->fContentWidth, fRuntimeDelegate->fContentHeight);
+					int w = fRuntimeDelegate->GetWidth();
+					int h = fRuntimeDelegate->GetHeight();
+					fRuntimeDelegate->SetWidth(h);
+					fRuntimeDelegate->SetHeight(w);
 				}
 				break;
 
@@ -366,14 +375,17 @@ namespace Rtt
 
 				if (width > 0 && height > 0)
 				{
-					fRuntimeDelegate->fContentWidth = width;
-					fRuntimeDelegate->fContentHeight = height;
+					fRuntimeDelegate->SetWidth(width);
+					fRuntimeDelegate->SetHeight(height);
 				}
 				else
 				{
 					// no valid defaultViewWidth & defaultViewHeight in 'build.settings', default values of fWidth & fHeight for Portrait
 					// use swapped default settings
-					Swap(fRuntimeDelegate->fContentWidth, fRuntimeDelegate->fContentHeight);
+					int w = fRuntimeDelegate->GetWidth();
+					int h = fRuntimeDelegate->GetHeight();
+					fRuntimeDelegate->SetWidth(h);
+					fRuntimeDelegate->SetHeight(w);
 				}
 				break;
 
@@ -382,8 +394,8 @@ namespace Rtt
 
 				if (width > 0 && height > 0)
 				{
-					fRuntimeDelegate->fContentWidth = width;
-					fRuntimeDelegate->fContentHeight = height;
+					fRuntimeDelegate->SetWidth(width);
+					fRuntimeDelegate->SetHeight(height);
 				}
 				else
 				{
@@ -397,8 +409,8 @@ namespace Rtt
 
 				if (width > 0 && height > 0)
 				{
-					fRuntimeDelegate->fContentWidth = width;
-					fRuntimeDelegate->fContentHeight = height;
+					fRuntimeDelegate->SetWidth(width);
+					fRuntimeDelegate->SetHeight(height);
 				}
 				else
 				{
@@ -490,6 +502,27 @@ namespace Rtt
 		fRuntime->GetDisplay().Invalidate();
 		fRuntime->DispatchEvent(ResizeEvent());
 	}
+
+	int SolarAppContext::GetWidth() const
+	{
+		return fRuntimeDelegate->GetWidth();
+	}
+
+	void SolarAppContext::SetWidth(int val)
+	{
+		fRuntimeDelegate->SetWidth(val);
+	}
+
+	int SolarAppContext::GetHeight() const
+	{
+		return fRuntimeDelegate->GetHeight(); 
+	}
+
+	void SolarAppContext::SetHeight(int val)
+	{
+		fRuntimeDelegate->SetHeight(val);
+	}
+
 } // namespace Rtt
 
 // App implementation
@@ -855,11 +888,11 @@ void SolarFrame::ResetSize()
 
 	if (IsFullScreen())
 	{
-		fContext->GetRuntimeDelegate()->fContentWidth = clientSize.GetWidth();
-		fContext->GetRuntimeDelegate()->fContentHeight = clientSize.GetHeight();
+		fContext->SetWidth(clientSize.GetWidth());
+		fContext->SetHeight(clientSize.GetHeight());
 	}
 
-	ChangeSize(fContext->GetRuntimeDelegate()->fContentWidth, fContext->GetRuntimeDelegate()->fContentHeight);
+	ChangeSize(fContext->GetWidth(), fContext->GetHeight());
 	GetCanvas()->Refresh(false);
 }
 
@@ -1038,8 +1071,8 @@ void SolarFrame::OnViewAsChanged(wxCommandEvent& event)
 	LinuxSimulatorView::Config::zoomedHeight = initialHeight;
 	LinuxSimulatorView::Config::Save();
 
-	frame->GetContext()->GetRuntimeDelegate()->fContentWidth = initialWidth;
-	frame->GetContext()->GetRuntimeDelegate()->fContentHeight = initialHeight;
+	frame->GetContext()->SetWidth(initialWidth);
+	frame->GetContext()->SetHeight(initialHeight);
 	frame->ChangeSize(initialWidth, initialHeight);
 
 	wxCommandEvent ev(eventRelaunchProject);
@@ -1361,8 +1394,8 @@ void SolarFrame::OnZoomIn(wxCommandEvent& event)
 	wxRect screen = display.GetClientArea();
 	bool doResize = false;
 
-	int proposedWidth = frame->GetContext()->GetRuntimeDelegate()->fContentWidth * LinuxSimulatorView::skinScaleFactor;
-	int proposedHeight = frame->GetContext()->GetRuntimeDelegate()->fContentHeight * LinuxSimulatorView::skinScaleFactor;
+	int proposedWidth = frame->GetContext()->GetWidth() * LinuxSimulatorView::skinScaleFactor;
+	int proposedHeight = frame->GetContext()->GetHeight() * LinuxSimulatorView::skinScaleFactor;
 
 	fZoomOut->Enable(true);
 
@@ -1380,8 +1413,8 @@ void SolarFrame::OnZoomIn(wxCommandEvent& event)
 
 	if (doResize)
 	{
-		frame->GetContext()->GetRuntimeDelegate()->fContentWidth = proposedWidth;
-		frame->GetContext()->GetRuntimeDelegate()->fContentHeight = proposedHeight;
+		frame->GetContext()->SetWidth(proposedWidth);
+		frame->GetContext()->SetHeight(proposedHeight);
 		frame->ChangeSize(proposedWidth, proposedHeight);
 		frame->GetContext()->RestartRenderer();
 		GetCanvas()->Refresh(false);
@@ -1409,15 +1442,15 @@ void SolarFrame::OnZoomIn(wxCommandEvent& event)
 void SolarFrame::OnZoomOut(wxCommandEvent& event)
 {
 	SolarFrame* frame = wxGetApp().GetFrame();
-	int proposedWidth = frame->GetContext()->GetRuntimeDelegate()->fContentWidth / LinuxSimulatorView::skinScaleFactor;
-	int proposedHeight = frame->GetContext()->GetRuntimeDelegate()->fContentHeight / LinuxSimulatorView::skinScaleFactor;
+	int proposedWidth = frame->GetContext()->GetWidth() / LinuxSimulatorView::skinScaleFactor;
+	int proposedHeight = frame->GetContext()->GetHeight() / LinuxSimulatorView::skinScaleFactor;
 
 	fZoomIn->Enable(true);
 
 	if (proposedWidth >= LinuxSimulatorView::skinMinWidth)
 	{
-		frame->GetContext()->GetRuntimeDelegate()->fContentWidth = proposedWidth;
-		frame->GetContext()->GetRuntimeDelegate()->fContentHeight = proposedHeight;
+		frame->GetContext()->SetWidth(proposedWidth);
+		frame->GetContext()->SetHeight(proposedHeight);
 		frame->ChangeSize(proposedWidth, proposedHeight);
 		frame->GetContext()->RestartRenderer();
 		GetCanvas()->Refresh(false);
