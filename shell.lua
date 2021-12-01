@@ -23,6 +23,10 @@ local function callOnShellComplete(param)
 	end
 end
 
+function overlay:setStatusBarMode( mode )
+	print( "WARNING: setStatusBarMode is not supported in Linux Simulator" )
+end
+
 if params.showMessage then
 
 	local halfW = display.contentWidth * 0.5

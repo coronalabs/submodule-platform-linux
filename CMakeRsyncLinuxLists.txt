@@ -38,6 +38,8 @@
 + external/tremor/***
 + external/apache-ant-1.8.1/
 + external/apache-ant-1.8.1/lib/***
++ external/remdebug-1.0/
++ external/remdebug-1.0/src/***
 + simulator-extensions/***
 
 - *

@@ -1261,7 +1261,40 @@ namespace Rtt
 		fScreenSurface->setWindow(ctx);
 	}
 
+#ifdef Rtt_AUTHORING_SIMULATOR
+	void LinuxPlatform::SetCursorForRect(const char* cursorName, int x, int y, int width, int height) const
+	{
+		if (Rtt_StringCompareNoCase(cursorName, "arrow") == 0)
+		{
+		}
+		else if (Rtt_StringCompareNoCase(cursorName, "closedHand") == 0)
+		{
+		}
+		else if (Rtt_StringCompareNoCase(cursorName, "openHand") == 0)
+		{
+		}
+		else if (Rtt_StringCompareNoCase(cursorName, "crosshair") == 0)
+		{
+		}
+		else if (Rtt_StringCompareNoCase(cursorName, "notAllowed") == 0)
+		{
+		}
+		else if (Rtt_StringCompareNoCase(cursorName, "pointingHand") == 0)
+		{
+		}
+		else
+		{
+			// Remove any rect with these bounds...
+			return;
+		}
+
+		// Store the rectangle within the control's client area that the give mouse cursor should be displayed.
+	}
+#endif
+
+//
 // for native.showAlert
+//
 	msgBox::msgBox(const char *title, const char *msg, const char **buttonLabels, U32 numButtons, LuaResource *resource)
 		: wxFrame(wxGetApp().GetFrame(), wxID_ANY, title, wxDefaultPosition, wxSize(520, 180), wxCAPTION | wxCLOSE_BOX), fCallback(resource)
 	{

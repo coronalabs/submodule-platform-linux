@@ -127,8 +127,8 @@ namespace Rtt
 	int LinuxSimulatorView::Config::skinHeight = 480;
 	int LinuxSimulatorView::Config::zoomedWidth = LinuxSimulatorView::Config::skinWidth;
 	int LinuxSimulatorView::Config::zoomedHeight = LinuxSimulatorView::Config::skinHeight;
-//	int LinuxSimulatorView::Config::welcomeScreenZoomedWidth = 960;
-//	int LinuxSimulatorView::Config::welcomeScreenZoomedHeight = 720;
+	//	int LinuxSimulatorView::Config::welcomeScreenZoomedWidth = 960;
+	//	int LinuxSimulatorView::Config::welcomeScreenZoomedHeight = 720;
 	wxConfig* LinuxSimulatorView::Config::configFile;
 	std::map<int, LinuxSimulatorView::SkinProperties> LinuxSimulatorView::fSkins;
 
@@ -156,8 +156,8 @@ namespace Rtt
 			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_HEIGHT), &LinuxSimulatorView::Config::skinHeight);
 			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_ZOOMED_WIDTH), &LinuxSimulatorView::Config::zoomedWidth);
 			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_SKIN_ZOOMED_HEIGHT), &LinuxSimulatorView::Config::zoomedHeight);
-//			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_WIDTH), &LinuxSimulatorView::Config::welcomeScreenZoomedWidth);
-//			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT), &LinuxSimulatorView::Config::welcomeScreenZoomedHeight);
+			//			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_WIDTH), &LinuxSimulatorView::Config::welcomeScreenZoomedWidth);
+			//			LinuxSimulatorView::Config::configFile->Read(wxT(SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT), &LinuxSimulatorView::Config::welcomeScreenZoomedHeight);
 			LinuxSimulatorView::Config::relaunchOnFileChange = static_cast<LinuxPreferencesDialog::RelaunchType>(relaunchOnFileChange);
 		}
 		else
@@ -368,16 +368,16 @@ namespace Rtt
 		int targetVersion = Rtt::TargetDevice::kLinux;
 		const TargetDevice::Platform targetPlatform(TargetDevice::Platform::kLinuxPlatform);
 
-		std::string linuxtemplate(platform->getInstallDir());
-		linuxtemplate.append("/Resources/template_x64.tgz");
-
 		// Package build settings parameters.
+		bool onlyGetPlugins = true;
+		bool runAfterBuild = false;
+		bool useWidgetResources = false;
 		LinuxAppPackagerParams linuxBuilderParams(
 			appName, NULL, identity, NULL,
 			appPath, NULL, NULL,
 			targetPlatform, targetVersion,
 			Rtt::TargetDevice::kLinux, NULL,
-			NULL, NULL, false, NULL, false, false, true);
+			NULL, NULL, false, NULL, useWidgetResources, runAfterBuild, onlyGetPlugins);
 
 		const char kBuildSettings[] = "build.settings";
 		Rtt::String buildSettingsPath;

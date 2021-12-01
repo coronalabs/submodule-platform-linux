@@ -113,6 +113,10 @@ namespace Rtt
 		virtual bool RequestSystem(lua_State *L, const char *actionName, int optionsIndex) const;
 		virtual void RuntimeErrorNotification(const char *errorType, const char *message, const char *stacktrace) const;
 
+#ifdef Rtt_AUTHORING_SIMULATOR
+		virtual void SetCursorForRect(const char* cursorName, int x, int y, int width, int height) const override;
+#endif
+
 	protected:
 		char *CopyString(const char *src, bool useAllocator = true) const;
 

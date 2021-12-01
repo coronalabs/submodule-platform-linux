@@ -146,7 +146,8 @@ namespace Rtt
 		wxMessageDialog *resultDialog = new wxMessageDialog(wxGetApp().GetFrame(), wxEmptyString, wxT("Build Error"), wxOK | wxICON_WARNING);
 
 		// setup paths
-		linuxtemplate.append("/Resources/template_x64.tgz");
+		linuxtemplate.append("/Resources/");
+		linuxtemplate.append(TEMPLATE_FILENAME);
 
 		// pre-build validation
 		if (!foundBuildSettings)
@@ -197,11 +198,12 @@ namespace Rtt
 			Rtt_Log("\nUsing custom Build Id %s\n", customBuildId);
 		}
 
+		bool onlyGetPlugins = false;
 		LinuxAppPackagerParams linuxBuilderParams(
 		    appName.c_str(), appVersion.c_str(), identity, NULL, sourceDir.c_str(),
 		    outputDir.c_str(), NULL, targetPlatform, targetVersion,
 		    Rtt::TargetDevice::kLinux, customBuildId, NULL, bundleId, isDistribution,
-		    NULL, useWidgetResources, runAfterBuild, false);
+		    NULL, useWidgetResources, runAfterBuild, onlyGetPlugins);
 
 		// select build template
 		fAppContext->GetPlatform()->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);

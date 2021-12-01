@@ -15,7 +15,7 @@ endforeach()
 
 # copy Android resources
 
-file(COPY "${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
+#file(COPY "${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 
 file(COPY "${CORONA_ROOT}/platform/resources/json.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)
 file(COPY "${CORONA_ROOT}/platform/resources/dkjson.lua" DESTINATION ${RESOURCES} FILE_PERMISSIONS OWNER_WRITE OWNER_READ)

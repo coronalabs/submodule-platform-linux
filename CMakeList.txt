@@ -237,8 +237,9 @@ SET( LUA_SOURCES
 	"${CORONA_ROOT}/plugins/network/shared/network.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/CoronaBuilder.lua"
 	"${CORONA_ROOT}/tools/CoronaBuilder/BuilderPluginDownloader.lua"
-#	"${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua"
+	"${CORONA_ROOT}/platform/resources/CoronaBuilderPluginCollector.lua"
 	"${CORONA_ROOT}/platform/android/create_build_properties.lua"
+	"${CORONA_ROOT}/platform/resources/config_require.lua"
 )
 
 SET( LUA_SOCKET_SOURCES
@@ -253,6 +254,10 @@ SET( LUA_SOCKET_SOURCES
 	"${CORONA_ROOT}/external/luasocket/src/ssl.lua"
 	"${CORONA_ROOT}/external/luasocket/src/tp.lua"
 	"${CORONA_ROOT}/external/luasocket/src/url.lua"
+)
+
+SET( LUA_REMDEBUG_SOURCES
+	"${CORONA_ROOT}/external/remdebug-1.0/src/remdebug/engine.lua"
 )
 
 SET( LUA51_SOURCES
@@ -300,6 +305,12 @@ FOREACH(LUA_FILE ${LUA_SOURCES})
 ENDFOREACH()
 
 FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
+	get_filename_component(finame ${LUA_FILE} NAME_WE)
+	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
+	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
+ENDFOREACH()
+
+FOREACH(LUA_FILE ${LUA_REMDEBUG_SOURCES})
 	get_filename_component(finame ${LUA_FILE} NAME_WE)
 	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
 	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
@@ -369,7 +380,7 @@ SET( SOLAR2D_SOURCES
 		${Lua2CppOutputDir}/widget_theme_ios7.cpp
 		${Lua2CppOutputDir}/shell.cpp
 		${Lua2CppOutputDir}/BuilderPluginDownloader.cpp
-#		${Lua2CppOutputDir}/CoronaBuilderPluginCollector.cpp
+		${Lua2CppOutputDir}/CoronaBuilderPluginCollector.cpp
 
 		${CORONA_ROOT}/external/luasocket/src/auxiliar.c
 		${CORONA_ROOT}/external/luasocket/src/compat.c
@@ -686,6 +697,8 @@ SET( SOLAR2D_SOURCES
 		${Lua2CppOutputDir}/network.cpp
 		${Lua2CppOutputDir}/create_build_properties.cpp
 		${Lua2CppOutputDir}/CoronaBuilder.cpp
+		${Lua2CppOutputDir}/config_require.cpp
+		${Lua2CppOutputDir}/engine.cpp
 
 		${CORONA_ROOT}/librtt/Renderer/Rtt_CommandBuffer.cpp
 		${CORONA_ROOT}/librtt/Renderer/Rtt_CPUResource.cpp
@@ -1003,6 +1016,19 @@ FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
 	add_dependencies(Solar2DBuilder ${finame})
 ENDFOREACH()
 
+FOREACH(LUA_FILE ${LUA_REMDEBUG_SOURCES})
+	SET(MODULE_COMMAND1 "-m")
+	SET(MODULE_COMMAND2 "remdebug")
+	get_filename_component(finame ${LUA_FILE} NAME_WE)
+	add_custom_target(${finame}
+		COMMAND ${CMAKE_COMMAND} -E env BUILD_CONFIG="${BUILD_CONFIG}" "${CORONA_ROOT}/platform/linux/lua_to_native.sh" ${MODULE_COMMAND1} ${MODULE_COMMAND2} "${LUA_FILE}" "${Lua2CppOutputDir}/" "${CMAKE_CURRENT_BINARY_DIR}"
+		DEPENDS dos2unix)
+	add_dependencies(Solar2DConsole ${finame})
+	add_dependencies(Solar2D ${finame})
+	add_dependencies(Solar2DSimulator ${finame})
+	add_dependencies(Solar2DBuilder ${finame})
+ENDFOREACH()
+
 target_compile_definitions( Solar2D PUBLIC
 	Rtt_LUA_COMPILER LUA_DL_DLOPEN wxUSE_MEDIACTRL=1 wxUSE_WEBVIEW=1
 	__WXGTK__ HAVE_SSIZE_T wxUSE_XTEST wxHAS_INOTIFY wxUSE_SELECT_DISPATCHER WXWIN_COMPATIBILITY_3_0 
@@ -1013,7 +1039,7 @@ target_compile_definitions( Solar2D PUBLIC
 	) 
 
 target_compile_definitions( Solar2DSimulator PUBLIC
-	Rtt_LUA_COMPILER Rtt_SIMULATOR LUA_DL_DLOPEN wxUSE_MEDIACTRL=1 wxUSE_WEBVIEW=1
+	Rtt_AUTHORING_SIMULATOR Rtt_LUA_COMPILER Rtt_SIMULATOR LUA_DL_DLOPEN wxUSE_MEDIACTRL=1 wxUSE_WEBVIEW=1
 	__WXGTK__ HAVE_SSIZE_T wxUSE_XTEST wxHAS_INOTIFY wxUSE_SELECT_DISPATCHER WXWIN_COMPATIBILITY_3_0 
 	wxUSE_PRIVATE_FONTS wxUSE_ACTIVITYINDICATOR wxUSE_ADDREMOVECTRL wxUSE_UNSAFE_WXSTRING_CONV
 	wxUSE_STD_CONTAINERS_COMPATIBLY wxUSE_GLCANVAS 
