@@ -31,10 +31,12 @@
 #include "Rtt_MPlatformServices.h"
 #include "Rtt_LinuxMenuEvents.h"
 #include "Rtt_ConsoleApp.h"
+#include "Rtt_HTTPClient.h"
 #include "wx/menu.h"
 #include "wx/dcclient.h"
 #include "wx/app.h"
 #include "wx/display.h"
+#include <curl/curl.h>
 
 #if !defined(wxHAS_IMAGES_IN_RESOURCES) && defined(Rtt_SIMULATOR)
 #include "resource/simulator.xpm"
@@ -578,10 +580,14 @@ SolarApp::SolarApp()
 		cmd.append("/Solar2DConsole");
 		wxExecute(cmd);
 	}
+
+	// init curl
+	curl_global_init(CURL_GLOBAL_ALL);
 }
 
 SolarApp::~SolarApp()
 {
+	curl_global_cleanup();
 }
 
 bool SolarApp::OnInit()

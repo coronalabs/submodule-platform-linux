@@ -856,6 +856,7 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/platform/linux/src/Rtt_Freetype.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxFileUtils.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_HTTPClientLinux.cpp
+		${CORONA_ROOT}/librtt/Rtt_HTTPClientCommon.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxInputDevice.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxInputDeviceManager.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxCrypto.cpp

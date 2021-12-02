@@ -145,7 +145,6 @@ void NetworkLibrary::onExiting(lua_State *L)
 
 int NetworkLibrary::Open(lua_State *L)
 {
-	curl_global_init(CURL_GLOBAL_DEFAULT);
 	curl_version_info_data* vinfo = curl_version_info(CURLVERSION_NOW);
 	if (vinfo->features && CURL_VERSION_SSL == 0)
 	{
