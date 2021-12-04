@@ -383,7 +383,7 @@ namespace Rtt
 		Rtt::String buildSettingsPath;
 		platform->PathForFile(kBuildSettings, Rtt::MPlatform::kResourceDir, Rtt::MPlatform::kTestFileExists, buildSettingsPath);
 		linuxBuilderParams.SetBuildSettingsPath(buildSettingsPath.GetString());
-		int rc = packager.Build(&linuxBuilderParams, NULL);
+		int rc = packager.Build(&linuxBuilderParams, "/tmp/Solar2D");
 	}
 
 	/// Gets a list of recent projects.
