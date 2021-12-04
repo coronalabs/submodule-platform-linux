@@ -285,7 +285,7 @@ namespace Rtt
 					{
 						// look in the plugins dir
 						String resDir(LinuxFileUtils::GetHomePath());
-						resDir.Append("/.Solar2D/Plugins/x86-64/");
+						resDir.Append("/.Solar2D/Plugins/");
 						PathForFile(filename, resDir.GetString(), result);
 						Rtt_WARN_SIM(!filename || FileExists(result.GetString()), ("WARNING: Cannot create path for resource file '%s (%s || %s || %s)'. File does not exist.\n\n", filename, result1.GetString(), result2.GetString(), result.GetString()));
 					}
@@ -332,7 +332,7 @@ namespace Rtt
 
 #ifdef Rtt_SIMULATOR
 					pluginPath = LinuxFileUtils::GetHomePath();
-					pluginPath.append("/.Solar2D/Plugins/x86-64");
+					pluginPath.append("/.Solar2D/Plugins");
 #else
 					pluginPath = LinuxFileUtils::GetStartupPath(NULL);
 #endif

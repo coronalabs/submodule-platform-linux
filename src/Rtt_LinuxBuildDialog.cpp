@@ -146,6 +146,7 @@ namespace Rtt
 		wxMessageDialog *resultDialog = new wxMessageDialog(wxGetApp().GetFrame(), wxEmptyString, wxT("Build Error"), wxOK | wxICON_WARNING);
 
 		// setup paths
+		const char* TEMPLATE_FILENAME = "linuxtemplate_x64.tgz";
 		linuxtemplate.append("/Resources/");
 		linuxtemplate.append(TEMPLATE_FILENAME);
 

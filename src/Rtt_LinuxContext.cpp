@@ -539,7 +539,7 @@ SolarApp::SolarApp()
 
 	basePath.append("/.Solar2D");
 	sandboxPath.append("/.Solar2D/Sandbox");
-	pluginPath.append("/.Solar2D/Plugins/x86-64");
+	pluginPath.append("/.Solar2D/Plugins");
 	buildPath.append("/Documents/Solar2D Built Apps");
 	projectCreationPath.append("/Documents/Solar2D Projects");
 

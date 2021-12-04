@@ -34,7 +34,6 @@
 #include <string>
 
 #define HOMESCREEN_ID "homescreen"
-#define TEMPLATE_FILENAME "linuxtemplate_x64.tgz"
 
 class SolarApp;
 class SolarFrame;
