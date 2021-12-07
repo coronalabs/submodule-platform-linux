@@ -260,6 +260,12 @@ SET( LUA_REMDEBUG_SOURCES
 	"${CORONA_ROOT}/external/remdebug-1.0/src/remdebug/engine.lua"
 )
 
+SET( LUA_FILES
+	${LUA_SOURCES}
+	${LUA_SOCKET_SOURCES}
+	${LUA_REMDEBUG_SOURCES}
+)
+
 SET( LUA51_SOURCES
     ${CORONA_ROOT}/external/lua-5.1.3/src/lapi.c
 		${CORONA_ROOT}/external/lua-5.1.3/src/lauxlib.c
@@ -296,21 +302,8 @@ SET( LUA51_SOURCES
 set(Lua2CppOutputDir "${CMAKE_CURRENT_BINARY_DIR}/generated_src")
 file(MAKE_DIRECTORY "${Lua2CppOutputDir}")
 
-# mark lua==>cpp files as GENERATED
-
-FOREACH(LUA_FILE ${LUA_SOURCES})
-	get_filename_component(finame ${LUA_FILE} NAME_WE)
-	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
-	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
-ENDFOREACH()
-
-FOREACH(LUA_FILE ${LUA_SOCKET_SOURCES})
-	get_filename_component(finame ${LUA_FILE} NAME_WE)
-	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
-	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
-ENDFOREACH()
-
-FOREACH(LUA_FILE ${LUA_REMDEBUG_SOURCES})
+# mark cpp files generated from lua files as GENERATED
+FOREACH(LUA_FILE ${LUA_FILES})
 	get_filename_component(finame ${LUA_FILE} NAME_WE)
 	string(CONCAT cppfile "${Lua2CppOutputDir}/" ${finame} ".cpp")
 	set_source_files_properties("${cppfile}" PROPERTIES  GENERATED TRUE)
@@ -987,7 +980,7 @@ add_executable( Solar2DBuilder
 add_custom_target(dos2unix
 	COMMAND dos2unix "${CORONA_ROOT}/platform/linux/lua_to_native.sh"
 
-	# copy lua binaries
+	# copy lua binaries to Native
 	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Resources/Native/Corona/linux/bin
 	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/lua" "${CMAKE_CURRENT_BINARY_DIR}/Resources/Native/Corona/linux/bin/"
 	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/luac" "${CMAKE_CURRENT_BINARY_DIR}/Resources/Native/Corona/linux/bin/"
@@ -1095,3 +1088,5 @@ install(TARGETS Solar2DBuilder RUNTIME DESTINATION bin/Solar2D)
 
 # install Resources
 install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/Resources/" DESTINATION bin/Solar2D/Resources USE_SOURCE_PERMISSIONS)
+install(FILES "${CORONA_ROOT}/platform/linux/README.md"  DESTINATION bin/Solar2D PERMISSIONS OWNER_READ GROUP_READ WORLD_READ)
+install(FILES "${CORONA_ROOT}/platform/linux/install_dependencies.sh"  DESTINATION bin/Solar2D PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
