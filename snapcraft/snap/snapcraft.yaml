@@ -43,3 +43,4 @@ parts:
       - libpangocairo-1.0-0 
       - libpangoft2-1.0-0 
       - libwebkit2gtk-4.0-37
+      - libsm6
