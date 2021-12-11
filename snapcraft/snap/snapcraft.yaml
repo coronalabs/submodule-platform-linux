@@ -4,7 +4,9 @@ version: '2021.9999'
 summary: Solar2D
 description: Solar2D is a Lua based game engine with focus on ease of iterations and usage
 grade: 'stable'
-confinement: 'strict'
+architectures:
+  - amd64
+confinement: devmode #classic # devmode # use 'strict' once you have the right plugs and slots
 
 apps:
   solar2d:
@@ -38,7 +40,6 @@ parts:
       - openjdk-8-jre-headless
       - zlib1g
       - libopenal1
-      - libgdk-pixbuf2.0-0
       - libpango-1.0-0
       - libpangocairo-1.0-0 
       - libpangoft2-1.0-0 
