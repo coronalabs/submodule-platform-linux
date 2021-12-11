@@ -3,10 +3,10 @@ base: core20
 version: '2021.9999'
 summary: Solar2D
 description: Solar2D is a Lua based game engine with focus on ease of iterations and usage
-grade: 'stable'
+grade: devel # must be 'stable' to release into candidate/stable channels
 architectures:
   - amd64
-confinement: devmode #classic # devmode # use 'strict' once you have the right plugs and slots
+confinement: classic # devmode # use 'strict' once you have the right plugs and slots
 
 apps:
   solar2d:
