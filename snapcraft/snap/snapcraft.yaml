@@ -9,7 +9,7 @@ architectures:
   - amd64
 
 apps:
-  solar2d:
+  simulator:
     command: bin/Solar2DSimulator
     environment:
       LD_LIBRARY_PATH: ${SNAP}/usr/local/lib
@@ -22,6 +22,20 @@ apps:
       - audio-playback
       - audio-record
       - home
+
+  builder:
+    command: bin/Solar2DBuilder
+    environment:
+      LD_LIBRARY_PATH: ${SNAP}/usr/local/lib
+    plugs:
+      - network
+      - network-bind 
+      - camera
+      - x11
+      - alsa
+      - audio-playback
+      - audio-record
+      - home      
 
 parts:
   solar2d:
