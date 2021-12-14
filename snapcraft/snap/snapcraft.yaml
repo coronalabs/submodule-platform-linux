@@ -9,7 +9,7 @@ architectures:
   - amd64
 
 apps:
-  simulator:
+  solar2d:
     command: bin/Solar2DSimulator
     environment:
       LD_LIBRARY_PATH: ${SNAP}/usr/local/lib
