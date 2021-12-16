@@ -52,3 +52,6 @@ file(COPY "${CORONA_ROOT}/external/lua-5.1.3/src/" DESTINATION ${RESOURCES}/incl
 file(COPY "${CORONA_ROOT}/simulator-extensions/welcomescreen" DESTINATION ${RESOURCES}) 
 file(REMOVE_RECURSE ${RESOURCES}/homescreen) 
 file(RENAME ${RESOURCES}/welcomescreen ${RESOURCES}/homescreen)
+
+# icon
+file(COPY "${CORONA_ROOT}/platform/linux/snapcraft/snap/gui/solar2d.png" DESTINATION ${RESOURCES}) 
