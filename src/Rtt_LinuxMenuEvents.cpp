@@ -224,17 +224,24 @@ void LinuxMenuEvents::OnOpenDocumentation(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnOpenSampleProjects(wxCommandEvent &event)
 {
-	wxFileDialog openFileDialog(wxGetApp().GetParent(), _("Open"), "/opt/Solar2D/SampleCode", wxEmptyString, "Simulator Files (main.lua)|main.lua", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	string samplesPath = Rtt::LinuxFileUtils::GetStartupPath(NULL);
+	samplesPath.append("/Resources/SampleCode");
+	if (!wxDirExists(samplesPath))
+	{
+		Rtt_LogException("%s\n not found", samplesPath.c_str());
+		return;
+	}
 
+	wxFileDialog openFileDialog(wxGetApp().GetParent(), _("Open"), samplesPath.c_str(), wxEmptyString, "Simulator Files (main.lua)|main.lua", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (openFileDialog.ShowModal() == wxID_CANCEL)
 	{
 		return;
 	}
 
 	wxString path = openFileDialog.GetPath();
-
 	if (!Rtt_FileExists(path.c_str()))
 	{
+		Rtt_LogException("%s\n not found", path.c_str());
 		return;
 	}
 
