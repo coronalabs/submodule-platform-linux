@@ -843,7 +843,6 @@ SolarFrame::SolarFrame(int style)
 	Bind(wxEVT_MENU, &LinuxMenuEvents::OnQuit, wxID_EXIT);
 	Bind(wxEVT_MENU, &LinuxMenuEvents::OnOpenDocumentation, ID_MENU_OPEN_DOCUMENTATION);
 	Bind(wxEVT_MENU, &LinuxMenuEvents::OnOpenSampleProjects, ID_MENU_OPEN_SAMPLE_CODE);
-	Bind(wxEVT_MENU, &LinuxMenuEvents::OnHelpBuildForAndroid, ID_MENU_HELP_BUILD_ANDROID);
 	Bind(wxEVT_MENU, &LinuxMenuEvents::OnAbout, wxID_ABOUT);
 }
 

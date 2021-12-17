@@ -24,7 +24,6 @@
 #define ID_MENU_OPEN_DOCUMENTATION wxID_HIGHEST + 160
 #define ID_MENU_OPEN_SAMPLE_CODE wxID_HIGHEST + 170
 #define ID_MENU_VIEW_AS wxID_HIGHEST + 180
-#define ID_MENU_HELP_BUILD_ANDROID wxID_HIGHEST + 190
 
 class LinuxMenuEvents
 {
@@ -45,7 +44,6 @@ public:
 	static void OnBuildForLinux(wxCommandEvent &event);
 	static void OnOpenDocumentation(wxCommandEvent &event);
 	static void OnOpenSampleProjects(wxCommandEvent &event);
-	static void OnHelpBuildForAndroid(wxCommandEvent &event);
 	static void OnAbout(wxCommandEvent &WXUNUSED(event));
 };
 
