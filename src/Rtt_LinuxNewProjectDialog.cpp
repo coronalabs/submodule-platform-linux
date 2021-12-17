@@ -2,7 +2,7 @@
 #include <string.h>
 #include "Rtt_LuaContext.h"
 #include "Rtt_LinuxContext.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Core/Rtt_FileSystem.h"
 
 // export for LUA
@@ -274,7 +274,7 @@ namespace Rtt
 
 	void LinuxNewProjectDialog::SetProjectPath()
 	{
-		const char* homedir = LinuxFileUtils::GetHomePath();
+		const char* homedir = GetHomePath();
 		fProjectPath = string(homedir);
 		fProjectPath.append("/Documents/Solar2D Projects");
 		txtProjectFolder->SetValue(fProjectPath);
@@ -282,7 +282,7 @@ namespace Rtt
 
 	void LinuxNewProjectDialog::SetResourcePath()
 	{
-		fResourcePath = string(LinuxFileUtils::GetStartupPath(NULL));
+		fResourcePath = string(GetStartupPath(NULL));
 		fResourcePath.append("/Resources");
 	}
 

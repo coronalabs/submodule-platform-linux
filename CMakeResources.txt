@@ -34,6 +34,7 @@ file(COPY "${CORONA_ROOT}/external/apache-ant-1.8.1/lib/ant-launcher.jar" DESTIN
 
 # copy Skins
 file(COPY "${CORONA_ROOT}/platform/resources/Skins" DESTINATION ${RESOURCES})
+file(COPY "${CORONA_ROOT}/platform/linux/Resources/Skins" DESTINATION ${RESOURCES})
 
 # copy plugins/licensing-google
 file(MAKE_DIRECTORY "${RESOURCES}/Native/plugins")

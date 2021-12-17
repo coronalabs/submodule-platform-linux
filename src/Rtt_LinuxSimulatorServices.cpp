@@ -15,7 +15,7 @@
 #include "Rtt_LinuxContext.h"
 #include "Rtt_LinuxSimulatorView.h"
 #include "Rtt_LinuxMenuEvents.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Core/Rtt_FileSystem.h"
 
 using namespace std;
@@ -250,14 +250,14 @@ namespace Rtt
 
 	bool LinuxSimulatorServices::ShowProjectSandbox(const char *name) const
 	{
-		const char *homeDir = LinuxFileUtils::GetHomePath();
+		const char *homeDir = GetHomePath();
 		string appName = wxGetApp().GetFrame()->GetContext()->GetAppName();
 		string command("xdg-open ");
 		command.append(homeDir);
 		command.append("/.Solar2D/Sandbox/");
 		command.append(name);
 		command.append("_");
-		command.append(LinuxFileUtils::CalculateMD5(name));
+		command.append(CalculateMD5(name));
 
 		wxExecute(command.c_str());
 		return true;

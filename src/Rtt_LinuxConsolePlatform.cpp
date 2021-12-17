@@ -31,7 +31,7 @@
 #include "Rtt_LinuxWebPopup.h"
 #include "Rtt_LinuxWebView.h"
 #include "Rtt_LinuxContainer.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Rtt_PreferenceCollection.h"
 #include "Rtt_Freetype.h"
 //#include "wx/wx.h"
@@ -167,7 +167,7 @@ namespace Rtt
 					if (filename != NULL && FileExists(result.GetString()) == false)
 					{
 						// look in the plugins dir
-						String resDir(LinuxFileUtils::GetHomePath());
+						String resDir(GetHomePath());
 						resDir.Append("/.Solar2D/Plugins/");
 						PathForFile(filename, resDir.GetString(), result);
 						Rtt_WARN_SIM(!filename || FileExists(result.GetString()), ("WARNING: Cannot create path for resource file '%s (%s || %s || %s)'. File does not exist.\n\n", filename, result1.GetString(), result2.GetString(), result.GetString()));
@@ -214,10 +214,10 @@ namespace Rtt
 					std::string pluginPath;
 
 #ifdef Rtt_SIMULATOR
-					pluginPath = LinuxFileUtils::GetHomePath();
+					pluginPath = GetHomePath();
 					pluginPath.append("/.Solar2D/Plugins");
 #else
-					pluginPath = LinuxFileUtils::GetStartupPath(NULL);
+					pluginPath = GetStartupPath(NULL);
 #endif
 
 					PathForFile(filename, pluginPath.c_str(), result);

@@ -30,7 +30,6 @@
     <VirtualDirectory Name="linux">
       <File Name="src/Rtt_LinuxConsolePlatform.cpp"/>
       <File Name="src/Rtt_Freetype.cpp" ExcludeProjConfig=""/>
-      <File Name="src/Rtt_LinuxFileUtils.cpp" ExcludeProjConfig=""/>
       <File Name="src/Rtt_HTTPClientLinux.cpp" ExcludeProjConfig=""/>
       <VirtualDirectory Name="packagers">
         <VirtualDirectory Name="include">
@@ -70,7 +69,6 @@
         <File Name="src/Rtt_LinuxKeyListener.h"/>
         <File Name="src/Rtt_LinuxRuntime.h"/>
         <File Name="src/Rtt_Freetype.h"/>
-        <File Name="src/Rtt_LinuxFileUtils.h"/>
         <File Name="src/Rtt_LinuxIPCClient.h"/>
         <File Name="src/Rtt_LinuxIPCClientConnection.h"/>
         <File Name="src/Rtt_LinuxWebView.h"/>

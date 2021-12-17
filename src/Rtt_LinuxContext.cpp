@@ -26,7 +26,7 @@
 #include "Rtt_Freetype.h"
 #include "Rtt_LuaLibSimulator.h"
 #include "Rtt_LinuxSimulatorView.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Rtt_LinuxUtils.h"
 #include "Rtt_MPlatformServices.h"
 #include "Rtt_LinuxMenuEvents.h"
@@ -37,6 +37,7 @@
 #include "wx/app.h"
 #include "wx/display.h"
 #include <curl/curl.h>
+#include <utility>		// for pairs
 
 #if !defined(wxHAS_IMAGES_IN_RESOURCES) && defined(Rtt_SIMULATOR)
 #include "resource/simulator.xpm"
@@ -57,8 +58,6 @@ static bool IsHomeScreen(string appName)
 	return appName.compare(HOMESCREEN_ID) == 0;
 }
 
-bool ReadRecentDocs(vector<string>& Names, vector<string>& Paths);
-
 namespace Rtt
 {
 	static ProjectSettings* fProjectSettings;
@@ -67,8 +66,8 @@ namespace Rtt
 		: fRuntime(NULL), fRuntimeDelegate(new LinuxRuntimeDelegate()), fMouseListener(NULL), fKeyListener(NULL), fPlatform(NULL), fTouchDeviceExist(false), fMode("normal"), fIsDebApp(false), fSimulator(NULL), fIsStarted(false)
 	{
 		string exeFileName;
-		const char* homeDir = LinuxFileUtils::GetHomePath();
-		const char* appPath = LinuxFileUtils::GetStartupPath(&exeFileName);
+		const char* homeDir = GetHomePath();
+		const char* appPath = GetStartupPath(&exeFileName);
 
 		// override appPath if arg isn't null
 		if (path && *path != 0)
@@ -126,7 +125,7 @@ namespace Rtt
 		}
 
 		// look for welcomescereen
-		startDir = LinuxFileUtils::GetStartupPath(NULL);
+		startDir = GetStartupPath(NULL);
 		startDir.append("/Resources/homescreen");
 		assetsDir = startDir;
 		assetsDir.append("/main.lua");
@@ -168,7 +167,7 @@ namespace Rtt
 
 	bool SolarAppContext::Init()
 	{
-		const char* homeDir = LinuxFileUtils::GetHomePath();
+		const char* homeDir = GetHomePath();
 		string appDir(homeDir);
 
 		if (LinuxSimulatorView::IsRunningOnSimulator())
@@ -187,7 +186,7 @@ namespace Rtt
 			if (LinuxSimulatorView::IsRunningOnSimulator())
 			{
 				appDir.append("_");
-				appDir.append(LinuxFileUtils::CalculateMD5(fAppName));
+				appDir.append(CalculateMD5(fAppName));
 			}
 		}
 		else
@@ -207,7 +206,7 @@ namespace Rtt
 		string temporaryDir(appDir);
 		string cachesDir(appDir);
 		string systemCachesDir(appDir);
-		string skinDir(LinuxFileUtils::GetStartupPath(NULL));
+		string skinDir(GetStartupPath(NULL));
 
 		// setup directory paths
 		documentsDir.append("/Documents");
@@ -237,7 +236,7 @@ namespace Rtt
 		}
 
 		setGlyphProvider(new glyph_freetype_provider(fPathToApp.c_str()));
-		fPlatform = new LinuxPlatform(fPathToApp.c_str(), documentsDir.c_str(), temporaryDir.c_str(), cachesDir.c_str(), systemCachesDir.c_str(), skinDir.c_str(), LinuxFileUtils::GetStartupPath(NULL));
+		fPlatform = new LinuxPlatform(fPathToApp.c_str(), documentsDir.c_str(), temporaryDir.c_str(), cachesDir.c_str(), systemCachesDir.c_str(), skinDir.c_str(), GetStartupPath(NULL));
 		fRuntime = new LinuxRuntime(*fPlatform, NULL);
 		fRuntime->SetDelegate(fRuntimeDelegate);
 
@@ -453,7 +452,7 @@ namespace Rtt
 
 		// add Resources to LUA_PATH
 		string luapath(getenv("LUA_PATH"));
-		luapath.append(LinuxFileUtils::GetStartupPath(NULL));
+		luapath.append(GetStartupPath(NULL));
 		luapath.append("/Resources/?.lua;");
 
 		setenv("LUA_PATH", luapath.c_str(), true);
@@ -517,7 +516,7 @@ namespace Rtt
 
 	int SolarAppContext::GetHeight() const
 	{
-		return fRuntimeDelegate->GetHeight(); 
+		return fRuntimeDelegate->GetHeight();
 	}
 
 	void SolarAppContext::SetHeight(int val)
@@ -530,7 +529,7 @@ namespace Rtt
 // App implementation
 SolarApp::SolarApp()
 {
-	const char* homeDir = LinuxFileUtils::GetHomePath();
+	const char* homeDir = GetHomePath();
 	string basePath(homeDir);
 	string sandboxPath(homeDir);
 	string pluginPath(homeDir);
@@ -576,7 +575,7 @@ SolarApp::SolarApp()
 	// start the console immediately
 	if (LinuxSimulatorView::IsRunningOnSimulator())
 	{
-		std::string cmd(LinuxFileUtils::GetStartupPath(NULL));
+		std::string cmd(GetStartupPath(NULL));
 		cmd.append("/Solar2DConsole");
 		wxExecute(cmd);
 	}
@@ -600,7 +599,7 @@ bool SolarApp::OnInit()
 		int height = 480;
 		int minWidth = width;
 		int minHeight = height;
-		string projectPath(LinuxFileUtils::GetStartupPath(NULL));
+		string projectPath(GetStartupPath(NULL));
 
 		if (LinuxSimulatorView::IsRunningOnSimulator())
 		{
@@ -820,7 +819,7 @@ SolarFrame::SolarFrame(int style)
 	CreateMenus();
 	fSolarGLCanvas = new SolarGLCanvas(this, vAttrs);
 	fRelaunchProjectDialog = new LinuxRelaunchProjectDialog(NULL, wxID_ANY, wxEmptyString);
-	const char* homeDir = LinuxFileUtils::GetHomePath();
+	const char* homeDir = GetHomePath();
 	fProjectPath = string(homeDir);
 	fProjectPath.append("/Documents/Solar2D Projects");
 
@@ -932,7 +931,7 @@ void SolarFrame::CreateMenus()
 			wxMenu* helpMenu = new wxMenu();
 			helpMenu->Append(ID_MENU_OPEN_DOCUMENTATION, _T("&Online Documentation..."));
 			helpMenu->Append(ID_MENU_OPEN_SAMPLE_CODE, _T("&Sample projects..."));
-//			helpMenu->Append(ID_MENU_HELP_BUILD_ANDROID, _T("&Building For Android"));
+			//			helpMenu->Append(ID_MENU_HELP_BUILD_ANDROID, _T("&Building For Android"));
 			helpMenu->Append(wxID_ABOUT, _T("&About Simulator..."));
 			fMenuMain->Append(helpMenu, _T("&Help"));
 		}
@@ -995,7 +994,7 @@ void SolarFrame::CreateMenus()
 			wxMenu* helpMenu = new wxMenu();
 			helpMenu->Append(ID_MENU_OPEN_DOCUMENTATION, _T("&Online Documentation..."));
 			helpMenu->Append(ID_MENU_OPEN_SAMPLE_CODE, _T("&Sample projects..."));
-//			helpMenu->Append(ID_MENU_HELP_BUILD_ANDROID, _T("&Building For Android"));
+			//			helpMenu->Append(ID_MENU_HELP_BUILD_ANDROID, _T("&Building For Android"));
 			helpMenu->Append(wxID_ABOUT, _T("&About Simulator..."));
 			fMenuProject->Append(helpMenu, _T("&Help"));
 		}
@@ -1107,7 +1106,7 @@ void SolarFrame::SetMenu(const char* appPath)
 			vector<string>desktopSkins;
 			int currentSkinID = ID_MENU_VIEW_AS;
 
-			const char* startupPath = LinuxFileUtils::GetStartupPath(NULL);
+			const char* startupPath = GetStartupPath(NULL);
 			string skinDirPath(startupPath);
 			skinDirPath.append("/Resources");
 			if (!Rtt_IsDirectory(skinDirPath.c_str()))
@@ -1184,12 +1183,12 @@ void SolarFrame::SetMenu(const char* appPath)
 			}
 
 			// sort all the skin vectors by name
-			sort(namedAndroidSkins.begin(), namedAndroidSkins.end(), LinuxUtils::SortVectorByName);
-			sort(genericAndroidSkins.begin(), genericAndroidSkins.end(), LinuxUtils::SortVectorByName);
-			sort(namedIOSSkins.begin(), namedIOSSkins.end(), LinuxUtils::SortVectorByName);
-			sort(genericIOSSkins.begin(), genericIOSSkins.end(), LinuxUtils::SortVectorByName);
-			sort(tvSkins.begin(), tvSkins.end(), LinuxUtils::SortVectorByName);
-			sort(desktopSkins.begin(), desktopSkins.end(), LinuxUtils::SortVectorByName);
+			sort(namedAndroidSkins.begin(), namedAndroidSkins.end(), SortVectorByName);
+			sort(genericAndroidSkins.begin(), genericAndroidSkins.end(), SortVectorByName);
+			sort(namedIOSSkins.begin(), namedIOSSkins.end(), SortVectorByName);
+			sort(genericIOSSkins.begin(), genericIOSSkins.end(), SortVectorByName);
+			sort(tvSkins.begin(), tvSkins.end(), SortVectorByName);
+			sort(desktopSkins.begin(), desktopSkins.end(), SortVectorByName);
 
 			// setup the child "view as" menus
 			CreateViewAsChildMenu(namedAndroidSkins, fViewAsAndroidMenu);
@@ -1268,7 +1267,7 @@ void SolarFrame::OnFileSystemEvent(wxFileSystemWatcherEvent& event)
 
 void SolarFrame::OnOpenWelcome(wxCommandEvent& event)
 {
-	string path(LinuxFileUtils::GetStartupPath(NULL));
+	string path(GetStartupPath(NULL));
 	path.append("/Resources/homescreen/main.lua");
 
 	wxCommandEvent eventOpen(eventOpenProject);
@@ -1438,8 +1437,8 @@ void SolarFrame::OnZoomIn(wxCommandEvent& event)
 		}
 		else
 		{
-//			LinuxSimulatorView::Config::welcomeScreenZoomedWidth = proposedWidth;
-//			LinuxSimulatorView::Config::welcomeScreenZoomedHeight = proposedHeight;
+			//			LinuxSimulatorView::Config::welcomeScreenZoomedWidth = proposedWidth;
+			//			LinuxSimulatorView::Config::welcomeScreenZoomedHeight = proposedHeight;
 			LinuxSimulatorView::Config::Save();
 		}
 	}
@@ -1487,34 +1486,6 @@ void SolarFrame::OnSuspendOrResume(wxCommandEvent& event)
 			CreateSuspendedPanel();
 			fHardwareMenu->SetLabel(ID_MENU_SUSPEND, "&Resume	\tCtrl-Down");
 			fContext->Pause();
-		}
-	}
-}
-
-void SolarFrame::UpdateRecentDocs(const std::string& appName, const std::string& path)
-{
-	vector<string> Names;
-	vector<string> Paths;
-	if (ReadRecentDocs(Names, Paths))
-	{
-		Names.erase(remove(Names.begin(), Names.end(), appName), Names.end());
-		Paths.erase(remove(Paths.begin(), Paths.end(), path), Paths.end());
-
-		// max size is 7
-		vector<string> recent_docs;
-		for (int i = max(0, (int)Names.size() - 6); i < Names.size(); i++)
-		{
-			recent_docs.push_back(Names[i] + "=" + Paths[i]);
-		}
-		recent_docs.push_back(appName + "=" + path);
-
-		string recent_path = LinuxFileUtils::GetHomePath();
-		recent_path += "/.Solar2D/recent_projects.conf";
-		ofstream f(recent_path);
-		if (f.is_open())
-		{
-			ostream_iterator<string> it(f, "\n");
-			copy(recent_docs.begin(), recent_docs.end(), it);
 		}
 	}
 }
@@ -1599,7 +1570,7 @@ void SolarFrame::OnOpen(wxCommandEvent& event)
 			string sandboxPath("~/.Solar2D/Sandbox/");
 			sandboxPath.append(fContext->GetTitle());
 			sandboxPath.append("_");
-			sandboxPath.append(LinuxFileUtils::CalculateMD5(fContext->GetTitle().c_str()));
+			sandboxPath.append(CalculateMD5(fContext->GetTitle().c_str()));
 
 			Rtt_Log("Loading project from: %s\n", fContext->GetAppPath());
 			Rtt_Log("Project sandbox folder: %s\n", sandboxPath.c_str());

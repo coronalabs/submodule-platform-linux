@@ -2,7 +2,7 @@
 #include <string.h>
 #include <fstream>
 #include <streambuf>
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 
 using namespace std;
 
@@ -106,7 +106,7 @@ namespace Rtt
 	void LinuxCloneProjectDialog::CloneProject()
 	{
 		activityIndicator->Start();
-		const char *homeDir = LinuxFileUtils::GetHomePath();
+		const char *homeDir = GetHomePath();
 
 		string command("git clone --progress ");
 		command.append(txtCloneUrl->GetValue().ToStdString());

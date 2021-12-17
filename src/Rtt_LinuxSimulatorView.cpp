@@ -26,7 +26,7 @@
 #include "Rtt_LinuxPlatform.h"
 #include "Rtt_LinuxSimulatorServices.h"
 #include "Rtt_LinuxSimulatorView.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Rtt_SimulatorRecents.h"
 #include "Rtt_WebAppPackager.h"
 #include "Rtt_LinuxAppPackager.h"
@@ -48,62 +48,6 @@
 //#define SIMULATOR_CONFIG_WELCOME_SCREEN_ZOOMED_HEIGHT "/welcomeScreenZoomedHeight"
 
 using namespace std;
-
-string& ltrim(string& str, const string& chars)
-{
-	str.erase(0, str.find_first_not_of(chars));
-	return str;
-}
-
-string& rtrim(string& str, const string& chars)
-{
-	str.erase(str.find_last_not_of(chars) + 1);
-	return str;
-}
-
-string& trim(string& str, const std::string& chars = "\t\n\v\f\r ")
-{
-	return ltrim(rtrim(str, chars), chars);
-}
-
-void split(vector<string>& cont, const string& str, const string& delims)
-{
-	const char* s = str.c_str();
-	const char* delim = strstr(s, delims.c_str());
-	while (delim)
-	{
-		string item(s, delim - s);
-		cont.push_back(trim(item));
-		s = delim + delims.size();
-		delim = strstr(s, delims.c_str());
-	}
-	if (*s != 0)
-		cont.push_back(s);
-}
-
-bool ReadRecentDocs(vector<string>& Names, vector<string>& Paths)
-{
-	std::string recent_path = Rtt::LinuxFileUtils::GetHomePath();
-	recent_path += "/.Solar2D/recent_projects.conf";
-	ifstream f(recent_path);
-	if (f.is_open())
-	{
-		string line;
-		while (getline(f, line))
-		{
-			std::vector<std::string> items;
-			split(items, line, "=");
-			if (items.size() == 2 && items[0].size() > 0 && items[1].size() > 0)
-			{
-				Names.push_back(items[0]);
-				Paths.push_back(items[1]);
-			}
-		}
-		f.close();
-		return Names.size() > 0;
-	}
-	return false;
-}
 
 namespace Rtt
 {
@@ -136,7 +80,7 @@ namespace Rtt
 	{
 		if (LinuxSimulatorView::Config::settingsFilePath.IsEmpty())
 		{
-			LinuxSimulatorView::Config::settingsFilePath = LinuxFileUtils::GetHomePath();
+			LinuxSimulatorView::Config::settingsFilePath = GetHomePath();
 			LinuxSimulatorView::Config::settingsFilePath.append("/.Solar2D/simulator.conf");
 			LinuxSimulatorView::Config::configFile = new wxFileConfig(wxEmptyString, wxEmptyString, LinuxSimulatorView::Config::settingsFilePath);
 		}
@@ -393,11 +337,10 @@ namespace Rtt
 		{
 			listPointer->Clear();
 
-			vector<string> Names;
-			vector<string> Paths;
-			if (ReadRecentDocs(Names, Paths))
+			vector<pair<string, string>> recentDocs;
+			if (ReadRecentDocs(recentDocs))
 			{
-				for (int i = 0; i < Names.size(); i++)
+				for (int i = 0; i < recentDocs.size(); i++)
 				{
 					// Create a recent project info object.
 					RecentProjectInfo* infoPointer = new RecentProjectInfo();
@@ -406,14 +349,17 @@ namespace Rtt
 						continue;
 					}
 
+					const string& appName = recentDocs[i].first;
+					const string& appPath = recentDocs[i].second;
+
 					// Copy the project's folder name to the info object.
 					String sTitle;
-					sTitle.Append(Names[i].c_str());
+					sTitle.Append(appName.c_str());
 					infoPointer->formattedString = sTitle;
 
 					// Copy the project's "main.lua" file path to the info object.
 					String sPath;
-					sPath.Append(Paths[i].c_str());
+					sPath.Append(appPath.c_str());
 					infoPointer->fullURLString = sPath;
 
 					// Add the info object to the given collection.

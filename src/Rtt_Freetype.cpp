@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "Rtt_Freetype.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 
 // for debugging
 #ifdef _DEBUG
@@ -117,7 +117,7 @@ namespace Rtt
 		Uint8* file_ptr = NULL;
 
 		// default fallback font
-		std::string defaultFontPath(LinuxFileUtils::GetStartupPath(NULL));
+		std::string defaultFontPath(GetStartupPath(NULL));
 		defaultFontPath.append("/Resources/homescreen/Exo2-Regular.ttf");
 		const char* defaultFontFile = defaultFontPath.c_str();
 

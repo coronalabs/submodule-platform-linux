@@ -156,7 +156,6 @@ public:
 	void CreateViewAsChildMenu(std::vector<std::string>skin, wxMenu *targetMenu);
 	void ClearMenuCheckboxes(wxMenu *menu, wxString currentSkinTitle);
 	void WatchFolder(const char *path, const char *appName);
-	void UpdateRecentDocs(const std::string& appName, const std::string& path);
 
 	bool fRelaunchedViaFileEvent;
 	Rtt::LinuxRelaunchProjectDialog *fRelaunchProjectDialog;

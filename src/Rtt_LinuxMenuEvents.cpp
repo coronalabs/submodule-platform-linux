@@ -2,7 +2,7 @@
 #include "Core/Rtt_FileSystem.h"
 #include "Rtt_LinuxPlatform.h"
 #include "Rtt_LinuxSimulatorView.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Rtt_LinuxCloneProjectDialog.h"
 #include "Rtt_LinuxNewProjectDialog.h"
 #include "Rtt_LinuxPreferencesDialog.h"
@@ -57,7 +57,7 @@ void LinuxMenuEvents::OnNewProject(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnOpenFileDialog(wxCommandEvent &event)
 {
-	string startPath(Rtt::LinuxFileUtils::GetHomePath());
+	string startPath(GetHomePath());
 	startPath.append("/Documents/Solar2D Projects");
 
 	wxFileDialog openFileDialog(wxGetApp().GetParent(), _("Open"), startPath, wxEmptyString, "Simulator Files (main.lua)|main.lua", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
@@ -117,14 +117,14 @@ void LinuxMenuEvents::OnShowProjectFiles(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnShowProjectSandbox(wxCommandEvent &event)
 {
-	const char *homeDir = Rtt::LinuxFileUtils::GetHomePath();
+	const char *homeDir = GetHomePath();
 	string appName = wxGetApp().GetFrame()->GetContext()->GetAppName();
 	string command("xdg-open ");
 	command.append(homeDir);
 	command.append("/.Solar2D/Sandbox/");
 	command.append(appName.c_str());
 	command.append("_");
-	command.append(Rtt::LinuxFileUtils::CalculateMD5(appName.c_str()));
+	command.append(CalculateMD5(appName.c_str()));
 
 	wxExecute(command.c_str());
 }
@@ -135,14 +135,14 @@ void LinuxMenuEvents::OnClearProjectSandbox(wxCommandEvent &event)
 
 	if (clearProjectSandboxDlg->ShowModal() == wxID_OK)
 	{
-		const char *homeDir = Rtt::LinuxFileUtils::GetHomePath();
+		const char *homeDir = GetHomePath();
 		string appName = wxGetApp().GetFrame()->GetContext()->GetAppName();
 		string command("rm -r ");
 		command.append(homeDir);
 		command.append("/.Solar2D/Sandbox/");
 		command.append(appName);
 		command.append("_");
-		command.append(Rtt::LinuxFileUtils::CalculateMD5(appName));
+		command.append(CalculateMD5(appName));
 
 		wxExecute(command.c_str());
 		// relaunch
@@ -224,7 +224,7 @@ void LinuxMenuEvents::OnOpenDocumentation(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnOpenSampleProjects(wxCommandEvent &event)
 {
-	string samplesPath = Rtt::LinuxFileUtils::GetStartupPath(NULL);
+	string samplesPath = GetStartupPath(NULL);
 	samplesPath.append("/Resources/SampleCode");
 	if (!wxDirExists(samplesPath))
 	{
@@ -271,7 +271,7 @@ void LinuxMenuEvents::OnAbout(wxCommandEvent &WXUNUSED(event))
 	info.SetLicence(_("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS\nBE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN\nACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\nCONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."));
 	info.SetDescription(_("Solar2D is a cross-platform framework ideal for rapidly creating apps and games for mobile devices, TV, desktop systems and HTML5.\n\nThat means you can create your project once and publish it to multiple types of devices, including Apple iPhone and iPad, Android phones and tablets, Amazon Fire, Mac Desktop, Windows Desktop, Linux, HTML5 and even connected TVs such as Apple TV, Fire TV, and Android TV."));
 
-	string iconPath = Rtt::LinuxFileUtils::GetStartupPath(NULL);
+	string iconPath = GetStartupPath(NULL);
 	iconPath.append("/Resources/solar2d.png");
 	if (Rtt_FileExists(iconPath.c_str()))
 	{

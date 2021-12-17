@@ -11,7 +11,7 @@
 #include "Rtt_LinuxPlatform.h"
 #include "Rtt_LinuxSimulatorServices.h"
 #include "Rtt_LinuxSimulatorView.h"
-#include "Rtt_LinuxFileUtils.h"
+#include "Rtt_LinuxUtils.h"
 #include "Rtt_LinuxBuildDialog.h"
 #include "Rtt_SimulatorRecents.h"
 #include "Rtt_AndroidAppPackager.h"
@@ -165,7 +165,7 @@ namespace Rtt
 		package.append(fAppContext->GetAppName());
 		appPackageNameTextCtrl->SetValue(package);
 
-		std::string keystorePath(LinuxFileUtils::GetStartupPath(NULL));
+		std::string keystorePath(GetStartupPath(NULL));
 		keystorePath.append("/Resources/debug.keystore");
 		keystorePathTextCtrl->SetValue(keystorePath);
 
@@ -249,7 +249,7 @@ namespace Rtt
 
 	void AndroidBuildDialog::OnSelectOutputPathClicked(wxCommandEvent &event)
 	{
-		wxDirDialog openDirDialog(this, _("Choose Output Directory"), LinuxFileUtils::GetHomePath(), 0, wxDefaultPosition);
+		wxDirDialog openDirDialog(this, _("Choose Output Directory"), GetHomePath(), 0, wxDefaultPosition);
 
 		if (openDirDialog.ShowModal() == wxID_OK)
 		{
@@ -259,7 +259,7 @@ namespace Rtt
 
 	void AndroidBuildDialog::OnSelectKeyStorePathClicked(wxCommandEvent &event)
 	{
-		wxFileDialog openFileDialog(this, _("Choose Keystore Path"), LinuxFileUtils::GetHomePath(), wxEmptyString, "KeyStore files |*.keystore", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+		wxFileDialog openFileDialog(this, _("Choose Keystore Path"), GetHomePath(), wxEmptyString, "KeyStore files |*.keystore", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 		if (openFileDialog.ShowModal() == wxID_OK)
 		{

@@ -847,7 +847,6 @@ SET( SOLAR2D_SOURCES
 		# Common Linux specific files
 		${CORONA_ROOT}/platform/linux/src/Rtt_Assert.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_Freetype.cpp
-		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxFileUtils.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_HTTPClientLinux.cpp
 		${CORONA_ROOT}/librtt/Rtt_HTTPClientCommon.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxInputDevice.cpp
@@ -869,6 +868,7 @@ SET( SOLAR2D_SOURCES
 		${CORONA_ROOT}/platform/shared/Rtt_PlatformObjectWrapper.cpp
 		${CORONA_ROOT}/modules/simulator/Rtt_LuaLibSimulator.cpp
 		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContainer.cpp
+		${CORONA_ROOT}/platform/linux/src/Rtt_LinuxUtils.cpp
 )
 
 add_executable( Solar2D
@@ -906,7 +906,6 @@ add_executable( Solar2D
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRelaunchProjectDialog.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntime.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntimeErrorDialog.cpp
-	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxUtils.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxSimulatorServices.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContextNewProject.cpp
 
@@ -951,7 +950,6 @@ add_executable( Solar2DSimulator
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRelaunchProjectDialog.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntime.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxRuntimeErrorDialog.cpp
-	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxUtils.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxSimulatorServices.cpp
 	${CORONA_ROOT}/platform/linux/src/Rtt_LinuxContextNewProject.cpp
 
