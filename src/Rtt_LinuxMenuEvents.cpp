@@ -57,8 +57,9 @@ void LinuxMenuEvents::OnNewProject(wxCommandEvent &event)
 
 void LinuxMenuEvents::OnOpenFileDialog(wxCommandEvent &event)
 {
-	string startPath(GetHomePath());
-	startPath.append("/Documents/Solar2D Projects");
+//	string startPath(GetHomePath());
+//	startPath.append("/Documents/Solar2D Projects");
+	wxString startPath(Rtt::LinuxSimulatorView::Config::lastProjectDirectory);
 
 	wxFileDialog openFileDialog(wxGetApp().GetParent(), _("Open"), startPath, wxEmptyString, "Simulator Files (main.lua)|main.lua", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
