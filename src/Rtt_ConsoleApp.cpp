@@ -2,17 +2,37 @@
 #include "Rtt_LinuxIPCClient.h"
 #include <time.h>
 #include <sys/time.h>
+#include <netdb.h> 
+#include <sys/un.h>
 
 #define LINUX_CONSOLE_CLEAR_CMD "###clear###"
 #define LINUX_CONSOLE_QUIT_CMD "###quit###"
 
-static Rtt_LinuxIPCClient *consoleClient = NULL;
+static Rtt_LinuxIPCClient* consoleClient = NULL;
 static bool instanceCreated = false;
 using namespace std;
 
-void ConsoleApp::Log(const char *message, bool isError)
+bool ConsoleApp::isStarted()
+// checking if unix socket IPC_SERVICE is available
 {
-	while (consoleClient == wxNullPtr)
+	int rc = -1;
+	int sd = socket(AF_UNIX, SOCK_STREAM, 0);
+	if (sd >= 0)
+	{
+		struct sockaddr_un serveraddr;
+		memset(&serveraddr, 0, sizeof(serveraddr));
+		serveraddr.sun_family = AF_UNIX;
+		strcpy(serveraddr.sun_path, IPC_SERVICE);
+
+		rc = connect(sd, (struct sockaddr*)&serveraddr, SUN_LEN(&serveraddr));
+		close(sd);
+	}
+	return rc >= 0;
+}
+
+void ConsoleApp::Log(const char* message, bool isError)
+{
+	if (consoleClient == wxNullPtr)
 	{
 		consoleClient = new Rtt_LinuxIPCClient();
 	}

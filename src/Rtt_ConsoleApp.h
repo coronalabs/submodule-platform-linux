@@ -9,6 +9,7 @@ public:
 	static void Log(const char *message, bool isError = false);
 	static void Clear();
 	static void Quit();
+	static bool isStarted();
 };
 
 #endif // Rtt_Console_App
