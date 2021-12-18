@@ -897,7 +897,7 @@ void SolarFrame::ResetSize()
 	}
 
 	ChangeSize(fContext->GetWidth(), fContext->GetHeight());
-	GetCanvas()->Refresh(false);
+	GetCanvas()->Refresh(true);
 }
 
 void SolarFrame::CreateMenus()
@@ -1421,7 +1421,7 @@ void SolarFrame::OnZoomIn(wxCommandEvent& event)
 		frame->GetContext()->SetHeight(proposedHeight);
 		frame->ChangeSize(proposedWidth, proposedHeight);
 		frame->GetContext()->RestartRenderer();
-		GetCanvas()->Refresh(false);
+		GetCanvas()->Refresh(true);
 
 		if (!IsHomeScreen(GetContext()->GetAppName()))
 		{
@@ -1457,7 +1457,7 @@ void SolarFrame::OnZoomOut(wxCommandEvent& event)
 		frame->GetContext()->SetHeight(proposedHeight);
 		frame->ChangeSize(proposedWidth, proposedHeight);
 		frame->GetContext()->RestartRenderer();
-		GetCanvas()->Refresh(false);
+		GetCanvas()->Refresh(true);
 
 		LinuxSimulatorView::Config::zoomedWidth = proposedWidth;
 		LinuxSimulatorView::Config::zoomedHeight = proposedHeight;
@@ -1556,7 +1556,7 @@ void SolarFrame::OnOpen(wxCommandEvent& event)
 //	}
 
 	fContext->RestartRenderer();
-	GetCanvas()->Refresh(false);
+	GetCanvas()->Refresh(true);
 	fSolarGLCanvas->StartTimer(1000.0f / (float)fContext->GetFPS());
 
 	if (LinuxSimulatorView::IsRunningOnSimulator())
@@ -1646,6 +1646,8 @@ void SolarGLCanvas::OnTimer(wxTimerEvent& event)
 	{
 		LinuxInputDeviceManager& deviceManager = (LinuxInputDeviceManager&)fContext->GetPlatform()->GetDevice().GetInputDeviceManager();
 		deviceManager.dispatchEvents(runtime);
+
+		// advance engine
 		(*runtime)();
 	}
 }
@@ -1664,7 +1666,7 @@ void SolarGLCanvas::OnWindowCreate(wxWindowCreateEvent& event)
 	Rtt_ASSERT(fGLContext);
 	// the current context must be set before we get OGL pointers
 	SetCurrent(*fGLContext);
-	Refresh(false);
+	Refresh(true);
 }
 
 void SolarGLCanvas::OnSize(wxSizeEvent& event)
@@ -1679,5 +1681,5 @@ void SolarGLCanvas::OnSize(wxSizeEvent& event)
 
 	fWindowHeight = event.GetSize().y;
 
-	Refresh(false);
+	Refresh(true);
 }
