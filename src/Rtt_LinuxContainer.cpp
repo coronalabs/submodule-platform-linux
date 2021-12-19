@@ -8,217 +8,142 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "Rtt_LinuxContainer.h"
-#include <stdarg.h>
 #include <stdio.h>
 #include <math.h>
 
-// Allocate in increments of BLOCKSIZE.
-static const int BLOCKSIZE = (1 << 12);
-static int capacity(int size)
-// Compute the buffer capacity corresponding to the given size.
-// Basically round up to the next block size.
-// Always return non-zero.
-{
-	// BLOCKSIZE must be a power of two.
-	//compiler_assert((BLOCKSIZE & (BLOCKSIZE - 1)) == 0);
-	if (size == 0)
-	{
-		// Special case, always allocate.
-		return BLOCKSIZE;
-	}
+using namespace std;
 
-	return (size + BLOCKSIZE - 1) & ~(BLOCKSIZE - 1);
-}
-
-membuf::membuf() :
-	m_size(0),
-	m_capacity(0),
-	m_data(0),
-	m_read_only(false)
+membuf::membuf()
+  : m_size(0)
+  , m_capacity(0)
+  , m_data(0)
+  , m_start(0)
 {
 }
 
-membuf::membuf(const void *data, int size) :
-	m_size(0),
-	m_capacity(0),
-	m_data(0),
-	m_read_only(false)
+membuf::membuf(const void* data, int size)
+  : m_size(0)
+  , m_capacity(0)
+  , m_data(0)
+  , m_start(0)
 {
-	append(data, size);
+  append(data, size);
 }
 
-membuf::membuf(const membuf &buf) :
-	m_size(0),
-	m_capacity(0),
-	m_data(0),
-	m_read_only(false)
+membuf::membuf(const membuf& buf)
+  : m_size(0)
+  , m_capacity(0)
+  , m_data(0)
+  , m_start(0)
 {
-	append(buf);
+  append(buf);
 }
 
-// Special read-only constructor.
-membuf::membuf(read_only_enum e, const void *data, int size) :
-	m_size(size),
-	m_capacity(0),
-	m_data(const_cast<void*>(data)),
-	m_read_only(true)
+membuf::membuf(const string& str)
+  : m_size(0)
+  , m_capacity(0)
+  , m_data(0)
+  , m_start(0)
 {
+  append(str);
 }
 
 membuf::~membuf()
 {
-	if (!m_read_only && m_capacity)
-	{
-		free(m_data);
-	}
-
-	m_data = NULL;
+  clear();
 }
 
-void membuf::resize(int new_size)
+void membuf::operator=(const membuf& buf)
 {
-	assert(!m_read_only);
-
-	if (new_size == m_size)
-	{
-		return;
-	}
-
-	int new_capacity = capacity(new_size);
-
-	if (m_data == NULL)
-	{
-		m_data = malloc(new_capacity);
-	}
-	else
-	{
-		if (new_capacity != m_capacity)
-		{
-			m_data = realloc(m_data, new_capacity);
-			assert(m_data);
-		}
-	}
-
-	assert(m_data);
-
-	m_capacity = new_capacity;
-	assert(m_capacity >= new_size);
-	m_size = new_size;
+  clear();
+  append(buf.data(), buf.size());
 }
 
-void membuf::append(const void *data, int datasize)
+void membuf::clear()
 {
-	if (m_read_only == false && datasize > 0)
-	{
-		int old_size = size();
-		resize(old_size + datasize);
-		memcpy(((char*) m_data) + old_size, data, datasize);
-	}
+  if (m_data)
+    free(m_data);
+
+  m_capacity = 0;
+  m_data = NULL;
+  m_size = 0;
+  m_start = 0;
 }
 
-void membuf::append(const membuf &buf)
+void membuf::append(const void* data, int datasize)
 {
-	append(buf.data(), buf.size());
+  if (datasize > 0)
+  {
+    int old_size = m_size + m_start;
+    int new_size = old_size + datasize;
+
+    // resize if need
+
+    static const int BLOCKSIZE = 4096;
+    int new_capacity = (new_size + BLOCKSIZE) & ~(BLOCKSIZE - 1); // +1 for ZERO at end
+
+    if (m_data == NULL)
+      m_data = (char*)malloc(new_capacity);
+    else
+    {
+      if (new_capacity != m_capacity)
+        m_data = (char*)realloc(m_data, new_capacity);
+    }
+    m_capacity = new_capacity;
+
+    memcpy(m_data + old_size, data, datasize);
+    m_size += datasize;
+  }
+}
+
+void membuf::append(const membuf& buf)
+{
+  append(buf.data(), buf.size());
+}
+
+void membuf::append(const string& str)
+{
+  append(str.c_str(), (int)str.size());
+}
+
+void membuf::append(char ch)
+{
+  append(&ch, 1);
+}
+
+// delete len bytes from back
+void membuf::erase(int len)
+{
+  if (len > 0)
+  {
+    if (len < m_size)
+    {
+      m_size -= len;
+    }
+    else
+      clear();
+  }
 }
 
 void membuf::remove(int len)
 {
-	if (m_read_only == false && size() >= len)
-	{
-		int old_size = size();
-		resize(old_size - len);
-
-		if (size() > 0)
-		{
-			memcpy(m_data, (char*) m_data + len, size());
-		}
-	}
+  if (len > 0)
+  {
+    if (len >= m_size)
+      clear();
+    else
+    {
+      m_size -= len;
+      m_start += len;
+    }
+  }
 }
 
-Uint8 &membuf::operator[](int index)
+const char* membuf::c_str() const
 {
-	assert(index >= 0 && index < m_size);
-	return ((Uint8*) m_data)[index];
-}
+  // ensure ZERO at end of data
+  if (m_data)
+    m_data[m_size + m_start] = 0;
 
-const Uint8 &membuf::operator[](int index) const
-{
-	assert(index >= 0 && index < m_size);
-	return ((Uint8*) m_data)[index];
-}
-
-void membuf::operator=(const membuf &buf)
-{
-	resize(buf.size());
-	memcpy(m_data, buf.m_data, size());
-	m_read_only = buf.m_read_only;
-}
-
-bool	membuf::operator==(const membuf &buf) const
-{
-	if (size() != buf.size())
-	{
-		return false;
-	}
-
-	return memcmp(m_data, buf.m_data, size()) == 0 ? true : false;
-}
-
-bool	membuf::operator!=(const membuf &buf) const
-{
-	if (size() != buf.size())
-	{
-		return false;
-	}
-
-	return memcmp(m_data, buf.m_data, size()) == 0 ? false : true;
-}
-
-void membuf::append(Uint8 byte)
-{
-	assert(m_read_only == false);
-
-	int old_size = size();
-	resize(old_size + 1);
-	((Uint8*) m_data)[old_size] = byte;
-}
-
-void membuf::append(int num)
-{
-	assert(m_read_only == false);
-
-	int old_size = size();
-	resize(old_size + sizeof(int));
-
-	for (int i = 0; i < sizeof(int); i++)
-	{
-		((Uint8*) m_data)[old_size + i] = *(((Uint8*) &num) + sizeof(int) - 1 - i);
-	}
-}
-
-void membuf::append(double num)
-{
-	assert(m_read_only == false);
-
-	int old_size = size();
-	resize(old_size + sizeof(double));
-
-	for (int i = 0; i < sizeof(double); i++)
-	{
-		((Uint8*) m_data)[old_size + i] = *(((Uint8*) &num) + sizeof(double) - 1 - i);
-	}
-}
-
-void membuf::dump()
-{
-	Uint8 *ptr = (Uint8*) m_data;
-	printf("membuf[%d]: ", size());
-
-	for (int i = 0; i < size(); i++)
-	{
-		printf("%02X ", *ptr);
-		ptr++;
-	}
-
-	printf("\n");
+  return (const char*)data();
 }

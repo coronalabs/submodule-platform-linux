@@ -10,8 +10,7 @@
 // Generic C++ containers.  Problem: STL is murder on compile times,
 // and is hard to debug.  These are substitutes that compile much
 // faster and are somewhat easier to debug.  Not as featureful,
-// efficient or hammered-on as STL though.  You can use STL
-// implementations if you want; see _TU_USE_STL.
+// efficient or hammered-on as STL though.  You can use STL implementations if you want
 
 #ifndef CONTAINER_H
 #define CONTAINER_H
@@ -22,6 +21,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <math.h>
+#include <string>
 
 // A smart (strong) pointer asserts that the pointed-to object will
 // not go away as long as the strong pointer is valid.  "Owners" of an
@@ -349,45 +349,33 @@ inline int frnd(float f) { return fchop(f + 0.5f); }	// replace with inline asm 
 struct membuf
 {
 	membuf();
-	membuf(const void *data, int size);
-	membuf(const membuf &buf);
+	membuf(const void* data, int size);
+	membuf(const membuf& buf);
+	membuf(const std::string& str);
 	~membuf();
 
-	// Construct a read-only membuf that points at the given data,
-	// instead of copying it.
-	enum read_only_enum { READ_ONLY };
-	membuf(read_only_enum e, const void *data, int size);
+	inline int size() const { return m_size; }
+	inline const void* data() const { return m_data + m_start; }
+	inline void* data() { return m_data + m_start; }
+	const char* c_str() const;
 
-	int size() const { return m_size; }
-	const void *data() const { return m_data; }
-	void *data()
-	{
-		//assert(!m_read_only);
-		return m_data;
-	}
+	void clear();
 
-	// Don't call these mutators on read-only membufs.
+	void append(char ch);
+	void append(const void* data, int size);
+	void append(const membuf& buf);
+	void append(const std::string& str);  // We do not append the terminating '\0'.
 
-	void resize(int new_size);
-	void append(const void *data, int size);
-	void append(const membuf &buf);
-	void append(Uint8 byte);
-	void append(int num);
-	void append(double num);
 	void remove(int size);
-	void dump();
-
-	Uint8 &operator[](int index);
-	const Uint8 &operator[](int index) const;
-	void	operator=(const membuf &buf);
-	bool	operator==(const membuf &buf) const;
-	bool	operator!=(const membuf &buf) const;
+	void erase(int size);
+	void	operator=(const membuf& buf);
 
 private:
+
 	int m_size;
 	int m_capacity;
-	void *m_data;
-	bool m_read_only;
+	char* m_data;
+	int m_start;
 };
 
 #endif // CONTAINER_H

@@ -84,6 +84,8 @@ namespace Rtt
 		const std::string &GetAppName() const { return fAppName; }
 		const std::string &GetSaveFolder() const { return fSaveFolder; }
 		const LinuxRuntimeDelegate *GetRuntimeDelegate() const { return fRuntimeDelegate; }
+		static int Print(lua_State* L);		// re-defined global.print
+
 		bool fIsStarted;
 
 	private:

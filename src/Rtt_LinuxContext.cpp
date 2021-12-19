@@ -38,6 +38,8 @@
 #include "wx/display.h"
 #include <curl/curl.h>
 #include <utility>		// for pairs
+#include "lua.h"
+#include "lauxlib.h"
 
 #if !defined(wxHAS_IMAGES_IN_RESOURCES) && defined(Rtt_SIMULATOR)
 #include "resource/simulator.xpm"
@@ -56,6 +58,15 @@ wxDEFINE_EVENT(eventWelcomeProject, wxCommandEvent);
 static bool IsHomeScreen(string appName)
 {
 	return appName.compare(HOMESCREEN_ID) == 0;
+}
+
+// for redirecting output to Solar2DConsole
+extern "C"
+{
+	static int print2console(lua_State* L)
+	{
+		return SolarAppContext::Print(L);
+	}
 }
 
 namespace Rtt
@@ -439,6 +450,37 @@ namespace Rtt
 		return fullScreen;
 	}
 
+	// global.print()
+	int SolarAppContext::Print(lua_State* L)
+	{
+		membuf mb;
+		int n = lua_gettop(L);  // number of arguments
+		lua_getglobal(L, "tostring");
+		for (int i = 1; i <= n; i++)
+		{
+			const char* s;
+			lua_pushvalue(L, -1);  // function to be called 
+			lua_pushvalue(L, i);   // value to print 
+			lua_call(L, 1, 1);
+			s = lua_tostring(L, -1);  // get result 
+			if (s == NULL)
+				return luaL_error(L, LUA_QL("tostring") " must return a string to " LUA_QL("print"));
+
+			if (i > 1)
+			{
+				mb.append('\t');
+			}
+			mb.append(s);
+
+			lua_pop(L, 1);  // pop result 
+		}
+
+		puts(mb.c_str());
+		mb.append('\n');
+		ConsoleApp::Log(mb.c_str());
+		return 0;
+	}
+
 	bool SolarAppContext::LoadApp(SolarGLCanvas* canvas)
 	{
 		fCanvas = canvas;
@@ -469,6 +511,11 @@ namespace Rtt
 			lua_pushlightuserdata(luaStatePointer, fSimulator);
 			Rtt::LuaContext::RegisterModuleLoader(luaStatePointer, Rtt::LuaLibSimulator::kName, Rtt::LuaLibSimulator::Open, 1);
 		}
+
+		// re-define
+		lua_State* L = fRuntime->VMContext().L();
+		lua_pushcfunction(L, print2console);
+		lua_setglobal(L, "print");
 
 		return true;
 	}
@@ -575,7 +622,11 @@ SolarApp::SolarApp()
 	// start the console immediately
 	if (LinuxSimulatorView::IsRunningOnSimulator())
 	{
-		if (!ConsoleApp::isStarted())
+		if (ConsoleApp::isStarted())
+		{
+			ConsoleApp::Clear();
+		}
+		else
 		{
 			std::string cmd(GetStartupPath(NULL));
 			cmd.append("/Solar2DConsole");
