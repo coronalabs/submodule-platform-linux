@@ -9,6 +9,10 @@
 
 #include "Rtt_Freetype.h"
 #include "Rtt_LinuxUtils.h"
+#include "default.ttf.h"
+#include <unordered_map>
+
+static std::unordered_map<std::string, bool> s_fontname_printed;		// for not repeating log
 
 // for debugging
 #ifdef _DEBUG
@@ -108,56 +112,31 @@ namespace Rtt
 		}
 
 		FT_Face face = NULL;
-		const FT_Byte* file_base = NULL;
-		FT_Long face_index = 0;	// The index of the face within the font. The first face has index 0.
-
-
-		// first try memory file
-		int file_size = 0;
-		Uint8* file_ptr = NULL;
-
-		// default fallback font
-		std::string defaultFontPath(GetStartupPath(NULL));
-		defaultFontPath.append("/Resources/homescreen/Exo2-Regular.ttf");
-		const char* defaultFontFile = defaultFontPath.c_str();
-
-		if (fontname.size() == 0)
+		std::string url = m_base_dir + fontname;
+		FT_New_Face(m_lib, url.c_str(), 0, &face);
+		if (face == NULL)
 		{
-			// use default
-			FT_New_Face(m_lib, defaultFontFile, 0, &face);
-			if (face == NULL)
-			{
-				Rtt_LogException("Failed to open default font file '%s'\n", defaultFontFile);
-				return NULL;
-			}
-		}
-		else
-		{
-			std::string url = m_base_dir + fontname;
+			// try .ttf
+			url = m_base_dir + fontname + ".ttf";
 			FT_New_Face(m_lib, url.c_str(), 0, &face);
 			if (face == NULL)
 			{
-				// try .ttf
-				url = m_base_dir + fontname + ".ttf";
+				// try .otf
+				url = m_base_dir + fontname + ".otf";
 				FT_New_Face(m_lib, url.c_str(), 0, &face);
 				if (face == NULL)
 				{
-					// try .otf
-					url = m_base_dir + fontname + ".otf";
+					// try default
+					url = m_base_dir + "default.ttf";
 					FT_New_Face(m_lib, url.c_str(), 0, &face);
 					if (face == NULL)
 					{
-						// try default
-						FT_New_Face(m_lib, defaultFontFile, 0, &face);
-						if (face == NULL)
+						if (fontname.size() > 0 && s_fontname_printed.find(fontname) == s_fontname_printed.end())
 						{
-							Rtt_Log("WARNING: Cannot open '%s%s'\n", m_base_dir.c_str(), fontname.c_str());
-							return NULL;
+							s_fontname_printed[fontname] = true;
+							Rtt_Log("WARNING: %s not found, using embedded font \n", fontname.c_str());
 						}
-						else
-						{
-							Rtt_Log("WARNING: Cannot open '%s%s', used default font file '%s'\n", m_base_dir.c_str(), fontname.c_str(), defaultFontFile);
-						}
+						FT_New_Memory_Face(m_lib, default_ttf, sizeof(default_ttf), 0, &face);
 					}
 				}
 			}
@@ -320,7 +299,7 @@ namespace Rtt
 	}
 
 	int glyph_freetype_provider::draw_line(alpha* im, face_entity* fe, const std::vector<Uint32>& ch,
-	                                       int i1, int i2, int* pen_x, int pen_y, const char* alignment, int boxw, int fontsize, float xscale)
+		int i1, int i2, int* pen_x, int pen_y, const char* alignment, int boxw, int fontsize, float xscale)
 	{
 		int line_width = 0;
 		for (int i = i1; i < i2; i++)
@@ -384,8 +363,8 @@ namespace Rtt
 	}
 
 	smart_ptr<alpha> glyph_freetype_provider::render_string(const std::string& str, const char* alignment, const std::string& fontname,
-	        bool is_bold, bool is_italic, int fontsize, const std::vector<int>& xleading, const std::vector<int>& yleading,
-	        int boxw, int boxh, bool multiline, float xscale, float yscale, float* baseline)
+		bool is_bold, bool is_italic, int fontsize, const std::vector<int>& xleading, const std::vector<int>& yleading,
+		int boxw, int boxh, bool multiline, float xscale, float yscale, float* baseline)
 	{
 		face_entity* fe = get_face_entity(fontname, is_bold, is_italic);
 		if (fe == NULL)
@@ -407,8 +386,8 @@ namespace Rtt
 		// load char images
 		std::vector<Uint32> ch;
 		Uint32	code = 1;
-		const char*	p = str.c_str();
-		const char*	end = p + str.size();
+		const char* p = str.c_str();
+		const char* end = p + str.size();
 		while (code && p < end)
 		{
 			code = decode_next_unicode_character(&p);
@@ -484,7 +463,7 @@ namespace Rtt
 					pen_x = pen_x0;
 					if (rowindex < xleading.size())
 					{
-//						pen_y = yleading.size() > rowindex ? yleading[rowindex] : fe->m_face->size->metrics.height >> 6;
+						//						pen_y = yleading.size() > rowindex ? yleading[rowindex] : fe->m_face->size->metrics.height >> 6;
 						pen_y = yleading.size() > rowindex ? yleading[rowindex] : vertAdvance;
 					}
 					else
