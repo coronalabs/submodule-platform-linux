@@ -1280,8 +1280,8 @@ void SolarFrame::OnClose(wxCloseEvent& event)
 		LinuxSimulatorView::Config::windowYPos = GetPosition().y;
 		LinuxSimulatorView::Config::Save();
 		ConsoleApp::Quit();
-		wxExit();
 	}
+	wxExit();
 }
 
 void SolarFrame::OnFileSystemEvent(wxFileSystemWatcherEvent& event)
